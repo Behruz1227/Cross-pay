@@ -250,22 +250,22 @@ export default function Partner() {
             wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
             // wordsListData?.ADDRESS || 'АДРЕС',
             wordsListData?.INN || 'ИНН',
-            // wordsListData?.DATE || 'ДАТА',  
+            // wordsListData?.DATE || 'ДАТА',
             wordsListData?.EXCEL_MFO || 'МФО',
-            wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',
-            wordsListData?.ACTIVE || 'АКТИВНЫЙ', 
+            // wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',
+            wordsListData?.ACTIVE || 'АКТИВНЫЙ',
           ]}
           buttonChild={
-            <Button  
-              bg={bgColor} 
-              color={'white'} 
-              _hover={{ bg: hoverBgColor }} 
-              _active={{ 
+            <Button
+              bg={bgColor}
+              color={'white'}
+              _hover={{ bg: hoverBgColor }}
+              _active={{
                 bg: hoverBgColor,
-                transform: 'scale(0.98)', 
-              }} 
-              onClick={() => { 
-                setIsOpen(true); 
+                transform: 'scale(0.98)',
+              }}
+              onClick={() => {
+                setIsOpen(true);
               }}
             >
               {wordsListData?.ADD_PARTNER || 'Добавить торговца'}
@@ -299,9 +299,9 @@ export default function Partner() {
                   {item.agreementDate ? item.agreementDate : '-'}
                 </Td> */}
                 <Td minWidth={'250px'}>{item.filial_code || '-'}</Td>
-                <Td minWidth={'250px'}>
+                {/* <Td minWidth={'250px'}>
                   {item.bankAccount ? item.bankAccount : '-'}
-                </Td>
+                </Td> */} 
                 <Td>
                   <Select
                     onChange={async (e) => {
@@ -325,7 +325,7 @@ export default function Partner() {
           ) : (
             <Tr>
               <Td textAlign={'center'} colSpan={10}>
-                {wordsListData?.EXCEL_MERCHANT || 'Торговец'}{' '}
+                {wordsListData?.EXCEL_MERCHANT || ' '}{' '}
                 {wordsListData?.NOT_FOUND || 'Не найдено'}
               </Td>
             </Tr>
