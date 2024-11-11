@@ -248,24 +248,24 @@ export default function Partner() {
             wordsListData?.TABLE_TR || '№',
             wordsListData?.NAME || 'ИМЯ',
             wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
-            wordsListData?.ADDRESS || 'АДРЕС',
+            // wordsListData?.ADDRESS || 'АДРЕС',
             wordsListData?.INN || 'ИНН',
-            wordsListData?.DATE || 'ДАТА',
+            // wordsListData?.DATE || 'ДАТА',  
             wordsListData?.EXCEL_MFO || 'МФО',
             wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',
-            wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+            wordsListData?.ACTIVE || 'АКТИВНЫЙ', 
           ]}
           buttonChild={
-            <Button
-              bg={bgColor}
-              color={'white'}
-              _hover={{ bg: hoverBgColor }}
-              _active={{
+            <Button  
+              bg={bgColor} 
+              color={'white'} 
+              _hover={{ bg: hoverBgColor }} 
+              _active={{ 
                 bg: hoverBgColor,
-                transform: 'scale(0.98)',
-              }}
-              onClick={() => {
-                setIsOpen(true);
+                transform: 'scale(0.98)', 
+              }} 
+              onClick={() => { 
+                setIsOpen(true); 
               }}
             >
               {wordsListData?.ADD_PARTNER || 'Добавить торговца'}
@@ -293,11 +293,11 @@ export default function Partner() {
                       )} ${item.phone.slice(8, 10)} ${item.phone.slice(10)}`
                     : '-'}
                 </Td>
-                <Td minWidth={'250px'}>{item.address ? item.address : '-'}</Td>
-                <Td minWidth={'250px'}>{item.tin ? item.tin : '-'}</Td>
-                <Td minWidth={'250px'}>
+                {/* <Td minWidth={'250px'}>{item.address ? item.address : '-'}</Td> */}
+                <Td minWidth={'250px'}>{item.inn || '-'}</Td>
+                {/* <Td minWidth={'250px'}>
                   {item.agreementDate ? item.agreementDate : '-'}
-                </Td>
+                </Td> */}
                 <Td minWidth={'250px'}>{item.filial_code || '-'}</Td>
                 <Td minWidth={'250px'}>
                   {item.bankAccount ? item.bankAccount : '-'}
