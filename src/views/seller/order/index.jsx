@@ -22,7 +22,7 @@ import {
   GridItem,
   Select,
 } from '@chakra-ui/react';
-import { Pagination, Popover } from 'antd';
+import { Pagination } from 'antd';
 import { seller_order_get } from 'contexts/api';
 import { admin_notification_count } from 'contexts/api';
 import { order_cancel } from 'contexts/api';
@@ -49,10 +49,10 @@ import io from 'socket.io-client';
 import { SocketStore } from 'contexts/state-management/socket/socketStore';
 import { consoleClear } from 'contexts/toast-message';
 
-const socket = io("https://socket.qrpay.uz", {
-  secure: true,
-  transports: ['websocket', 'polling'] // WebSocket va Pollingni qo'llash
-});
+// const socket = io('https://socket.qrpay.uz', {
+//   secure: true,
+//   transports: ['websocket', 'polling'], // WebSocket va Pollingni qo'llash
+// });
 
 export default function SellerOrder() {
   const {
@@ -68,11 +68,12 @@ export default function SellerOrder() {
     setTerminalData,
     size,
     setSize,
-    createLoading, setCreateLoading
+    createLoading,
+    setCreateLoading,
   } = PaymentStore();
   const { t } = useTranslation();
   const socketRef = useRef(null);
-  const { setSocketData, socketData, setSocketModalData } = SocketStore()
+  const { setSocketData, socketData, setSocketModalData } = SocketStore();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -103,12 +104,12 @@ export default function SellerOrder() {
 
   const thead = [
     wordsListData?.TABLE_TR || 'T/r',
-    wordsListData?.SELLER_NAME || 'Название компании',
+    // wordsListData?.SELLER_NAME || 'Название компании',
     wordsListData?.QR_AMOUNT || 'QR - сумма',
     wordsListData?.CURRENCY || 'Валюта',
-    wordsListData?.POS_ID || 'ИД терминала',
+    // wordsListData?.POS_ID || 'ИД терминала',
     wordsListData?.DATE_CREATED || 'Дата создания',
-    wordsListData?.VALID_TILL || 'Срок действия',
+    // wordsListData?.VALID_TILL || 'Срок действия',
     wordsListData?.STATUS || 'Статус',
     wordsListData?.ACTION || 'Действия',
   ];
@@ -139,8 +140,6 @@ export default function SellerOrder() {
   };
 
   useEffect(() => {
-   
-
     setConfig();
     getFunction();
     globalGetFunction({
@@ -150,55 +149,51 @@ export default function SellerOrder() {
     });
   }, []);
 
-  const connectSocket = () => {
-    if (socketRef.current) {
-      socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
-    }
-    socketRef.current = io("https://socket.qrpay.uz", {
-      secure: true,
-      transports: ['websocket', 'polling'],
-    });
+  // const connectSocket = () => {
+  //   if (socketRef.current) {
+  //     socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
+  //   }
+  //   socketRef.current = io('https://socket.qrpay.uz', {
+  //     secure: true,
+  //     transports: ['websocket', 'polling'],
+  //   });
 
-    socketRef.current.on('connect', () => {
-      console.log("Connected to Socket.IO server ID: " + socketRef.current.id);
-      setSocketData(socketRef.current)
-      
-    });
+  //   socketRef.current.on('connect', () => {
+  //     console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
+  //     setSocketData(socketRef.current);
+  //   });
 
-    socketRef.current.on('callback-web-or-app', (data) => {
-      console.log("Received data:", data);
-      setSocketModalData(data);
-    });
+  //   socketRef.current.on('callback-web-or-app', (data) => {
+  //     console.log('Received data:', data);
+  //     setSocketModalData(data);
+  //   });
 
-    socketRef.current.on('connect_error', (error) => {
-      console.error("Socket connection error:", error);
-      setTimeout(() => {
-        console.log("Retrying to connect socket...");
-        connectSocket(); // Qayta ulanish
-      }, 5000);
-    });
+  //   socketRef.current.on('connect_error', (error) => {
+  //     console.error('Socket connection error:', error);
+  //     setTimeout(() => {
+  //       console.log('Retrying to connect socket...');
+  //       connectSocket(); // Qayta ulanish
+  //     }, 5000);
+  //   });
 
-    consoleClear()
-  };
+  //   consoleClear();
+  // };
 
-  useEffect(() => {
-    connectSocket(); // Ilk bor socketni ulaymiz
+  // useEffect(() => {
+  //   connectSocket(); // Ilk bor socketni ulaymiz
 
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (socketRef.current) {
+  //       socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
+  //     }
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    if (socketRef.current && !socketRef.current.connected) {
-      connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
-    }
-  }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
-
-
-
+  // useEffect(() => {
+  //   if (socketRef.current && !socketRef.current.connected) {
+  //     connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
+  //   }
+  // }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
 
   // console.log("socketData", socketData);
   // console.log("socketData id", socketData?.id);
@@ -222,10 +217,10 @@ export default function SellerOrder() {
         role === 'ROLE_TERMINAL'
           ? `${terminal_order_get}?page=${page}&size=${size}`
           : role === 'ROLE_SELLER'
-            ? `${seller_order_get}?page=${page}&size=${size}`
-            : role === 'ROLE_SUPER_ADMIN'
-              ? `${admin_order_get}?page=${page}&size=${size}`
-              : '',
+          ? `${seller_order_get}?page=${page}&size=${size}`
+          : role === 'ROLE_SUPER_ADMIN'
+          ? `${admin_order_get}?page=${page}&size=${size}`
+          : '',
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
@@ -246,10 +241,10 @@ export default function SellerOrder() {
         role === 'ROLE_TERMINAL'
           ? `${terminal_order_get}?page=${page}&size=${size}`
           : role === 'ROLE_SELLER'
-            ? `${seller_order_get}?page=${page}&size=${size}`
-            : role === 'ROLE_SUPER_ADMIN'
-              ? `${admin_order_get}?page=${page}&size=${size}`
-              : '',
+          ? `${seller_order_get}?page=${page}&size=${size}`
+          : role === 'ROLE_SUPER_ADMIN'
+          ? `${admin_order_get}?page=${page}&size=${size}`
+          : '',
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
@@ -259,10 +254,10 @@ export default function SellerOrder() {
         role === 'ROLE_TERMINAL'
           ? terminal_notification_count
           : role === 'ROLE_SELLER'
-            ? seller_notification_count
-            : role === 'ROLE_SUPER_ADMIN'
-              ? admin_notification_count
-              : '',
+          ? seller_notification_count
+          : role === 'ROLE_SUPER_ADMIN'
+          ? admin_notification_count
+          : '',
       setData: setCountData,
     });
   };
@@ -329,7 +324,6 @@ export default function SellerOrder() {
           amount: +formValues.amount,
           phone: `${formValues.phone.slice(1)}`,
           terminalId: formValues.terminalId,
-          socketId: socketData?.id
         },
         setLoading: setIsLoading,
         getFunction: getFunction,
@@ -380,52 +374,44 @@ export default function SellerOrder() {
             paymentData.object.map((item, i) => (
               <Tr key={item.id}>
                 <Td>{page * 10 + i + 1}</Td>
-                <Td minWidth={"250px"}>{item.sellerName || '-'}</Td>
                 {/* <Td>
                   {item.dateCreate
                     ? moment(item.dateCreate).format('DD.MM.YYYY HH:mm:ss')
                     : '-'}
                 </Td> */}
-                <Td minWidth={"250px"}>
-                  {item.amount
-                    ? `${item.amount.toLocaleString('uz-UZ', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`
-                    : '-'}
-                </Td>
-                <Td minWidth={"250px"}>{item.currency || '-'}</Td>
+                <Td minWidth={'250px'}>{item.chequeAmount || '-'}</Td>
+                <Td minWidth={'250px'}>{item.rate || '-'}</Td>
                 {/* <Td>
                   {item.datePin
                     ? moment(item.datePin).format('DD.MM.YYYY HH:mm:ss')
                     : '-'}
                 </Td> */}
-                <Td minWidth={"250px"}>{item.posId || '-'}</Td>
-                <Td minWidth={"250px"}>
-                  {item.dateCreate
-                    ? item.dateCreate.slice(0, 10) +
-                    ' ' +
-                    item.dateCreate.slice(11, 16)
+                {/* <Td minWidth={'250px'}>{item.posId || '-'}</Td> */}
+                <Td minWidth={'250px'}>
+                  {item.cheque_created_at
+                    ? item.cheque_created_at.slice(0, 10) +
+                      ' ' +
+                      item.cheque_created_at.slice(11, 16)
                     : '-'}
                 </Td>
-                <Td minWidth={"250px"}>
+                {/* <Td minWidth={'250px'}>
                   {item.validtil
                     ? item.validtil.slice(0, 10) +
-                    ' ' +
-                    item.validtil.slice(11, 16)
+                      ' ' +
+                      item.validtil.slice(11, 16)
                     : '-'}
-                </Td>
+                </Td> */}
                 <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
-                    color={bgGenerator(item?.paymentStatus)[0]}
+                    color={bgGenerator(item?.status)[0]}
                     py="10px"
                     fontWeight="700"
                     borderRadius="10px"
                     textAlign={'center'}
                     width={'130px'}
                   >
-                    {bgGenerator(item?.paymentStatus)[1]}
+                    {bgGenerator(item?.status)[1]}
                   </Text>
                 </Td>
                 <Td
@@ -639,7 +625,7 @@ export default function SellerOrder() {
                 gap={6}
                 px={5}
               >
-                <Flex
+                {/* <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
@@ -653,7 +639,7 @@ export default function SellerOrder() {
                       ? detailData.sellerName
                       : '-'}
                   </Text>
-                </Flex>
+                </Flex> */}
 
                 <Flex
                   width={'100%'}
@@ -665,8 +651,8 @@ export default function SellerOrder() {
                     {wordsListData?.QR_AMOUNT || 'QR - сумма'}:{' '}
                   </Text>
                   <Text fontSize={'17px'}>
-                    {detailData?.amount || detailData?.amount === 0
-                      ? detailData.amount
+                    {detailData?.chequeAmount || detailData?.chequeAmount === 0
+                      ? detailData.chequeAmount
                       : '-'}
                   </Text>
                 </Flex>
@@ -703,12 +689,13 @@ export default function SellerOrder() {
                     {wordsListData?.CURRENCY || 'Валюта'}:{' '}
                   </Text>
                   <Text width={'70%'} fontSize={'17px'}>
-                    {detailData?.currency || detailData?.currency === 0
-                      ? detailData.currency
+                    {detailData?.chequeCurrency ||
+                    detailData?.chequeCurrency === 0
+                      ? detailData.chequeCurrency
                       : '-'}
                   </Text>
                 </GridItem>
-                <Flex
+                {/* <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
@@ -722,8 +709,8 @@ export default function SellerOrder() {
                       ? detailData.posId
                       : '-'}
                   </Text>
-                </Flex>
-                <Flex
+                </Flex> */}
+                {/* <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
@@ -735,12 +722,12 @@ export default function SellerOrder() {
                   <Text fontSize={'17px'}>
                     {detailData?.validtil || detailData?.validtil === 0
                       ? `${detailData?.validtil.slice(
-                        0,
-                        10,
-                      )} ${detailData?.validtil.slice(11, 16)}`
+                          0,
+                          10,
+                        )} ${detailData?.validtil.slice(11, 16)}`
                       : '-'}
                   </Text>
-                </Flex>
+                </Flex> */}
                 <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
@@ -751,9 +738,8 @@ export default function SellerOrder() {
                     {wordsListData?.STATUS || 'Статус'}:
                   </Text>
                   <Text fontSize={'17px'}>
-                    {detailData?.paymentStatus ||
-                      detailData?.paymentStatus === 0
-                      ? detailData.paymentStatus
+                    {detailData?.status || detailData?.status === 0
+                      ? detailData.status
                       : '-'}
                   </Text>
                 </Flex>
@@ -767,11 +753,12 @@ export default function SellerOrder() {
                     {wordsListData?.DATE_CREATED || 'Дата создания'}:
                   </Text>
                   <Text fontSize={'17px'}>
-                    {detailData?.dateCreate || detailData?.dateCreate === 0
-                      ? `${detailData?.dateCreate.slice(
-                        0,
-                        10,
-                      )} ${detailData?.dateCreate.slice(11, 16)}`
+                    {detailData?.cheque_created_at ||
+                    detailData?.cheque_created_at === 0
+                      ? `${detailData?.cheque_created_at.slice(
+                          0,
+                          10,
+                        )} ${detailData?.cheque_created_at.slice(11, 16)}`
                       : '-'}
                   </Text>
                 </Flex>
@@ -910,8 +897,9 @@ export default function SellerOrder() {
               }}
               onClick={() => {
                 globalPostFunction({
-                  url: `${order_cancel}?ext_id=${detailData && detailData.ext_id ? detailData.ext_id : 0
-                    }`,
+                  url: `${order_cancel}?ext_id=${
+                    detailData && detailData.ext_id ? detailData.ext_id : 0
+                  }`,
                   postData: {},
                   getFunction: () => {
                     getFunction();
@@ -968,8 +956,9 @@ export default function SellerOrder() {
               }}
               onClick={() => {
                 globalPostFunction({
-                  url: `${order_confirm}${detailData && detailData.id ? detailData.id : 0
-                    }`,
+                  url: `${order_confirm}${
+                    detailData && detailData.id ? detailData.id : 0
+                  }`,
                   postData: {},
                   getFunction: () => {
                     getFunction();

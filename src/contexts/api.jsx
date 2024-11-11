@@ -1,6 +1,6 @@
 export const base_url = 'http://185.74.4.138:8080/';
 
-export const getMeUrl = `${base_url}user/me`;
+export const getMeUrl = `${base_url}api/user/me`;
 
 // USER CONTROLLER
 export const user_register = `${base_url}api/user/register`;
@@ -21,18 +21,18 @@ export const terminal_get = `${base_url}terminal/list`;
 export const terminal_get_list = `${base_url}terminal/select-terminal-list`;
 export const terminal_update = `${base_url}terminal/update/`;
 export const terminal_isActive = `${base_url}terminal/deactive/`;
-export const terminal_search = `${base_url}user/select`;
+export const terminal_search = `${base_url}api/user/select`;
 
 // ORDER CONTROLLER
-export const order_create = `${base_url}order/create`;
-export const seller_order_get = `${base_url}order/list/for/seller`;
-export const terminal_order_get = `${base_url}order/list/for/terminal`;
-export const admin_order_get = `${base_url}order/list/for/admin`;
-export const order_cancel = `${base_url}order/cancel?orderId=`;
-export const order_confirm = `${base_url}order/confirm?orderId=`;
-export const order_get_by_id = `${base_url}order/one/`;
-export const order_stats = `${base_url}order/statistics/filter/admin`;
-export const order_stats_seller_and_terminal = `${base_url}order/statistics/filter/seller-or-terminal`;
+export const order_create = `${base_url}payment/create`;
+export const seller_order_get = `${base_url}payment/list/for/seller`;
+export const terminal_order_get = `${base_url}payment/list/for/terminal`;
+export const admin_order_get = `${base_url}payment/list/for/admin`;
+export const order_cancel = `${base_url}payment/cancel?orderId=`;
+export const order_confirm = `${base_url}payment/confirm?orderId=`;
+export const order_get_by_id = `${base_url}payment/one/`; 
+export const order_stats = `${base_url}payment/statistics/filter/admin`;
+export const order_stats_seller_and_terminal = `${base_url}payment/statistics/filter/seller-or-terminal`;
 
 // Notification CONTROLLER
 export const delete_notification = `${base_url}notification/delete`;

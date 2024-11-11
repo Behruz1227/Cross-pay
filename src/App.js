@@ -32,7 +32,6 @@ import { setConfig } from './contexts/token';
 import { LanguageStore } from 'contexts/state-management/language/languageStore';
 import { globalGetFunction } from 'contexts/logic-function/globalFunktion';
 import { words_get_data } from 'contexts/api';
-import { siteSecurity } from 'contexts/allRequest';
 import { consoleClear } from 'contexts/toast-message';
 import { PaymentStore } from 'contexts/state-management/payment/paymentStore';
 import { SocketStore } from 'contexts/state-management/socket/socketStore';
@@ -68,29 +67,29 @@ export default function Main() {
   //   siteSecurity();
   // }, []);
 
-  useEffect(() => {
-    if (socketModalData) {
-      setSocketModal(true);
-      setTimer(60); // 60 senlik sanashni o'qishni bosqichga olish
-    }
-  }, [socketModalData]);
+  // useEffect(() => {
+  //   if (socketModalData) {
+  //     setSocketModal(true);
+  //     setTimer(60); // 60 senlik sanashni o'qishni bosqichga olish
+  //   }
+  // }, [socketModalData]);
 
-  useEffect(() => {
-    let interval = null;
+  // useEffect(() => {
+  //   let interval = null;
 
-    if (socketModal && timer > 0) {
-      interval = setInterval(() => {
-        setTimer(timer - 1); // Har soniyada sanashni kamaytirish
-      }, 900);
-    } else if (timer === 0) {
-      setSocketModal(false); // Sanash tugagach modalni yopish
-      setTimer(0);
-      setSocketModalData(null);
-      consoleClear();
-    }
+  //   if (socketModal && timer > 0) {
+  //     interval = setInterval(() => {
+  //       setTimer(timer - 1); // Har soniyada sanashni kamaytirish
+  //     }, 900);
+  //   } else if (timer === 0) {
+  //     setSocketModal(false); // Sanash tugagach modalni yopish
+  //     setTimer(0);
+  //     setSocketModalData(null);
+  //     consoleClear();
+  //   }
 
-    return () => clearInterval(interval); // Komponent o'chirilganda intervalni to'xtatish
-  }, [socketModal, timer]);
+  //   return () => clearInterval(interval); // Komponent o'chirilganda intervalni to'xtatish
+  // }, [socketModal, timer]);
 
   useEffect(() => {
     // i18n.changeLanguage(languageData);

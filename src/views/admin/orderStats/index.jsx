@@ -14,7 +14,6 @@ import { PaymentStore } from 'contexts/state-management/payment/paymentStore';
 import { setConfig } from 'contexts/token';
 import React, { useEffect, useState } from 'react';
 import ComplexTable from 'views/admin/dataTables/components/ComplexTable';
-import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { order_stats } from 'contexts/api';
 import { Option } from 'antd/es/mentions';
@@ -34,7 +33,6 @@ export default function OrderStats() {
     setTotalPages,
   } = PaymentStore();
   const { wordsListData } = LanguageStore();
-  const { t } = useTranslation();
   const role = sessionStorage.getItem('ROLE');
   const [createLoading, setCreateLoading] = useState(false);
   const [fullName, setFullName] = useState('');
@@ -51,9 +49,9 @@ export default function OrderStats() {
     wordsListData?.EXCEL_AMOUNT || 'Количество',
     wordsListData?.EXCEL_TERMINAL_NAME || 'Терминал',
     wordsListData?.EXCEL_MFO || 'МФО',
-    wordsListData?.INN || 'INN', //
-    wordsListData?.MERCHANT_ACCOUNT || 'Merchant accaount', //
-    wordsListData?.CLIENT_ACCOUNT || 'Client accaount', //
+    // wordsListData?.INN || 'INN', //
+    // wordsListData?.MERCHANT_ACCOUNT || 'Merchant accaount', 
+    // wordsListData?.CLIENT_ACCOUNT || 'Client accaount', 
     wordsListData?.EXCEL_RATE || 'Курс',
     wordsListData?.EXCEL_CREATED_AT || 'Дата создания',
     wordsListData?.EXCEL_PAYMENT_DATE || 'Дата оплаты',
@@ -105,7 +103,7 @@ export default function OrderStats() {
       page: page,
     });
   };
-  
+
   const handleDownloadFile = () => {
     downloadFile(`${download_file}?page=${downloadInterval}`);
   };
@@ -196,14 +194,14 @@ export default function OrderStats() {
                     wordsListData?.EXCEL_CREATED_AT || 'Дата создания'
                   }
                 />
-                <Input
+                {/* <Input
                   type="date"
                   value={paymentDate}
                   onChange={(e) => setPaymentDate(e.target.value)}
                   placeholder={
                     wordsListData?.EXCEL_PAYMENT_DATE || 'Дата оплаты'
                   }
-                />
+                /> */}
                 <Select
                   value={status}
                   style={{ width: '100%', height: '40px' }}
@@ -256,9 +254,11 @@ export default function OrderStats() {
             paymentData.object.map((item, i) => (
               <Tr key={i}>
                 <Td>{page * 10 + i + 1}</Td>
-                <Td minWidth={"250px"}>{item.merchant ? item.merchant : '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.merchant ? item.merchant : '-'}
+                </Td>
                 {/* <Td>{item.terminalName ? item.terminalName : "-"}</Td> */}
-                <Td minWidth={"250px"}>
+                <Td minWidth={'250px'}>
                   {item.amount
                     ? `${item.amount.toLocaleString('uz-UZ', {
                         minimumFractionDigits: 2,
@@ -266,15 +266,23 @@ export default function OrderStats() {
                       })}`
                     : '-'}
                 </Td>
-                <Td minWidth={"250px"}>{item.terminalName ? item.terminalName : '-'}</Td>
-                <Td minWidth={"250px"}>{item.filial_code ? item.filial_code : '-'}</Td>
-                <Td minWidth={"250px"}>{item.inn ? item.inn : '-'}</Td>
-                <Td minWidth={"250px"}>{item.toAccount ? item.toAccount : '-'}</Td>
-                <Td minWidth={"250px"}>{item.fromAccount ? item.filial_code : '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.terminalName ? item.terminalName : '-'}
+                </Td>
+                <Td minWidth={'250px'}>
+                  {item.filial_code ? item.filial_code : '-'}
+                </Td>
+                {/* <Td minWidth={'250px'}>{item.inn ? item.inn : '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.toAccount ? item.toAccount : '-'}
+                </Td>
+                <Td minWidth={'250px'}>
+                  {item.fromAccount ? item.filial_code : '-'}
+                </Td> */}
 
                 <Td>{item.rate ? item.rate : '-'}</Td>
-                <Td minWidth={"250px"}>{item.createdAt || '-'}</Td>
-                <Td minWidth={"250px"}>{item.paymentDate || '-'}</Td>
+                <Td minWidth={'250px'}>{item.createdAt || '-'}</Td>
+                <Td minWidth={'250px'}>{item.paymentDate || '-'}</Td>
                 <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}

@@ -27,7 +27,6 @@ export default function AdminNavbar(props) {
   const [scrolled, setScrolled] = useState(false);
   const pathName = sessionStorage.getItem('pathname');
   const role = sessionStorage.getItem('ROLE');
-  const { t } = useTranslation();
 
   useEffect(() => {
     window.addEventListener('scroll', changeNavbar);
@@ -44,7 +43,7 @@ export default function AdminNavbar(props) {
     'rgba(244, 247, 254, 0.2)',
     'rgba(11,20,55,0.5)',
   );
-  const [RateData, setRateData] = useState(null)
+  const [RateData, setRateData] = useState(null);
   let navbarBorder = 'transparent';
   let secondaryMargin = '0px';
   let paddingX = '15px';
@@ -53,14 +52,14 @@ export default function AdminNavbar(props) {
     if (window.scrollY > 1) setScrolled(true);
     else setScrolled(false);
   };
-  useEffect(() => {
-    globalGetFunction({
-        url: `${rate_rating}`,
-        setData: setRateData,
-      })
-  }, [])
+  // useEffect(() => {
+  //   globalGetFunction({
+  //     url: `${rate_rating}`,
+  //     setData: setRateData,
+  //   });
+  // }, []);
   // console.log(RateData);
-  
+
   return (
     <Box
       position={navbarPosition}
@@ -180,44 +179,44 @@ export default function AdminNavbar(props) {
             </Link>
           </Box>
         ) : (
-          role === 'ROLE_SUPER_ADMIN' && (
-            <Box
-              ms="auto"
-              backgroundColor={'gray.100'}
-              paddingX={4}
-              paddingY={2}
-              borderRadius={10}
-              display={{ base: 'none', lg: 'flex' }}
-              gap={10}
-              w={{ sm: '100%', md: 'unset' }}
-            >
-              <Box color={'green'} display={'flex'} gap={7}>
-                <Text>{wordsListData?.BUYING || 'Покупка'} : </Text>
-                <Box
-                  display={'flex'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  gap={3}
-                >
-                  <Text>{RateData && RateData?.buying} UZS</Text>
-                  <FaArrowTrendUp size={19} color="green" />
-                </Box>
-              </Box>
-              <Box height={7} border={'1px solid blue'}></Box>
-              <Box color={'red'} display={'flex'} gap={7}>
-                <Text>{wordsListData?.SELLING || 'Продажа'} : </Text>
-                <Box
-                  display={'flex'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  gap={3}
-                >
-                  <Text>{RateData && RateData.selling} UZS</Text>
-                  <FaArrowTrendDown size={19} color="red" />
-                </Box>
-              </Box>
-            </Box>
-          )
+          role === 'ROLE_SUPER_ADMIN' &&
+          // <Box
+          //   ms="auto"
+          //   backgroundColor={'gray.100'}
+          //   paddingX={4}
+          //   paddingY={2}
+          //   borderRadius={10}
+          //   display={{ base: 'none', lg: 'flex' }}
+          //   gap={10}
+          //   w={{ sm: '100%', md: 'unset' }}
+          // >
+          //   <Box color={'green'} display={'flex'} gap={7}>
+          //     <Text>{wordsListData?.BUYING || 'Покупка'} : </Text>
+          //     <Box
+          //       display={'flex'}
+          //       alignItems={'center'}
+          //       justifyContent={'center'}
+          //       gap={3}
+          //     >
+          //       <Text>{RateData && RateData?.buying} UZS</Text>
+          //       <FaArrowTrendUp size={19} color="green" />
+          //     </Box>
+          //   </Box>
+          //   <Box height={7} border={'1px solid blue'}></Box>
+          //   <Box color={'red'} display={'flex'} gap={7}>
+          //     <Text>{wordsListData?.SELLING || 'Продажа'} : </Text>
+          //     <Box
+          //       display={'flex'}
+          //       alignItems={'center'}
+          //       justifyContent={'center'}
+          //       gap={3}
+          //     >
+          //       <Text>{RateData && RateData.selling} UZS</Text>
+          //       <FaArrowTrendDown size={19} color="red" />
+          //     </Box>
+          //   </Box>
+          // </Box>
+          ''
         )}
         <Box ms="auto" w={{ sm: '100%', md: 'unset' }}>
           <AdminNavbarLinks

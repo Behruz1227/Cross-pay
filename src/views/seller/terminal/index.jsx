@@ -18,13 +18,7 @@ import {
   useColorModeValue,
   Text,
   Switch,
-  InputGroup,
-  InputRightElement,
-  IconButton,
   Grid,
-  Flex,
-  InputLeftElement,
-  GridItem,
   Select,
 } from '@chakra-ui/react';
 import { debounce } from 'lodash';
@@ -43,15 +37,12 @@ import {
 import { TerminalStore } from 'contexts/state-management/terminal/terminalStory';
 import { setConfig } from 'contexts/token';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FaEdit } from 'react-icons/fa';
 import ComplexTable from 'views/admin/dataTables/components/ComplexTable';
 import { LanguageStore } from 'contexts/state-management/language/languageStore';
 import { terminal_search } from 'contexts/api';
 
 export default function SellerTerminal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { t } = useTranslation();
   const {
     setTerminalData,
     terminalData,
@@ -66,7 +57,6 @@ export default function SellerTerminal() {
   } = TerminalStore();
   const [createLoading, setCreateLoading] = useState(false);
   const [detailData, setdetailData] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
   const [selectData, setSelectData] = useState([]);
   const [terminalSerialCodeInitial, setTerminalSerialCodeInitial] =
     useState(null);
@@ -84,13 +74,13 @@ export default function SellerTerminal() {
   const thead = [
     wordsListData?.TABLE_TR || '№',
     wordsListData?.NAME || 'ИМЯ',
-    wordsListData?.TERMINAL_CODE || 'ТЕРМИНАЛЬНЫЙ КОД',
-    wordsListData?.MERCHANT || 'МЕРЧАНТ',
+    wordsListData?.SERIAL_CODE || 'Серийный код',
+    wordsListData?.ACCOUNT || 'Счет',
     wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
 
-    wordsListData?.TYPE || 'ТИП',
-    wordsListData?.POS_ID || 'ПОС ИД',
     wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+    // wordsListData?.POS_ID || 'ПОС ИД',
+    // wordsListData?.ACTIVE || 'АКТИВНЫЙ',
   ];
 
   useEffect(() => {
@@ -139,7 +129,7 @@ export default function SellerTerminal() {
   };
 
   const [formValues, setFormValues] = useState(initialValue);
-  // const [terminalNewUsers, setTerminalNewUsers] = useState([terminalNewUsersInitial]); 
+  // const [terminalNewUsers, setTerminalNewUsers] = useState([terminalNewUsersInitial]);
   const [formErrors, setFormErrors] = useState(initialValue);
   const resetValue = () => {
     setFormValues(initialValue);
@@ -153,12 +143,19 @@ export default function SellerTerminal() {
     setFormValues({ ...formValues, [name]: value });
 
     const errors = {};
-    if (formValues?.status && formValues?.status === "POS" && name === 'terminalSerialCode') {
+    if (
+      formValues?.status &&
+      formValues?.status === 'POS' &&
+      name === 'terminalSerialCode'
+    ) {
       if (formValues?.terminalSerialCode?.trim() === '') {
         errors[name] = `${name} ${wordsListData?.REQUIRED || ' требуется'}`;
       }
-    }
-    else if (name !== 'status' && name !== 'terminalSerialCode' && formValues[name].trim() === '')
+    } else if (
+      name !== 'status' &&
+      name !== 'terminalSerialCode' &&
+      formValues[name].trim() === ''
+    )
       errors[name] = `${name} ${wordsListData?.REQUIRED || ' требуется'}`;
     setFormErrors({ ...formErrors, ...errors });
   };
@@ -176,7 +173,9 @@ export default function SellerTerminal() {
     if (isEdit === true) {
       if (Object.keys(errors).length === 0) {
         globalPutFunction({
-          url: `${terminal_update}${detailData && detailData.id ? detailData.id : 0}`,
+          url: `${terminal_update}${
+            detailData && detailData.id ? detailData.id : 0
+          }`,
           putData: {
             name: formValues?.name,
             terminalSerialCode: formValues?.terminalSerialCode || null,
@@ -191,12 +190,15 @@ export default function SellerTerminal() {
       } else setFormErrors(errors);
     } else {
       Object.keys(formValues).forEach((key) => {
-        if (formValues?.status && formValues?.status === "POS" && key === 'terminalSerialCode') {
+        if (
+          formValues?.status &&
+          formValues?.status === 'POS' &&
+          key === 'terminalSerialCode'
+        ) {
           if (formValues?.terminalSerialCode?.trim() === '') {
             errors[key] = `${key} ${wordsListData?.REQUIRED || ' требуется'}`;
           }
-        }
-        else if (key !== 'status' && formValues[key].trim() === '')
+        } else if (key !== 'status' && formValues[key].trim() === '')
           errors[key] = `${key} ${wordsListData?.REQUIRED || ' требуется'}`;
       });
       if (Object.keys(errors).length === 0) {
@@ -204,7 +206,10 @@ export default function SellerTerminal() {
           url: `${terminal_create}`,
           postData: {
             name: formValues?.name,
-            terminalSerialCode: formValues?.status === "POS" ? formValues?.terminalSerialCode : null,
+            terminalSerialCode:
+              formValues?.status === 'POS'
+                ? formValues?.terminalSerialCode
+                : null,
             status: formValues?.status,
           },
           setLoading: setCreateLoading,
@@ -258,15 +263,26 @@ export default function SellerTerminal() {
             terminalData?.object?.map((item, i) => (
               <Tr key={i}>
                 <Td>{page * 10 + i + 1}</Td>
-                <Td minWidth={"250px"}>{item?.name ? item?.name : '-'}</Td>
+                <Td minWidth={'250px'}>{item?.name ? item?.name : '-'}</Td>
 
-                <Td minWidth={"250px"}>
+                <Td minWidth={'250px'}>
                   {item?.terminalSerialCode ? item?.terminalSerialCode : '-'}
                 </Td>
-                <Td minWidth={"250px"}>{item?.merchant ? item?.merchant : '-'}</Td>
-                <Td minWidth={"250px"}>{item?.phone ? `+998 (${item?.phone.slice(3, 5)}) ${item?.phone.slice(5, 8)} ${item?.phone.slice(8, 10)} ${item?.phone.slice(10)}` : '-'}</Td>
+                <Td minWidth={'250px'}>{item?.account || '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item?.phones && item.phones.length > 0
+                    ? item.phones?.map((phone, index) => (
+                        <div key={index}>
+                          {`+998 (${phone.slice(4, 6)}) ${phone.slice(
+                            6,
+                            9,
+                          )} ${phone.slice(9, 11)} ${phone.slice(11, 13)}`}
+                        </div>
+                      ))
+                    : '-'}
+                </Td>
 
-                <Td alignSelf="flex-start">
+                {/* <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
                     color={'blue'}
@@ -276,10 +292,12 @@ export default function SellerTerminal() {
                     textAlign={'center'}
                     width={'130px'}
                   >
-                    {item?.status ? item?.status : '-'}
+                    {item?.status === 1
+                      ? wordsListData.BUTTON_ACTIVE
+                      : wordsListData.BUTTON_NOT_ACTIVE}
                   </Text>
-                </Td>
-                <Td>{item?.posId ? item?.posId : '-'}</Td>
+                </Td> */}
+                {/* <Td>{item?.posId ? item?.posId : '-'}</Td> */}
                 {/* <Td>{item?.filial_code ? item?.filial_code : '-'}</Td> */}
                 {role === 'ROLE_SELLER' && (
                   <Td>
@@ -297,7 +315,7 @@ export default function SellerTerminal() {
                           onOpen();
                         }}
                       >
-                        <FaEdit color={navbarIcon} size={23} />
+                        {/* <FaEdit color={navbarIcon} size={23} /> */}
                       </button>
                     </Box>
                   </Td>
@@ -311,8 +329,8 @@ export default function SellerTerminal() {
                     }}
                   >
                     <Switch
-                      disabled={item.status !== 0}
-                      isChecked={item.status === 0}
+                      disabled={item.status === 1}
+                      isChecked={item.status === 0} 
                       colorScheme="teal"
                       size="lg"
                     />
@@ -339,8 +357,8 @@ export default function SellerTerminal() {
             setPage(page - 1);
           }}
           onShowSizeChange={(current, pageSize) => {
-            setSize(pageSize)
-            setPage(0)
+            setSize(pageSize);
+            setPage(0);
           }}
         />
         {/*}*/}
@@ -378,11 +396,10 @@ export default function SellerTerminal() {
                     color={inputTextColor}
                   >
                     <option disabled selected>
-                      {wordsListData?.SELECT_TERMINAL_TYPE || 'Выберите терминал'}
+                      {wordsListData?.SELECT_TERMINAL_TYPE ||
+                        'Выберите терминал'}
                     </option>
-                    <option value="POS">
-                      {wordsListData?.POS || 'ПОС'}
-                    </option>
+                    <option value="POS">{wordsListData?.POS || 'ПОС'}</option>
                     <option value="CASH">
                       {wordsListData?.CASH || 'Касса'}
                     </option>
@@ -394,7 +411,9 @@ export default function SellerTerminal() {
                 </FormControl>
               )}
               <FormControl mt={4} isInvalid={!!formErrors.name}>
-                <FormLabel>{wordsListData?.TERMINAL_NAME || 'Название терминала'}</FormLabel>
+                <FormLabel>
+                  {wordsListData?.TERMINAL_NAME || 'Название терминала'}
+                </FormLabel>
                 <Input
                   name="name"
                   ref={initialRef}
@@ -461,7 +480,9 @@ export default function SellerTerminal() {
                 handleSave();
               }}
             >
-              {createLoading ? wordsListData?.LOADING || "Загрузка..." : wordsListData?.SAVE || 'Сохранить'}
+              {createLoading
+                ? wordsListData?.LOADING || 'Загрузка...'
+                : wordsListData?.SAVE || 'Сохранить'}
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -72,7 +72,7 @@ export default function Partner() {
   }, [page, fullName, tin, filialCode, phone, size]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
+  const onClose = () => setIsOpen(false); 
 
   const bgGenerator = (status) => {
     if (status === 'ACTIVE')
@@ -255,22 +255,22 @@ export default function Partner() {
             // wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',
             wordsListData?.ACTIVE || 'АКТИВНЫЙ',
           ]}
-          buttonChild={
-            <Button
-              bg={bgColor}
-              color={'white'}
-              _hover={{ bg: hoverBgColor }}
-              _active={{
-                bg: hoverBgColor,
-                transform: 'scale(0.98)',
-              }}
-              onClick={() => {
-                setIsOpen(true);
-              }}
-            >
-              {wordsListData?.ADD_PARTNER || 'Добавить торговца'}
-            </Button>
-          }
+          // buttonChild={
+          //   <Button
+          //     bg={bgColor}
+          //     color={'white'}
+          //     _hover={{ bg: hoverBgColor }}
+          //     _active={{
+          //       bg: hoverBgColor,
+          //       transform: 'scale(0.98)',
+          //     }}
+          //     onClick={() => {
+          //       setIsOpen(true);
+          //     }}
+          //   >
+          //     {wordsListData?.ADD_PARTNER || 'Добавить торговца'}
+          //   </Button>
+          // }
         >
           {loading ? (
             <Tr>
@@ -301,7 +301,7 @@ export default function Partner() {
                 <Td minWidth={'250px'}>{item.filial_code || '-'}</Td>
                 {/* <Td minWidth={'250px'}>
                   {item.bankAccount ? item.bankAccount : '-'}
-                </Td> */} 
+                </Td> */}
                 <Td>
                   <Select
                     onChange={async (e) => {
@@ -551,7 +551,7 @@ export default function Partner() {
               </FormControl> */}
             </Grid>
           </ModalBody>
-          <ModalFooter>
+          {/* <ModalFooter>
             <Button
               mr={4}
               bg={'red'}
@@ -591,7 +591,7 @@ export default function Partner() {
             >
               {wordsListData?.SAVE || 'Сохранить'}
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </Box>
