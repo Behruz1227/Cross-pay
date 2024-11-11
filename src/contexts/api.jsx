@@ -1,19 +1,19 @@
-export const base_url = 'https://apk.qrpay.uz/';
+export const base_url = 'http://185.74.4.138:8080/';
 
 export const getMeUrl = `${base_url}user/me`;
 
 // USER CONTROLLER
-export const user_register = `${base_url}user/register`;
-export const user_login = `${base_url}user/login`;
-export const user_sendCode = `${base_url}user/send-code`;
+export const user_register = `${base_url}api/user/register`;
+export const user_login = `${base_url}api/user/login`;
+export const user_sendCode = `${base_url}api/user/send-code`;
 export const user_request = `${base_url}request/save`;
-export const user_edit = `${base_url}user/update`;
-export const user_merchant = `${base_url}user/page`;
-export const user_terminal = `${base_url}user/terminal`;
-export const user_edit_status = `${base_url}user/user-active`;
+export const user_edit = `${base_url}api/user/update`;
+export const user_merchant = `${base_url}api/user/page`;
+export const user_terminal = `${base_url}api/user/terminal`;
+export const user_edit_status = `${base_url}api/user/user-active`;
 export const user_terminal_add = `${base_url}terminal/add-terminal-user`;
 export const user_terminal_delete = `${base_url}terminal/delete-terminal-user`;
-export const user_merchant_update = `${base_url}user/add-seller`;
+export const user_merchant_update = `${base_url}api/user/add-seller`;
 
 // TERMINAL CONTROLLER
 export const terminal_create = `${base_url}terminal/create`;
@@ -72,5 +72,5 @@ export const rate_get = `${base_url}rate`;
 export const rate_put = `${base_url}rate/`;
 export const rate_post = `${base_url}rate?status=`;
 export const rate_delete = `${base_url}rate/`;
-export const rate_select = `${base_url}rate/select-status`
-export const rate_rating = `${base_url}rate/online-rate`
+export const rate_select = `${base_url}rate/select-status`;
+export const rate_rating = `${base_url}rate/online-rate`;

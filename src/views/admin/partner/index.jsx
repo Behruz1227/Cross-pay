@@ -16,10 +16,7 @@ import {
   FormControl,
   FormLabel,
   ModalFooter,
-  InputGroup,
   Input,
-  InputLeftElement,
-  FormErrorMessage,
 } from '@chakra-ui/react';
 import ComplexTable from '../dataTables/components/ComplexTable';
 import { Pagination } from 'antd';
@@ -84,7 +81,6 @@ export default function Partner() {
       return ['red', wordsListData?.BUTTON_NOT_ACTIVE || 'НЕ АКТИВНЫЙ'];
     else return ['gray', wordsListData?.UNKNOWN || 'НЕИЗВЕСТНЫЙ'];
   };
-
   const getTestUrl = () => {
     const queryParams = [
       fullName ? `fullName=${fullName}` : '',
@@ -94,10 +90,10 @@ export default function Partner() {
     ]
       .filter(Boolean)
       .join('&');
-    return `${user_merchant}?${queryParams ? `${queryParams}&` : ''
-      }page=${page}&size=${size}`;
+    return `${user_merchant}?${
+      queryParams ? `${queryParams}&` : ''
+    }page=${page}&size=${size}`;
   };
-
   const getMerchant = async () => {
     await globalGetFunction({
       url: getTestUrl(),
@@ -106,11 +102,9 @@ export default function Partner() {
       setData: setMerchantData,
     });
   };
-
   const validateFields = () => {
     const newErrors = {};
 
-    
     if (!data.legalName) newErrors.legalName = 'Legal Name is required';
     if (!data.legalAddress)
       newErrors.legalAddress = 'Legal Address is required';
@@ -125,7 +119,6 @@ export default function Partner() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSave = async () => {
     if (!validateFields()) return;
     await globalPostFunction({
@@ -178,8 +171,9 @@ export default function Partner() {
         >
           <Input
             style={{ padding: '10px' }}
-            placeholder={`${wordsListData?.SELLER_SEARCH_FULL_NAME || 'Поиск по имени'
-              }`}
+            placeholder={`${
+              wordsListData?.SELLER_SEARCH_FULL_NAME || 'Поиск по имени'
+            }`}
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             allowClear
@@ -187,8 +181,9 @@ export default function Partner() {
           />
           <Input
             style={{ padding: '10px' }}
-            placeholder={`${wordsListData?.SELLER_SEARCH_INN || 'Поиск по ИНН'
-              }`}
+            placeholder={`${
+              wordsListData?.SELLER_SEARCH_INN || 'Поиск по ИНН'
+            }`}
             value={tin}
             onChange={(e) => setInn(e.target.value)}
             allowClear
@@ -196,9 +191,10 @@ export default function Partner() {
           />
           <Input
             style={{ padding: '10px' }}
-            placeholder={`${wordsListData?.SELLER_SEARCH_FILIAL_CODE ||
+            placeholder={`${
+              wordsListData?.SELLER_SEARCH_FILIAL_CODE ||
               'Поиск по коду филиала'
-              }`}
+            }`}
             value={filialCode}
             onChange={(e) => setFilialCode(e.target.value)}
             allowClear
@@ -207,8 +203,9 @@ export default function Partner() {
           <PhoneInput
             required
             defaultCountry="uz"
-            placeholder={`${wordsListData?.SELLER_SEARCH_PHONE || 'Поиск по телефону'
-              }`}
+            placeholder={`${
+              wordsListData?.SELLER_SEARCH_PHONE || 'Поиск по телефону'
+            }`}
             value={phone}
             onChange={(phone) => setPhone(phone)}
             style={{
@@ -285,20 +282,26 @@ export default function Partner() {
             merchantData?.object.map((item, i) => (
               <Tr color={tableRowColor} key={i}>
                 <Td>{page * 10 + i + 1}</Td>
-                <Td minWidth={"250px"}>{item.managerFio ? item.managerFio : '-'}</Td>
-                <Td minWidth={"250px"}>
+                <Td minWidth={'250px'}>
+                  {item.firstName} {item.lastName || '-'}
+                </Td>
+                <Td minWidth={'250px'}>
                   {item.phone
                     ? `+998 (${item.phone.slice(3, 5)}) ${item.phone.slice(
-                      5,
-                      8,
-                    )} ${item.phone.slice(8, 10)} ${item.phone.slice(10)}`
+                        5,
+                        8,
+                      )} ${item.phone.slice(8, 10)} ${item.phone.slice(10)}`
                     : '-'}
                 </Td>
-                <Td minWidth={"250px"}>{item.address ? item.address : '-'}</Td>
-                <Td minWidth={"250px"}>{item.tin ? item.tin : '-'}</Td>
-                <Td minWidth={"250px"}>{item.agreementDate ? item.agreementDate : '-'}</Td>
-                <Td minWidth={"250px"}>{item.bankBik ? item.bankBik : '-'}</Td>
-                <Td minWidth={"250px"}>{item.bankAccount ? item.bankAccount : '-'}</Td>
+                <Td minWidth={'250px'}>{item.address ? item.address : '-'}</Td>
+                <Td minWidth={'250px'}>{item.tin ? item.tin : '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.agreementDate ? item.agreementDate : '-'}
+                </Td>
+                <Td minWidth={'250px'}>{item.filial_code || '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.bankAccount ? item.bankAccount : '-'}
+                </Td>
                 <Td>
                   <Select
                     onChange={async (e) => {
@@ -335,7 +338,7 @@ export default function Partner() {
           total={totalPage}
           onChange={(page, size) => {
             setPage(page - 1);
-            setSize(size)
+            setSize(size);
           }}
         />
       </SimpleGrid>
