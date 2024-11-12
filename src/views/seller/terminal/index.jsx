@@ -282,10 +282,10 @@ export default function SellerTerminal() {
                   {item?.phones && item.phones.length > 0
                     ? item.phones?.map((phone, index) => (
                         <div key={index}>
-                          {`+998 (${phone.slice(4, 6)}) ${phone.slice(
-                            6,
-                            9,
-                          )} ${phone.slice(9, 11)} ${phone.slice(11, 13)}`}
+                          {`+998 (${phone.slice(3, 5)}) ${phone.slice(
+                            5,
+                            8,
+                          )} ${phone.slice(8, 10)} ${phone.slice(10, 12)}`}
                         </div>
                       ))
                     : '-'}
