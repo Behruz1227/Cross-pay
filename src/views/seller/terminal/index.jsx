@@ -358,20 +358,21 @@ export default function SellerTerminal() {
             </Tr>
           )}
         </ComplexTable>
-        {/*{Array.isArray(terminalData.object) && terminalData.object.length > 0 &&*/}
-        {role === 'ROLE_TERMINAL' || <Pagination
-          showSizeChanger
-          responsive={true}
-          defaultCurrent={1}
-          total={totalPage}
-          onChange={(page, size) => {
-            setPage(page - 1);
-          }}
-          onShowSizeChange={(current, pageSize) => {
-            setSize(pageSize);
-            setPage(0);
-          }}
-        />}
+        {role === 'ROLE_TERMINAL' || (
+          <Pagination
+            showSizeChanger
+            responsive={true}
+            defaultCurrent={1}
+            total={totalPage}
+            onChange={(page, size) => {
+              setPage(page - 1);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              setSize(pageSize);
+              setPage(0);
+            }}
+          />
+        )}
         {/*}*/}
       </SimpleGrid>
       <Modal
