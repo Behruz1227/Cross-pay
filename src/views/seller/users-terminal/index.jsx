@@ -240,10 +240,10 @@ const UserTerminal = () => {
                 <Td minWidth="250px">{item.terminalName || '-'}</Td>
                 <Td minWidth="250px">
                   {item.phone
-                    ? `+998 (${item.phone.slice(4, 6)}) ${item.phone.slice(
-                        6,
-                        9,
-                      )} ${item.phone.slice(9, 11)} ${item.phone.slice(11)}`
+                    ? `+998 (${item.phone.slice(3, 5)}) ${item.phone.slice(
+                        5,
+                        8,
+                      )} ${item.phone.slice(8, 10)} ${item.phone.slice(10)}`
                     : '-'}
                 </Td>
                 <Td minWidth="250px">{item.email || '-'}</Td>
