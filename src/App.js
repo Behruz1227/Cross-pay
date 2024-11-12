@@ -41,6 +41,7 @@ import { admin_order_get } from 'contexts/api';
 import { order_confirm } from 'contexts/api';
 import { seller_order_get } from 'contexts/api';
 import { order_cancel } from 'contexts/api';
+import { siteSecurity } from 'contexts/allRequest';
 
 export default function Main() {
   const { languageData, setWordsListData, wordsListData } = LanguageStore();
@@ -63,9 +64,9 @@ export default function Main() {
   const role = sessionStorage.getItem('ROLE');
   const tokenExpiry = sessionStorage.getItem('tokenExpiry');
 
-  // useEffect(() => {
-  //   siteSecurity();
-  // }, []);
+  useEffect(() => {
+    siteSecurity();
+  }, []);
 
   // useEffect(() => {
   //   if (socketModalData) {
@@ -125,7 +126,7 @@ export default function Main() {
     window.scrollTo(0, 0);
 
     if (pathname === '/') {
-      if (role === 'ROLE_SUPER_ADMIN') {
+      if (role === 'ROLE_SUPER_ADMIN') {  
         if (!tokens) navigate('/auth/sign-in');
         else navigate('/admin/dashboard');
       } else if (role === 'ROLE_SELLER') {
