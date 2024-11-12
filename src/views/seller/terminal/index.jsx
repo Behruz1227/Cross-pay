@@ -361,10 +361,10 @@ export default function SellerTerminal() {
         {role === 'ROLE_TERMINAL' || (
           <Pagination
             showSizeChanger
-            responsive={true}
+            responsive={true} 
             defaultCurrent={1}
             total={totalPage}
-            onChange={(page, size) => {
+            onChange={(page, size) => { 
               setPage(page - 1);
             }}
             onShowSizeChange={(current, pageSize) => {
