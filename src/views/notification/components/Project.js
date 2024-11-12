@@ -125,7 +125,7 @@ export default function Project(props) {
                   {item?.partner || '0'}
                 </Text> */}
                 <Box>
-                  
+                   
                   <Text
                     color={textColorPrimary}
                     fontWeight="500"

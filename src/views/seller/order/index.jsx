@@ -762,7 +762,7 @@ export default function SellerOrder() {
                   pe={5}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.redirect_url || 'reURL'}:
+                    {wordsListData?.redirect_url || 'Redirect URL'}:
                   </Text>
                   <Text fontSize={'17px'}>
                     {detailData?.redirect_url || '-'}
