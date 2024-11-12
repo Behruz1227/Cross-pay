@@ -200,7 +200,7 @@ const UserTerminal = () => {
       <SimpleGrid
         mb="20px"
         columns={{ sm: 1 }}
-        spacing={{ base: '20px', xl: '20px' }}
+        spacing={{ base: '20px', xl: '20px' }} 
       >
         <ComplexTable
           buttonChild={
@@ -211,7 +211,7 @@ const UserTerminal = () => {
               _active={{
                 bg: hoverBgColor,
                 transform: 'scale(0.98)',
-              }} 
+              }}
               onClick={() => {
                 onOpen();
               }}
@@ -268,9 +268,7 @@ const UserTerminal = () => {
           ) : (
             <Tr>
               <Td textAlign="center" colSpan={thead.length}>
-                {wordsListData?.TERMINAL_USERS_TABLE ||
-                  'Пользователи терминалов'}{' '}
-                {wordsListData?.NOT_FOUND || 'не найдено'}
+                {wordsListData?.PAYMENT_NOTFOUND || 'не найдено'}
               </Td>
             </Tr>
           )}

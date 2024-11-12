@@ -79,7 +79,7 @@ export default function SellerTerminal() {
     wordsListData?.ACCOUNT || 'Счет',
     wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
 
-    wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+    role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
     // wordsListData?.POS_ID || 'ПОС ИД',
     // wordsListData?.ACTIVE || 'АКТИВНЫЙ',
   ];
@@ -329,22 +329,24 @@ export default function SellerTerminal() {
                     </Box>
                   </Td>
                 )}
-                <Td>
-                  <Box
-                    onClick={() => {
-                      if (item.status === 0) {
-                        debouncedPostFunction(item);
-                      }
-                    }}
-                  >
-                    <Switch
-                      disabled={item.status === 1}
-                      isChecked={item.status === 0}
-                      colorScheme="teal"
-                      size="lg"
-                    />
-                  </Box>
-                </Td>
+                {role === 'ROLE_TERMINAL' || (
+                  <Td>
+                    <Box
+                      onClick={() => {
+                        if (item.status === 0) {
+                          debouncedPostFunction(item);
+                        }
+                      }}
+                    >
+                      <Switch
+                        disabled={item.status === 1}
+                        isChecked={item.status === 0}
+                        colorScheme="teal"
+                        size="lg"
+                      />
+                    </Box>
+                  </Td>
+                )}
               </Tr>
             ))
           ) : (

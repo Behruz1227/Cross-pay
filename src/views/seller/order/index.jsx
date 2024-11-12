@@ -615,8 +615,9 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-between'}
+                  justifyContent={'space-start'}
                   pe={5}
+                  gap={20}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.QR_AMOUNT || 'QR - сумма'}:{' '}
