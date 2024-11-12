@@ -40,6 +40,7 @@ import React, { useEffect, useState } from 'react';
 import ComplexTable from 'views/admin/dataTables/components/ComplexTable';
 import { LanguageStore } from 'contexts/state-management/language/languageStore';
 import { terminal_search } from 'contexts/api';
+import { PhoneInput } from 'react-international-phone';
 
 export default function SellerTerminal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -125,7 +126,11 @@ export default function SellerTerminal() {
   const initialValue = {
     name: '',
     terminalSerialCode: '',
-    status: null,
+    account: '',
+    inn: '',
+    filialCode: '',
+    phone: '',
+    password: '12345',
   };
 
   const [formValues, setFormValues] = useState(initialValue);
@@ -178,7 +183,12 @@ export default function SellerTerminal() {
           }`,
           putData: {
             name: formValues?.name,
-            terminalSerialCode: formValues?.terminalSerialCode || null,
+            account: formValues.account,
+            inn: formValues.inn,
+            phone: `${formValues.phone.slice(1)}`,
+            password: formValues.password,
+            terminalSerialCode: formValues.terminalSerialCode,
+            filialCode: formValues.filialCode,
           },
           setLoading: setCreateLoading,
           getFunction: () => {
@@ -201,25 +211,24 @@ export default function SellerTerminal() {
         } else if (key !== 'status' && formValues[key].trim() === '')
           errors[key] = `${key} ${wordsListData?.REQUIRED || ' требуется'}`;
       });
-      if (Object.keys(errors).length === 0) {
-        globalPostFunction({
-          url: `${terminal_create}`,
-          postData: {
-            name: formValues?.name,
-            terminalSerialCode:
-              formValues?.status === 'POS'
-                ? formValues?.terminalSerialCode
-                : null,
-            status: formValues?.status,
-          },
-          setLoading: setCreateLoading,
-          getFunction: () => {
-            getFunction();
-            onClose();
-            resetValue();
-          },
-        });
-      } else setFormErrors(errors);
+      globalPostFunction({
+        url: `${terminal_create}`,
+        postData: {
+          name: formValues?.name,
+          account: formValues.account,
+          inn: formValues.inn,
+          phone: `${formValues.phone.slice(1)}`,
+          password: formValues.password,
+          terminalSerialCode: formValues.terminalSerialCode,
+          filialCode: formValues.filialCode,
+        },
+        setLoading: setCreateLoading,
+        getFunction: () => {
+          getFunction();
+          onClose();
+          resetValue();
+        },
+      });
     }
   };
 
@@ -233,7 +242,7 @@ export default function SellerTerminal() {
         <ComplexTable
           name={`${wordsListData?.TERMINAL_TABLE_TITLE || 'Терминальный стол'}`}
           buttonChild={
-            role === 'ROLE_SELLER' && (
+            role === 'ROLE_SUPER_ADMIN' && (
               <Button
                 bg={bgColor}
                 color={textColor}
@@ -330,7 +339,7 @@ export default function SellerTerminal() {
                   >
                     <Switch
                       disabled={item.status === 1}
-                      isChecked={item.status === 0} 
+                      isChecked={item.status === 0}
                       colorScheme="teal"
                       size="lg"
                     />
@@ -383,7 +392,7 @@ export default function SellerTerminal() {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Grid templateColumns="repeat(2, 1fr)" gap={6} px={5}>
-              {!isEdit && (
+              {/* {!isEdit && (
                 <FormControl mt={4}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL_TYPE || 'Выберите терминал'}
@@ -409,7 +418,9 @@ export default function SellerTerminal() {
                     </option>
                   </Select>
                 </FormControl>
-              )}
+              )} */}
+
+              {/* Terminal Name */}
               <FormControl mt={4} isInvalid={!!formErrors.name}>
                 <FormLabel>
                   {wordsListData?.TERMINAL_NAME || 'Название терминала'}
@@ -425,31 +436,93 @@ export default function SellerTerminal() {
                   onChange={handleChange}
                   color={inputTextColor}
                 />
-                {/* {formErrors.name && (
-                  <Text color="red.500" fontSize="sm">
-                    {formErrors.name}
-                  </Text>
-                )} */}
               </FormControl>
-              {formValues.status === 'POS' && (
-                <FormControl mt={4}>
-                  <FormLabel>
-                    {wordsListData?.SERIAL_CODE || 'Серийный код'}
-                  </FormLabel>
-                  <Input
-                    name="terminalSerialCode"
-                    placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
-                    value={formValues.terminalSerialCode}
-                    onChange={handleChange}
-                    color={inputTextColor}
-                  />
-                  {/* {formErrors.terminalSerialCode && (
-                  <Text color="red.500" fontSize="sm">
-                    {formErrors.terminalSerialCode}
-                  </Text>
-                )} */}
-                </FormControl>
-              )}
+
+              {/* Account */}
+              <FormControl mt={4}>
+                <FormLabel>{wordsListData?.ACCOUNT || 'Аккаунт'}</FormLabel>
+                <Input
+                  name="account"
+                  placeholder={wordsListData?.ACCOUNT || 'Аккаунт'}
+                  value={formValues.account}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
+
+              {/* Filial Code */}
+              <FormControl mt={4}>
+                <FormLabel>{wordsListData?.MFO || 'Код филиала'}</FormLabel>
+                <Input
+                  name="filialCode"
+                  placeholder={wordsListData?.MFO || 'Код филиала'}
+                  value={formValues.filialCode}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
+
+              {/* INN */}
+              <FormControl mt={4}>
+                <FormLabel>{wordsListData?.INN_WEB || 'ИНН'}</FormLabel>
+                <Input
+                  name="inn"
+                  placeholder={wordsListData?.INN_WEB || 'ИНН'}
+                  value={formValues.inn}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
+
+              {/* Phone */}
+              <FormControl mt={4}>
+                <FormLabel>
+                  {wordsListData?.PHONE_NUMBER || 'НОМЕР ТЕЛЕФОНА'}
+                </FormLabel>
+                <PhoneInput
+                  required
+                  defaultCountry="uz"
+                  value={formValues.phone}
+                  onChange={(phone) =>
+                    handleChange({ target: { name: 'phone', value: phone } })
+                  }
+                  style={{
+                    width: '100%',
+                    height: '50px',
+                    borderRadius: '16px',
+                    border: '1px solid #E0E5F2',
+                    fontSize: '16px',
+                    padding: '0 15px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: textColor,
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '16px',
+                    color: textColor,
+                  }}
+                  inputClass="phone-input"
+                  containerClass="phone-input-container"
+                  textClass="phone-input-text"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>
+                  {wordsListData?.SERIAL_CODE || 'Серийный код'}
+                </FormLabel>
+                <Input
+                  name="terminalSerialCode"
+                  placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
+                  value={formValues.terminalSerialCode}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
             </Grid>
           </ModalBody>
           <ModalFooter display={'flex'} gap={'10px'}>
@@ -457,10 +530,7 @@ export default function SellerTerminal() {
               bg={'red'}
               color={'white'}
               _hover={{ bg: 'red.600' }}
-              _active={{
-                bg: 'red.600',
-                transform: 'scale(0.98)',
-              }}
+              _active={{ bg: 'red.600', transform: 'scale(0.98)' }}
               onClick={() => {
                 onClose();
                 resetValue();
@@ -472,10 +542,7 @@ export default function SellerTerminal() {
               bg={'green'}
               color={'white'}
               _hover={{ bg: 'green.600' }}
-              _active={{
-                bg: 'green.600',
-                transform: 'scale(0.98)',
-              }}
+              _active={{ bg: 'green.600', transform: 'scale(0.98)' }}
               onClick={() => {
                 handleSave();
               }}

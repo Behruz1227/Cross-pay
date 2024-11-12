@@ -116,25 +116,21 @@ export default function SellerOrder() {
 
   const [formValues, setFormValues] = useState({
     amount: '',
-    phone: '',
     terminalId: 0,
   });
 
   const [formErrors, setFormErrors] = useState({
     amount: '',
-    phone: '',
     terminalId: 0,
   });
 
   const resetValue = () => {
     setFormValues({
       amount: '',
-      phone: '',
       terminalId: 0,
     });
     setFormErrors({
       amount: '',
-      phone: '',
       terminalId: 0,
     });
   };
@@ -322,7 +318,6 @@ export default function SellerOrder() {
         url: `${order_create}`,
         postData: {
           amount: +formValues.amount,
-          phone: `${formValues.phone.slice(1)}`,
           terminalId: formValues.terminalId,
         },
         setLoading: setIsLoading,
@@ -553,30 +548,10 @@ export default function SellerOrder() {
                   )} */}
                 </FormControl>
 
-                <FormControl mt={4} isInvalid={!!formErrors.phone}>
+                {/* <FormControl mt={4} isInvalid={!!formErrors.phone}>
                   <FormLabel>
                     {wordsListData?.PHONE_NUMBER || 'Телефон'}
                   </FormLabel>
-                  {/* <InputGroup display={'flex'} alignItems={'center'}>
-                    <InputLeftElement>
-
-                      <Text fontSize="sm" fontWeight="500">
-                        +7
-                      </Text>
-                    </InputLeftElement>
-                    <Input
-                      name="phone"
-                      maxLength={10}
-                      type="text"
-                      placeholder={
-                        wordsListData?.PHONE_NUMBER_PLACEHOLDER ||
-                        'Введите ваш телефон'
-                      }
-                      value={formValues.phone || ''}
-                      onChange={handleChange}
-                      color={inputTextColor}
-                    />
-                  </InputGroup> */}
                   <PhoneInput
                     required
                     defaultCountry="ru"
@@ -608,12 +583,7 @@ export default function SellerOrder() {
                     containerClass="phone-input-container"
                     textClass="phone-input-text"
                   />
-                  {/* {formErrors.phone && (
-                    <Text color="red.500" fontSize="sm">
-                      {formErrors.phone}
-                    </Text>
-                  )} */}
-                </FormControl>
+                </FormControl> */}
               </>
             ) : (
               <Grid
@@ -710,24 +680,32 @@ export default function SellerOrder() {
                       : '-'}
                   </Text>
                 </Flex> */}
-                {/* <Flex
+                <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.VALID_TILL || 'Срок действия'}:
+                    {wordsListData?.PARTNER || 'Партнер'}:
+                  </Text>
+                  <Text fontSize={'17px'}>{detailData?.partner || '-'}</Text>
+                </Flex>
+                <Flex
+                  width={'100%'}
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  justifyContent={'space-between'}
+                  pe={5}
+                >
+                  <Text fontSize={'17px'} fontWeight={'700'}>
+                    {wordsListData?.STATUS || 'Статус'}:
                   </Text>
                   <Text fontSize={'17px'}>
-                    {detailData?.validtil || detailData?.validtil === 0
-                      ? `${detailData?.validtil.slice(
-                          0,
-                          10,
-                        )} ${detailData?.validtil.slice(11, 16)}`
+                    {detailData?.status || detailData?.status === 0
+                      ? detailData.status
                       : '-'}
                   </Text>
-                </Flex> */}
+                </Flex>
                 <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
@@ -760,6 +738,43 @@ export default function SellerOrder() {
                           10,
                         )} ${detailData?.cheque_created_at.slice(11, 16)}`
                       : '-'}
+                  </Text>
+                </Flex>
+                <Flex
+                  width={'100%'}
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  justifyContent={'space-between'}
+                  pe={5}
+                >
+                  <Text fontSize={'17px'} fontWeight={'700'}>
+                    {wordsListData?.PURPOSE || 'Цель'}:
+                  </Text>
+                  <Text fontSize={'14px'}>{detailData?.purpose || '-'}</Text>
+                </Flex>
+
+                <Flex
+                  width={'100%'}
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  justifyContent={'space-between'}
+                  pe={5}
+                >
+                  <Text fontSize={'17px'} fontWeight={'700'}>
+                    {wordsListData?.EXIT_ID || 'EXIT ID'}:
+                  </Text>
+                  <Text fontSize={'15px'}>{detailData?.ext_id || '-'}</Text>
+                </Flex>
+
+                <Flex
+                  width={'100%'}
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  justifyContent={'space-between'}
+                  pe={5}
+                >
+                  <Text fontSize={'17px'} fontWeight={'700'}>
+                    {wordsListData?.redirect_url || 'reURL'}:
+                  </Text>
+                  <Text fontSize={'17px'}>
+                    {detailData?.redirect_url || '-'}
                   </Text>
                 </Flex>
                 <GridItem

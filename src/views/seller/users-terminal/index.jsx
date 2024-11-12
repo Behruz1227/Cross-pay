@@ -89,8 +89,8 @@ const UserTerminal = () => {
     wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала',
     wordsListData?.PHONE_NUMBER || 'Телефон',
     wordsListData?.EMAIL || 'Электронная почта',
-    wordsListData?.INN_WEB || 'ИНН',
-    wordsListData?.EXCEL_MFO || 'МФО',
+    // wordsListData?.INN_WEB || 'ИНН',
+    // wordsListData?.EXCEL_MFO || 'МФО',
     wordsListData?.ACTION || 'Действия',
   ];
 
@@ -129,7 +129,8 @@ const UserTerminal = () => {
   const resetValue = () => {
     setFormValues({
       terminalId: '',
-      managerFio: '',
+      firstName: '',
+      lastName: '',
       phone: '',
       password: '12345',
     });
@@ -210,7 +211,7 @@ const UserTerminal = () => {
               _active={{
                 bg: hoverBgColor,
                 transform: 'scale(0.98)',
-              }}
+              }} 
               onClick={() => {
                 onOpen();
               }}
@@ -246,8 +247,8 @@ const UserTerminal = () => {
                     : '-'}
                 </Td>
                 <Td minWidth="250px">{item.email || '-'}</Td>
-                <Td minWidth="250px">{item.filialCode || '-'}</Td>
-                <Td minWidth="250px">{item.inn || '-'}</Td>
+                {/* <Td minWidth="250px">{item.filialCode || '-'}</Td> */}
+                {/* <Td minWidth="250px">{item.inn || '-'}</Td> */}
                 <Td>
                   <Box ms={3}>
                     <IconButton
@@ -440,7 +441,7 @@ const UserTerminal = () => {
               </FormControl>
 
               {/* Password */}
-              <FormControl mt={4} isInvalid={!!formErrors.password} isRequired>
+              {/* <FormControl mt={4} isInvalid={!!formErrors.password} isRequired>
                 <FormLabel>{wordsListData?.PASSWORD || 'Пароль'}</FormLabel>
                 <InputGroup>
                   <Input
@@ -472,7 +473,7 @@ const UserTerminal = () => {
                     {formErrors.password}
                   </Text>
                 )}
-              </FormControl>
+              </FormControl> */}
             </Grid>
           </ModalBody>
           <ModalFooter display={'flex'} gap={'10px'}>
