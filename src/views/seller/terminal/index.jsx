@@ -527,7 +527,7 @@ export default function SellerTerminal() {
           </ModalBody>
           <ModalFooter display={'flex'} gap={'10px'}>
             <Button
-              bg={'red'}   
+              bg={'red'}
               color={'white'}
               _hover={{ bg: 'red.600' }}
               _active={{ bg: 'red.600', transform: 'scale(0.98)' }}
