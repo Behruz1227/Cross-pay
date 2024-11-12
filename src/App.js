@@ -134,6 +134,9 @@ export default function Main() {
       } else if (role === 'ROLE_TERMINAL') {
         if (!tokens) navigate('/auth/sign-in');
         else navigate('/terminal/payment');
+      } else if (role === 'ROLE_BANK') {
+        if (!tokens) navigate('/auth/sign-in');
+        else navigate('/bank/dashboard');
       }
     }
 
