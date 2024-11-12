@@ -75,19 +75,19 @@ export const generateRoutes = (wordsListData) => [
         icon: <Icon as={RiFileList3Line} width="20px" height="20px" color="inherit"/>,
         component: <WordsPage/>,
     },
-    {
-        name: wordsListData?.PANEL_RATE || "Настройка курс",
-        layout: '/admin',
-        path: '/rate',
-        icon: <Icon as={IoLogoUsd} width="20px" height="20px" color="inherit"/>,
-        component: <Rate/>,
-    },
+    // {
+    //     name: wordsListData?.PANEL_RATE || "Настройка курс",
+    //     layout: '/admin',
+    //     path: '/rate',
+    //     icon: <Icon as={IoLogoUsd} width="20px" height="20px" color="inherit"/>,
+    //     component: <Rate/>,
+    // }, 
     {
         name: '',
         layout: '/admin',
         path: '/notification',
         icon: <Icon as={RiRefund2Line} width="20px" height="20px" color="inherit"/>,
-        component: <Notification/>,
+        component: <Notification/>, 
     },
     // Seller panel route
     {
