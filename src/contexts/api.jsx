@@ -1,4 +1,5 @@
-export const base_url = 'http://185.74.4.138:8080/';
+// export const base_url = 'http://185.74.4.138:8080/';
+export const base_url = 'https://apk.qrpay.uz/';
 
 export const getMeUrl = `${base_url}api/user/me`;
 
@@ -7,7 +8,7 @@ export const user_register = `${base_url}api/user/register`;
 export const user_login = `${base_url}api/user/login`;
 export const bank_login = `${base_url}api/user/bank-login`;
 export const user_sendCode = `${base_url}api/user/send-code`;
-export const checkPhoneUrl = `${base_url}api/user/check-phone?phone=` //
+export const checkPhoneUrl = `${base_url}api/user/check-phone?phone=`; //
 export const user_request = `${base_url}request/save`;
 export const user_edit = `${base_url}api/user/update`;
 export const user_merchant = `${base_url}api/user/page`;
@@ -32,7 +33,7 @@ export const terminal_order_get = `${base_url}payment/list/for/terminal`;
 export const admin_order_get = `${base_url}payment/list/for/admin`;
 export const order_cancel = `${base_url}payment/cancel?orderId=`;
 export const order_confirm = `${base_url}payment/confirm?orderId=`;
-export const order_get_by_id = `${base_url}payment/one/`; 
+export const order_get_by_id = `${base_url}payment/one/`;
 export const order_stats = `${base_url}payment/statistics/filter/admin`;
 export const order_stats_seller_and_terminal = `${base_url}payment/statistics/filter/seller-or-terminal`;
 
