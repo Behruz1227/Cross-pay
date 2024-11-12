@@ -359,7 +359,7 @@ export default function SellerTerminal() {
           )}
         </ComplexTable>
         {/*{Array.isArray(terminalData.object) && terminalData.object.length > 0 &&*/}
-        <Pagination
+        {role === 'ROLE_TERMINAL' || <Pagination
           showSizeChanger
           responsive={true}
           defaultCurrent={1}
@@ -371,7 +371,7 @@ export default function SellerTerminal() {
             setSize(pageSize);
             setPage(0);
           }}
-        />
+        />}
         {/*}*/}
       </SimpleGrid>
       <Modal

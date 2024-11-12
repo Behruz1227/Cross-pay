@@ -158,7 +158,7 @@ export default function AdminNavbar(props) {
           {/*    {brandText}*/}
           {/*</Link>*/}
         </Box>
-        {role === 'ROLE_SELLER' ? (
+        {role === 'ROLE_SELLER' || role === 'ROLE_TERMINAL' ? (
           <Box ms="auto" w={{ sm: '100%', md: 'unset' }}>
             <Link to={`/seller/payment`}>
               <Button
