@@ -372,8 +372,7 @@ export default function SellerTerminal() {
               setPage(0);
             }}
           />
-        )}
-        {/*}*/}
+        )} 
       </SimpleGrid>
       <Modal
         size={'3xl'}

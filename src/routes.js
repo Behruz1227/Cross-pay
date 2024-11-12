@@ -197,6 +197,46 @@ export const generateRoutes = (wordsListData) => [
     ),
     component: <Notification />,
   },
+
+  //   Bank role
+
+  {
+    name: wordsListData?.PANEL_CONTROL || 'Панель управления',
+    layout: '/bank',
+    path: '/dashboard',
+    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
+    component: <AdminDashboard />,
+  },
+  {
+    name: wordsListData?.MERCHANT || 'Торговец',
+    layout: '/bank',
+    path: '/partner',
+    icon: (
+      <Icon
+        as={MdOutlineShoppingCart}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    component: <Partner />,
+    secondary: true,
+  },
+  {
+    name: wordsListData?.PANEL_TERMINAL || 'Терминал',
+    layout: '/bank',
+    path: '/terminal',
+    icon: <Icon as={IoTerminal} width="20px" height="20px" color="inherit" />,
+    component: <SellerTerminal />,
+  },
+  {
+    name: wordsListData?.PANEL_PAYMENT_STATS || 'Отчет о платежах', //
+    layout: '/bank',
+    path: '/statistic',
+    icon: <Icon as={IoStatsChart} width="20px" height="20px" color="inherit" />,
+    component: <OrderStats />,
+  },
+
   {
     name: wordsListData?.SIGN_IN || 'Вход', //
     layout: '/auth',
