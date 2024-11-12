@@ -126,7 +126,7 @@ export default function Main() {
     window.scrollTo(0, 0);
 
     if (pathname === '/') {
-      if (role === 'ROLE_SUPER_ADMIN') {  
+      if (role === 'ROLE_SUPER_ADMIN') {
         if (!tokens) navigate('/auth/sign-in');
         else navigate('/admin/dashboard');
       } else if (role === 'ROLE_SELLER') {

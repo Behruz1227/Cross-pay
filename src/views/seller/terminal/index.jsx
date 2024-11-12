@@ -485,6 +485,35 @@ export default function SellerTerminal() {
                   required
                   defaultCountry="uz"
                   value={formValues.phone}
+                  onChange={(phone) => handleChange({ target: { name: 'phone', value: phone } })}
+                  style={{
+                    width: '100%',
+                    height: '50px',
+                    borderRadius: '16px',
+                    border: '1px solid #E0E5F2',
+                    fontSize: '16px',
+                    padding: '0 15px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: inputTextColor
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '16px',
+                    color: inputTextColor
+                  }}
+                  inputClass="phone-input"
+                  containerClass="phone-input-container"
+                  textClass="phone-input-text"
+                />
+                {/* <PhoneInput
+                  required
+                  defaultCountry="uz"
+                  value={formValues.phone}
                   onChange={(phone) =>
                     handleChange({ target: { name: 'phone', value: phone } })
                   }
@@ -511,7 +540,7 @@ export default function SellerTerminal() {
                   inputClass="phone-input"
                   containerClass="phone-input-container"
                   textClass="phone-input-text"
-                />
+                /> */}
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>
