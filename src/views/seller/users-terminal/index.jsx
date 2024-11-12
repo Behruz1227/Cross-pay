@@ -23,7 +23,6 @@ import {
   Tr,
   useColorModeValue,
   useDisclosure,
-  InputLeftElement,
 } from '@chakra-ui/react';
 import ComplexTable from 'views/admin/dataTables/components/ComplexTable';
 import {
@@ -46,9 +45,9 @@ import { MdDeleteForever } from 'react-icons/md';
 import { TerminalStore } from 'contexts/state-management/terminal/terminalStory';
 import { LanguageStore } from 'contexts/state-management/language/languageStore';
 import { PhoneInput } from 'react-international-phone';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 const UserTerminal = () => {
-  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { wordsListData } = LanguageStore();
   const {
@@ -69,19 +68,20 @@ const UserTerminal = () => {
 
   const [formValues, setFormValues] = useState({
     terminalId: '',
-    managerFio: '',
+    firstName: '',
+    lastName: '',
     phone: '',
-    password: '12345',
+    password: '',
   });
-
   const [formErrors, setFormErrors] = useState({});
-  // const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const inputTextColor = useColorModeValue('gray.800', 'white');
   const navbarIcon = useColorModeValue('#1B255A', 'white');
   const bgColor = useColorModeValue('#422AFB', '#7551FF');
   const hoverBgColor = useColorModeValue('blue.600', 'purple.600');
   const textColor = useColorModeValue('secondaryGray.900', 'white');
+  console.log(formValues.firstName, formValues.lastName);
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
@@ -89,8 +89,8 @@ const UserTerminal = () => {
     wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала',
     wordsListData?.PHONE_NUMBER || 'Телефон',
     wordsListData?.EMAIL || 'Электронная почта',
-    // wordsListData?.INN || 'ИНН',
-    // wordsListData?.EXCEL_MFO || 'МФО',
+    wordsListData?.INN_WEB || 'ИНН',
+    wordsListData?.EXCEL_MFO || 'МФО',
     wordsListData?.ACTION || 'Действия',
   ];
 
@@ -120,8 +120,8 @@ const UserTerminal = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-      setFormValues((prev) => ({
-        ...prev,
+    setFormValues((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -139,29 +139,36 @@ const UserTerminal = () => {
   const validate = () => {
     const errors = {};
     if (!formValues.terminalId)
-      errors.terminalId = `${wordsListData?.TERMINAL || 'Терминал'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
-    if (!formValues.managerFio.trim(''))
-      errors.managerFio = `${wordsListData?.NAME || 'Имя'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.terminalId = `${wordsListData?.TERMINAL || 'Терминал'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.firstName.trim(''))
+      errors.managerFio = `${wordsListData?.NAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.lastName.trim(''))
+      errors.managerFio = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.phone.trim('')) {
-
-      errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
-    } else if (
-      formValues?.phone.slice(1).length !== 12
-    ) {
-      errors.phone = `${wordsListData?.PHONE_ERROR ||
+      errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    } else if (formValues?.phone.slice(1).length !== 12) {
+      errors.phone = `${
+        wordsListData?.PHONE_ERROR ||
         'Номер телефона должен состоять ровно из 9 символов и содержать только цифры.'
-        }`;
+      }`;
     }
     if (!formValues.password.trim(''))
-      errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     else if (formValues.password.length < 4) {
-      errors.password = `${wordsListData?.PASSWORD_ERROR_TERMINAL ||
+      errors.password = `${
+        wordsListData?.PASSWORD_ERROR_TERMINAL ||
         'Пароль должен содержать не менее 4 символов.'
-        }`;
+      }`;
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -171,11 +178,11 @@ const UserTerminal = () => {
     if (validate()) {
       const data = {
         terminalId: parseInt(formValues.terminalId, 10),
-        managerFio: formValues.managerFio,
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
         phone: `${formValues.phone.slice(1)}`,
         password: formValues.password,
       };
-
       globalPostFunction({
         url: user_terminal_add,
         postData: data,
@@ -198,7 +205,7 @@ const UserTerminal = () => {
           buttonChild={
             <Button
               bg={bgColor}
-              color={"white"}
+              color={'white'}
               _hover={{ bg: hoverBgColor }}
               _active={{
                 bg: hoverBgColor,
@@ -211,8 +218,9 @@ const UserTerminal = () => {
               {wordsListData?.CREATE_USER || 'Создать пользователя'}
             </Button>
           }
-          name={`${wordsListData?.TERMINAL_USERS_TABLE || 'Пользователи терминалов'
-            }`}
+          name={`${
+            wordsListData?.TERMINAL_USERS_TABLE || 'Пользователи терминалов'
+          }`}
           thead={thead}
         >
           {loading ? (
@@ -223,33 +231,34 @@ const UserTerminal = () => {
             </Tr>
           ) : usersTerminal ? (
             usersTerminal.object.map((item, i) => (
-              <Tr key={i}>
-                <Td>{page * 10 + i + 1}</Td>
-                <Td minWidth={"250px"}>{item.managerFio || '-'}</Td>
-                <Td minWidth={"250px"}>{item.terminalName || '-'}</Td>
-                <Td  minWidth={"250px"}>
+              <Tr key={item.id}>
+                <Td>{i + 1}</Td>
+                <Td minWidth="250px">
+                  {item.firstName + ' ' + item.lastName || '-'}
+                </Td>
+                <Td minWidth="250px">{item.terminalName || '-'}</Td>
+                <Td minWidth="250px">
                   {item.phone
-                    ? `+998 (${item.phone.slice(3, 5)}) ${item.phone.slice(
-                      5,
-                      8,
-                    )} ${item.phone.slice(8, 10)} ${item.phone.slice(10)}`
+                    ? `+998 (${item.phone.slice(4, 6)}) ${item.phone.slice(
+                        6,
+                        9,
+                      )} ${item.phone.slice(9, 11)} ${item.phone.slice(11)}`
                     : '-'}
                 </Td>
-                <Td minWidth={"250px"}>{item.email || '-'}</Td>
-                {/* <Td>{item.tin || '-'}</Td>
-                <Td>{item.bankBik || ''}</Td> */}
+                <Td minWidth="250px">{item.email || '-'}</Td>
+                <Td minWidth="250px">{item.filialCode || '-'}</Td>
+                <Td minWidth="250px">{item.inn || '-'}</Td>
                 <Td>
                   <Box ms={3}>
                     <IconButton
                       icon={<MdDeleteForever size={25} />}
-                      color={navbarIcon}
+                      color="red.500"
                       variant="ghost"
                       onClick={() => {
                         setId(item.id);
                         openDelete();
-                        // You might want to set the selected user for deletion here
                       }}
-                      aria-label={wordsListData?.DELETE || 'Удалить'}
+                      aria-label="Удалить"
                     />
                   </Box>
                 </Td>
@@ -333,28 +342,42 @@ const UserTerminal = () => {
               </FormControl>
 
               {/* First Name */}
-              <FormControl
-                mt={4}
-                isInvalid={!!formErrors.managerFio}
-                isRequired
-              >
+              <FormControl mt={4} isInvalid={!!formErrors.firstName} isRequired>
                 <FormLabel>{wordsListData?.NAME || 'Имя'}</FormLabel>
                 <Input
-                  name="managerFio"
+                  name="firstName"
                   placeholder={
                     wordsListData?.NAME_PLACEHOLDER || 'Введите ваше имя'
                   }
-                  value={formValues.managerFio}
+                  // value={formValues.firstName}
                   onChange={handleChange}
                   color={inputTextColor}
                 />
-                {formErrors.managerFio && (
+                {formErrors.firstName && (
                   <Text color="red.500" fontSize="sm">
-                    {formErrors.managerFio}
+                    {formErrors.firstName}
                   </Text>
                 )}
               </FormControl>
 
+              <FormControl mt={4} isInvalid={!!formErrors.lastName} isRequired>
+                <FormLabel>{wordsListData?.SURNAME || 'Фамилия'}</FormLabel>
+                <Input
+                  name="lastName"
+                  type="text"
+                  placeholder={
+                    wordsListData?.SURNAME_PLACEHOLDER || 'Введите фамилию'
+                  }
+                  value={formValues.lastName}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+                {formErrors.lastName && (
+                  <Text color="red.500" fontSize="sm">
+                    {formErrors.lastName}
+                  </Text>
+                )}
+              </FormControl>
               {/* Phone */}
               <FormControl mt={4} isInvalid={!!formErrors.phone} isRequired>
                 <FormLabel>
@@ -382,7 +405,9 @@ const UserTerminal = () => {
                   required
                   defaultCountry="uz"
                   value={formValues.phone}
-                  onChange={(phone) => handleChange({ target: { name: 'phone', value: phone } })}
+                  onChange={(phone) =>
+                    handleChange({ target: { name: 'phone', value: phone } })
+                  }
                   style={{
                     width: '100%',
                     height: '50px',
@@ -392,7 +417,7 @@ const UserTerminal = () => {
                     padding: '0 15px',
                     display: 'flex',
                     alignItems: 'center',
-                    color: textColor
+                    color: textColor,
                   }}
                   inputStyle={{
                     width: '100%',
@@ -401,7 +426,7 @@ const UserTerminal = () => {
                     outline: 'none',
                     backgroundColor: 'transparent',
                     fontSize: '16px',
-                    color: textColor
+                    color: textColor,
                   }}
                   inputClass="phone-input"
                   containerClass="phone-input-container"
@@ -415,7 +440,7 @@ const UserTerminal = () => {
               </FormControl>
 
               {/* Password */}
-              {/* <FormControl mt={4} isInvalid={!!formErrors.password} isRequired>
+              <FormControl mt={4} isInvalid={!!formErrors.password} isRequired>
                 <FormLabel>{wordsListData?.PASSWORD || 'Пароль'}</FormLabel>
                 <InputGroup>
                   <Input
@@ -436,35 +461,46 @@ const UserTerminal = () => {
                       variant="ghost"
                       size="sm"
                       aria-label={
-                        wordsListData?.TOGGLE_PASSWORD_VISIBILITY ||
+                        wordsListData?.TOGGLE_PASSWORD_VISIBILITY || 
                         'Переключить видимость пароля'
                       }
                     />
                   </InputRightElement>
-                </InputGroup> */}
-                {/* {formErrors.password && (
+                </InputGroup>
+                {formErrors.password && (
                   <Text color="red.500" fontSize="sm">
                     {formErrors.password}
                   </Text>
-                )} */}
-              {/* </FormControl> */}
+                )}
+              </FormControl>
             </Grid>
           </ModalBody>
           <ModalFooter display={'flex'} gap={'10px'}>
-            <Button bg={'red'} color={'white'} _hover={{ bg: 'red.600' }} _active={{
-              bg: 'red.600',
-              transform: 'scale(0.98)',
-            }} onClick={() => {
-              onClose();
+            <Button
+              bg={'red'}
+              color={'white'}
+              _hover={{ bg: 'red.600' }}
+              _active={{
+                bg: 'red.600',
+                transform: 'scale(0.98)',
+              }}
+              onClick={() => {
+                onClose();
                 resetValue();
               }}
             >
               {wordsListData?.CANCEL || 'Отмена'}
             </Button>
-            <Button bg={'blue'} color={'white'} _hover={{ bg: 'blue.600' }} _active={{
-              bg: 'blue.600',
-              transform: 'scale(0.98)',
-            }} onClick={handleSave}>
+            <Button
+              bg={'blue'}
+              color={'white'}
+              _hover={{ bg: 'blue.600' }}
+              _active={{
+                bg: 'blue.600',
+                transform: 'scale(0.98)',
+              }}
+              onClick={handleSave}
+            >
               {wordsListData?.SAVE || 'Сохранить'}
             </Button>
           </ModalFooter>

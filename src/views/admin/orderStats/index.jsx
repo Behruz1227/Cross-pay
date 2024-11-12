@@ -50,8 +50,8 @@ export default function OrderStats() {
     wordsListData?.EXCEL_TERMINAL_NAME || 'Терминал',
     wordsListData?.EXCEL_MFO || 'МФО',
     // wordsListData?.INN || 'INN', //
-    // wordsListData?.MERCHANT_ACCOUNT || 'Merchant accaount', 
-    // wordsListData?.CLIENT_ACCOUNT || 'Client accaount', 
+    // wordsListData?.MERCHANT_ACCOUNT || 'Merchant accaount',
+    // wordsListData?.CLIENT_ACCOUNT || 'Client accaount',
     wordsListData?.EXCEL_RATE || 'Курс',
     wordsListData?.EXCEL_CREATED_AT || 'Дата создания',
     wordsListData?.EXCEL_PAYMENT_DATE || 'Дата оплаты',
@@ -169,65 +169,81 @@ export default function OrderStats() {
                   {wordsListData?.DOWNLOAD_FILE || 'Скачать файл'}
                 </Button>
               </Flex>
-              <Flex gap={2} mt={5}>
+              <Flex gap={5} mt={5}>
                 {role !== 'ROLE_SELLER' && role !== 'ROLE_TERMINAL' && (
-                  <Input
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder={wordsListData?.FULL_NAME || 'ФИО'}
-                  />
+                  <Box>
+                    <Text fontSize="15px">
+                      {wordsListData?.EXCEL_MERCHANT || 'Торговец'}
+                    </Text>
+                    <Input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder={wordsListData?.EXCEL_MERCHANT || 'Торговец'}
+                    />
+                  </Box>
                 )}
                 {role !== 'ROLE_TERMINAL' && (
+                  <Box>
+                    <Text fontSize="15px">
+                      {wordsListData?.EXCEL_MFO || 'МФО'}
+                    </Text>
+                    <Input
+                      type="text"
+                      value={mfo}
+                      onChange={(e) => setMfo(e.target.value)}
+                      placeholder={wordsListData?.EXCEL_MFO || 'МФО'}
+                    />
+                  </Box>
+                )}
+                <Box>
+                  <Text fontSize="15px">
+                    {wordsListData?.EXCEL_CREATED_AT || 'Дата создания'}
+                  </Text>
+                  <Input
+                    type="date"
+                    value={createdAt}
+                    onChange={(e) => setCreatedAt(e.target.value)}
+                    placeholder={
+                      wordsListData?.EXCEL_CREATED_AT || 'Дата создания'
+                    }
+                  />
+                </Box>
+                <Box>
+                  <Text fontSize="15px">
+                    {wordsListData?.STATUS || 'Статус'}
+                  </Text>
+                  <Select
+                    value={status}
+                    style={{ width: '100%', height: '40px' }}
+                    onChange={(value) => setStatus(value)}
+                    placeholder={wordsListData?.STATUS || 'Статус'}
+                  >
+                    <Option value="">{wordsListData?.ALL || 'Все'}</Option>
+                    <Option value="WAIT">
+                      {wordsListData?.STATUS_WAIT || 'Ожидание'}
+                    </Option>
+                    <Option value="COMPLETED">
+                      {wordsListData?.STATUS_CONFIRMED || 'Подтвержден'}
+                    </Option>
+                    <Option value="CANCEL">
+                      {wordsListData?.STATUS_CANCELED || 'Отменен'}
+                    </Option>
+                  </Select>
+                </Box>
+                <Box>
+                  <Text fontSize="15px">
+                    {wordsListData?.EXCEL_AMOUNT || 'Количество'}
+                  </Text>
                   <Input
                     type="text"
-                    value={mfo}
-                    onChange={(e) => setMfo(e.target.value)}
-                    placeholder={wordsListData?.EXCEL_MFO || 'МФО'}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder={wordsListData?.EXCEL_AMOUNT || 'Количество'}
                   />
-                )}
-                <Input
-                  type="date"
-                  value={createdAt}
-                  onChange={(e) => setCreatedAt(e.target.value)}
-                  placeholder={
-                    wordsListData?.EXCEL_CREATED_AT || 'Дата создания'
-                  }
-                />
-                {/* <Input
-                  type="date"
-                  value={paymentDate}
-                  onChange={(e) => setPaymentDate(e.target.value)}
-                  placeholder={
-                    wordsListData?.EXCEL_PAYMENT_DATE || 'Дата оплаты'
-                  }
-                /> */}
-                <Select
-                  value={status}
-                  style={{ width: '100%', height: '40px' }}
-                  onChange={(value) => setStatus(value)}
-                  placeholder={wordsListData?.STATUS || 'Статус'}
-                >
-                  <Option value="">{wordsListData?.ALL || 'Все'}</Option>{' '}
-                  {/* Default empty value */}
-                  <Option value="WAIT">
-                    {wordsListData?.STATUS_WAIT || 'Ожидание'}
-                  </Option>
-                  <Option value="COMPLETED">
-                    {wordsListData?.STATUS_CONFIRMED || 'Подтвержден'}
-                  </Option>
-                  <Option value="CANCEL">
-                    {wordsListData?.STATUS_CANCELED || 'Отменен'}
-                  </Option>
-                </Select>
-                <Input
-                  type="text"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder={wordsListData?.EXCEL_AMOUNT || 'Количество'}
-                />
+                </Box>
                 <Button
-                  style={{ height: '40px' }}
+                  style={{ height: '40px', marginTop: '22px' }}
                   onClick={() => {
                     setFullName('');
                     setMfo('');
