@@ -12,7 +12,6 @@ import { LanguageStore } from 'contexts/state-management/language/languageStore'
 
 // Custom Chakra theme
 export default function Auth() {
-  const { t } = useTranslation();
   const { wordsListData } = LanguageStore()
   const routes = generateRoutes(wordsListData);
   // states and functions

@@ -249,7 +249,7 @@ export default function Partner() {
             wordsListData?.NAME || 'ИМЯ',
             wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
             // wordsListData?.ADDRESS || 'АДРЕС',
-            wordsListData?.INN || 'ИНН',
+            wordsListData?.INN_WEB || 'ИНН',
             // wordsListData?.DATE || 'ДАТА',
             wordsListData?.EXCEL_MFO || 'МФО',
             // wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',

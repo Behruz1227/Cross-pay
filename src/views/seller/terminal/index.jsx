@@ -76,8 +76,8 @@ export default function SellerTerminal() {
     wordsListData?.TABLE_TR || '№',
     wordsListData?.NAME || 'ИМЯ',
     wordsListData?.SERIAL_CODE || 'Серийный код',
-    wordsListData?.ACCOUNT || 'Счет',
-    wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
+    wordsListData?.ACCOUNT_WEB || 'Счет',
+    wordsListData?.PHONE_NUMBER || 'Телефон',
 
     role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
     // wordsListData?.POS_ID || 'ПОС ИД',
@@ -425,7 +425,7 @@ export default function SellerTerminal() {
               {/* Terminal Name */}
               <FormControl mt={4} isInvalid={!!formErrors.name}>
                 <FormLabel>
-                  {wordsListData?.TERMINAL_NAME || 'Название терминала'}
+                  {wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала'}
                 </FormLabel>
                 <Input
                   name="name"
@@ -442,10 +442,10 @@ export default function SellerTerminal() {
 
               {/* Account */}
               <FormControl mt={4}>
-                <FormLabel>{wordsListData?.ACCOUNT || 'Аккаунт'}</FormLabel>
+                <FormLabel>{wordsListData?.ACCOUNT_WEB || 'Аккаунт'}</FormLabel>
                 <Input
                   name="account"
-                  placeholder={wordsListData?.ACCOUNT || 'Аккаунт'}
+                  placeholder={wordsListData?.ACCOUNT_WEB || 'Аккаунт'}
                   value={formValues.account}
                   onChange={handleChange}
                   color={inputTextColor}
@@ -454,10 +454,10 @@ export default function SellerTerminal() {
 
               {/* Filial Code */}
               <FormControl mt={4}>
-                <FormLabel>{wordsListData?.MFO || 'Код филиала'}</FormLabel>
+                <FormLabel>{wordsListData?.EXCEL_MFO || 'Код филиала'}</FormLabel>
                 <Input
                   name="filialCode"
-                  placeholder={wordsListData?.MFO || 'Код филиала'}
+                  placeholder={wordsListData?.EXCEL_MFO || 'Код филиала'}
                   value={formValues.filialCode}
                   onChange={handleChange}
                   color={inputTextColor}
@@ -479,7 +479,7 @@ export default function SellerTerminal() {
               {/* Phone */}
               <FormControl mt={4}>
                 <FormLabel>
-                  {wordsListData?.PHONE_NUMBER || 'НОМЕР ТЕЛЕФОНА'}
+                  {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
                 </FormLabel>
                 <PhoneInput
                   required

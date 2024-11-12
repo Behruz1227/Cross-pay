@@ -7,13 +7,11 @@ import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { LanguageStore } from 'contexts/state-management/language/languageStore';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { generateRoutes } from 'routes';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
-  const { t } = useTranslation();
   const { wordsListData } = LanguageStore()
   const routes = generateRoutes(wordsListData);
   const { ...rest } = props;
@@ -25,7 +23,7 @@ export default function Dashboard(props) {
     return window.location.pathname !== '/admin/full-screen-maps';
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = t("dashboard");
+    let activeRoute = "dashboard";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].items);
