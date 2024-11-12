@@ -72,7 +72,7 @@ export default function Partner() {
   }, [page, fullName, tin, filialCode, phone, size]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false); 
+  const onClose = () => setIsOpen(false);
 
   const bgGenerator = (status) => {
     if (status === 'ACTIVE')
@@ -102,6 +102,7 @@ export default function Partner() {
       setData: setMerchantData,
     });
   };
+  const role = localStorage.getItem('role');
   const validateFields = () => {
     const newErrors = {};
 
@@ -152,7 +153,6 @@ export default function Partner() {
       },
     });
   };
-
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '90px' }}>
       <SimpleGrid
@@ -253,7 +253,7 @@ export default function Partner() {
             // wordsListData?.DATE || 'ДАТА',
             wordsListData?.EXCEL_MFO || 'МФО',
             // wordsListData?.BANK_ACCOUNT || 'БАНК СЧЕТ',
-            wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+            role === 'ROLE_BANK' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
           ]}
           // buttonChild={
           //   <Button
@@ -300,26 +300,28 @@ export default function Partner() {
                 </Td> */}
                 <Td minWidth={'250px'}>{item.filial_code || '-'}</Td>
                 {/* <Td minWidth={'250px'}>
-                  {item.bankAccount ? item.bankAccount : '-'}
+                  {item.bankAccount ? item.bankAccount : '-'} 
                 </Td> */}
-                <Td>
-                  <Select
-                    onChange={async (e) => {
-                      await updateUserStatus({
-                        userId: item.id,
-                        status: e.target.value,
-                        getFunction: getMerchant,
-                      });
-                    }}
-                    width={'150px'}
-                    value={item.status}
-                  >
-                    <option value="ACTIVE">{bgGenerator('ACTIVE')[1]}</option>
-                    <option value="INACTIVE">
-                      {bgGenerator('INACTIVE')[1]}
-                    </option>
-                  </Select>
-                </Td>
+                {role === 'ROLE_BANK' || ( 
+                  <Td>
+                    <Select
+                      onChange={async (e) => {
+                        await updateUserStatus({
+                          userId: item.id,
+                          status: e.target.value,
+                          getFunction: getMerchant,
+                        });
+                      }}
+                      width={'150px'}
+                      value={item.status}
+                    >
+                      <option value="ACTIVE">{bgGenerator('ACTIVE')[1]}</option>
+                      <option value="INACTIVE">
+                        {bgGenerator('INACTIVE')[1]}
+                      </option>
+                    </Select>
+                  </Td>
+                )}
               </Tr>
             ))
           ) : (
