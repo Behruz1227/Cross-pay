@@ -9,8 +9,10 @@ import {
     FormControl,
     FormLabel,
     Heading,
+    Icon,
     Input,
     InputGroup,
+    InputRightElement,
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
@@ -24,6 +26,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import {
     admin_notification_count,
+    bank_login,
     seller_notification_count,
     terminal_notification_count,
     user_login,
@@ -36,6 +39,7 @@ import { AppStore } from "contexts/state-management";
 import { globalGetFunction } from "contexts/logic-function/globalFunktion";
 import { NotificationStore } from "contexts/state-management/notification/notificationStore";
 import { useTranslation } from "react-i18next";
+import { FaEye } from "react-icons/fa6";
 // import { toastMessage } from "contexts/toast-message";
 
 const defVal = { phone: '', password: '' }
@@ -43,6 +47,7 @@ const defVal = { phone: '', password: '' }
 function CheckCodeBank() {
     const navigate = useNavigate()
     const { setCountData } = NotificationStore()
+    const [showPassword, setShowPassword] = useState(false);
     const { setGetMeeData, phonenumber } = AppStore()
     const [auth, setAuth] = useState({ phone: '', password: '' });
     const [roles, setRoles] = useState('');
@@ -58,20 +63,10 @@ function CheckCodeBank() {
 
 
     useEffect(() => {
-        if (roles === 'ROLE_SUPER_ADMIN') {
+        if (roles === 'ROLE_BANK') {
             toast.success('Вы успешно вошли в систему')
-            navigate('/admin/dashboard')
+            navigate('/bank/dashboard')
             sessionStorage.setItem('pathname', 'Dashboard')
-            setAuth(defVal)
-        } else if (roles === 'ROLE_SELLER') {
-            toast.success('Вы успешно вошли в систему')
-            navigate('/seller/dashboard')
-            sessionStorage.setItem('pathname', 'Dashboard')
-            setAuth(defVal)
-        } else if (roles === 'ROLE_TERMINAL') {
-            toast.success('Вы успешно вошли в систему')
-            navigate('/terminal/payment')
-            sessionStorage.setItem('pathname', 'Terminal dashboard')
             setAuth(defVal)
         }
     }, [roles]);
@@ -79,14 +74,14 @@ function CheckCodeBank() {
     const authLogin = async () => {
         setLoading(true)
         try {
-            const { data } = await axios.post(user_login, {
+            const { data } = await axios.post(bank_login, {
                 phone: `${phonenumber.slice(1)}`,
-                code: auth.password
+                password: auth.password
             })
             if (data?.error?.code) {
                 setLoading(false)
                 toastMessage(data.error.code)
-           consoleClear()
+                consoleClear()
             } else {
                 setLoading(false)
                 const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000;
@@ -95,37 +90,15 @@ function CheckCodeBank() {
                 sessionStorage.setItem("ROLE", data.data.role)
                 setRoles(data.data.role)
                 await userGetMe({ setData: setGetMeeData, token: data.data.token });
-                await globalGetFunction({
-                    url: data.data.role === "ROLE_TERMINAL" ? terminal_notification_count : data.data.role === "ROLE_SELLER" ? seller_notification_count : data.data.role === "ROLE_SUPER_ADMIN" ? admin_notification_count : "",
-                    setData: setCountData, token: data.data.token
-                })
-           consoleClear()
+                // await globalGetFunction({
+                //     url: data.data.role === "ROLE_TERMINAL" ? terminal_notification_count : data.data.role === "ROLE_SELLER" ? seller_notification_count : data.data.role === "ROLE_SUPER_ADMIN" ? admin_notification_count : "",
+                //     setData: setCountData, token: data.data.token
+                // })
+                consoleClear()
             }
         } catch (err) {
             setLoading(false)
-       consoleClear()
-        }
-    }
-
-    const reSend = async () => {
-        toast.success("Код отправлен повторно!")
-        setLoading(true)
-        try {
-            const { data } = await axios.post(user_sendCode, {
-                phone: `${phonenumber.slice(1)}`,
-            })
-            if (data?.error?.code) {
-                setLoading(false)
-                toastMessage(data.error.code)
-           consoleClear()
-            } else {
-                setLoading(false)
-              
-           consoleClear()
-            }
-        } catch (err) {
-            setLoading(false)
-       consoleClear()
+            consoleClear()
         }
     }
 
@@ -160,14 +133,14 @@ function CheckCodeBank() {
                     <Heading color={textColor} fontSize='36px' mb='10px'>
                         {"Вход"}
                     </Heading>
-                    <Text
+                    {/* <Text
                         mb='10px'
                         ms='4px'
                         color={textColorSecondary}
                         fontWeight='400'
                         fontSize='md'>
                         {"Код"}{` +${phonenumber.slice(1)}`}{" отправлен на номер."}
-                    </Text>
+                    </Text> */}
                 </Box>
                 <Flex
                     zIndex='2'
@@ -182,7 +155,7 @@ function CheckCodeBank() {
                 >
                     <Flex align='center' mb='30px'>
                         <HSeparator />
-                       
+
                         <HSeparator />
                     </Flex>
                     <FormControl>
@@ -219,23 +192,30 @@ function CheckCodeBank() {
                             fontWeight='500'
                             color={textColor}
                             display='flex'>
-                            {"Введите код"}<Text color={brandStars}>*</Text>
+                            {"Введите пароль"}<Text color={brandStars}>*</Text>
                         </FormLabel>
-                        <InputGroup size='md'>
+                        <InputGroup display={'flex'} alignItems={'center'}>
                             <Input
                                 isRequired={true}
-                                fontSize='sm'
-                                placeholder={"-- --"}
-                                mb='24px'
-                                size='lg'
-                                variant='auth'
-                                onKeyDown={checkKeyPress}
+                                variant="auth"
+                                fontSize="sm"
+                                ms={{ base: '0px', md: '0px' }}
+                                type={showPassword ? "text" : "password"} // Yangi shart qo'shildi
+                                placeholder="*****"
+                                mb="24px"
+                                fontWeight="500"
+                                size="lg"
                                 value={auth.password}
-                                onChange={e => handleAuth('password', e.target.value)}
+                                onKeyDown={checkKeyPress}
+                                onChange={(e) => {
+                                    handleAuth('password', e.target.value)
+                                }}
                             />
-                            
+                            <InputRightElement mt={1} me={2}>
+                                <Icon as={FaEye} onClick={() => setShowPassword(!showPassword)} />
+                            </InputRightElement>
                         </InputGroup>
-                       
+
                         <Button
                             fontSize='sm'
                             variant='brand'
@@ -246,11 +226,11 @@ function CheckCodeBank() {
                             type='submit'
                             onClick={async () => {
                                 if (auth.password) await authLogin()
-                                else toast.error(t('checkData'));
+                                else toast.error("Проверьте правильность данных");
                             }}
                         >{loading ? `загрузка...` : `Войти`}</Button>
                     </FormControl>
-                    <Flex
+                    {/* <Flex
                         flexDirection='column'
                         justifyContent='center'
                         alignItems='start'
@@ -270,7 +250,7 @@ function CheckCodeBank() {
                                 </Text>
                             </NavLink>
                         </Text>
-                    </Flex>
+                    </Flex> */}
                 </Flex>
             </Flex>
         </DefaultAuth>

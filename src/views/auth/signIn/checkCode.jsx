@@ -246,7 +246,7 @@ function CheckCode() {
                             type='submit'
                             onClick={async () => {
                                 if (auth.password) await authLogin()
-                                else toast.error(t('checkData'));
+                                else toast.error("Проверьте правильность данных");
                             }}
                         >{loading ? `загрузка...` : `Войти`}</Button>
                     </FormControl>
