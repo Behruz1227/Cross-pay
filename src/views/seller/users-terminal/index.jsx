@@ -71,7 +71,7 @@ const UserTerminal = () => {
     firstName: '',
     lastName: '',
     phone: '',
-    password: '',
+    password: '12345',
   });
   const [formErrors, setFormErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
