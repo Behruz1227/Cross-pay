@@ -713,21 +713,6 @@ export default function SellerOrder() {
                   pe={5}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.STATUS || 'Статус'}:
-                  </Text>
-                  <Text fontSize={'17px'}>
-                    {detailData?.status || detailData?.status === 0
-                      ? detailData.status
-                      : '-'}
-                  </Text>
-                </Flex>
-                <Flex
-                  width={'100%'}
-                  flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-between'}
-                  pe={5}
-                >
-                  <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.DATE_CREATED || 'Дата создания'}:
                   </Text>
                   <Text fontSize={'17px'}>
