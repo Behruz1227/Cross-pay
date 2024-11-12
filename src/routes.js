@@ -21,6 +21,7 @@ import PrivacyTermsPage from 'views/shartlar/PrivacyTermsPage';
 import WordsPage from 'views/admin/words';
 import OrderStats from 'views/admin/orderStats';
 import Rate from 'views/admin/rate/rate';
+import CheckCodeBank from 'views/auth/signIn/checkCodeBank';
 
 export const generateRoutes = (wordsListData) => [
   // Admin panel route
@@ -209,6 +210,13 @@ export const generateRoutes = (wordsListData) => [
     path: '/check-code',
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
     component: <CheckCode />,
+  },
+  {
+    name: wordsListData?.CHECK_CODE || 'Проверка кода', //
+    layout: '/auth',
+    path: '/check-password',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+    component: <CheckCodeBank />,
   },
   {
     name: wordsListData?.PRIVACY_POLICY || 'Политика конфиденциальности', //

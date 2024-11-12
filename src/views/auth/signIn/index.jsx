@@ -24,21 +24,25 @@ import illustration from 'assets/img/auth/auth.png';
 // import { FcGoogle } from "react-icons/fc";
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { user_sendCode } from '../../../contexts/api';
+import { checkPhoneUrl, user_sendCode } from '../../../contexts/api';
 import { consoleClear, toastMessage } from '../../../contexts/toast-message';
 import { useNavigate } from 'react-router-dom';
 import { AppStore } from 'contexts/state-management';
-import { useTranslation } from 'react-i18next';
 import { PhoneInput } from 'react-international-phone';
+import { globalPostFunction } from 'contexts/logic-function/globalFunktion';
+import _ from 'lodash';
 
 function SignIn() {
   const navigate = useNavigate();
   const { setPhonenumber, phonenumber } = AppStore();
   const [policy, setPolicy] = useState(false);
+  const [password, setPassword] = useState(null);
+  const [showPassword, setShowPassword] = useState(true);
   const [loading, setLoading] = useState(false);
   const textColor = useColorModeValue('navy.700', 'white');
   const textColorSecondary = 'gray.400';
   const brandStars = useColorModeValue('brand.500', 'brand.400');
+
 
   const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
   const textColorBrand = useColorModeValue('brand.500', 'white');
@@ -46,7 +50,9 @@ function SignIn() {
   // console.log(phonenumber.slice(1));
 
   const authLogin = async () => {
-    setLoading(true);
+    showPassword ?
+      navigate('/auth/check-password') :
+      setLoading(true);
     try {
       const { data } = await axios.post(user_sendCode, {
         phone: `${phonenumber.slice(1)}`,
@@ -54,33 +60,18 @@ function SignIn() {
       if (data?.error?.code) {
         setLoading(false);
         toastMessage(data.error.code);
-       consoleClear()
+        consoleClear()
       } else {
         setLoading(false);
         navigate('/auth/check-code');
-       consoleClear()
+        consoleClear()
       }
     } catch (err) {
-     consoleClear()
+      consoleClear()
       toast.error('Ошибка при отправке кода');
       setLoading(false);
     }
   };
-
-  // const formatPhoneNumber = (value) => {
-  //   if (!value) return '';
-
-  //   const numbers = value.replace(/[^\d]/g, '');
-  //   if (numbers.length === 0) return '';
-
-  //   let formatted = '';
-  //   if (numbers.length > 0) formatted += numbers.slice(0, 2);
-  //   if (numbers.length > 2) formatted += ' ' + numbers.slice(2, 5);
-  //   if (numbers.length > 5) formatted += '-' + numbers.slice(5, 7);
-  //   if (numbers.length > 7) formatted += '-' + numbers.slice(7, 9);
-
-  //   return formatted;
-  // };
 
   function checkKeyPress(event) {
     if (event.key === 'Enter') {
@@ -88,6 +79,34 @@ function SignIn() {
       document.querySelector('button[type="submit"]').click();
     }
   }
+
+  useEffect(() => {
+    console.log(phonenumber.slice(1));
+    if (phonenumber.slice(1).length === 12) {
+      _.delay(() => {
+        // globalPostFunction({
+        //   url: `${checkPhoneUrl}${phonenumber.slice(1)}`,
+        //   postData: {},
+        //   setLoading: () => { },
+        //   setData: setShowPassword
+        // })
+        try {
+          const { data } = axios.post(`${checkPhoneUrl}${phonenumber.slice(1)}`, {});
+          if (data?.error?.code) {
+            setShowPassword(true)
+          } else {
+            console.log(data?.data);
+            
+            setShowPassword(data?.data)
+            consoleClear()
+          }
+        } catch (err) {
+          consoleClear()
+          setShowPassword(true)
+        }
+      }, 2000);
+    }
+  }, [phonenumber])
 
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
@@ -155,7 +174,7 @@ function SignIn() {
               onKeyDown={checkKeyPress}
               style={{
                 width: '100%',
-                height: '50px', 
+                height: '50px',
                 borderRadius: '16px',
                 border: '1px solid #E0E5F2',
                 fontSize: '16px',
@@ -177,6 +196,32 @@ function SignIn() {
               containerClass="phone-input-container"
               textClass="phone-input-text"
             />
+            {/* {
+              showPassword &&
+              <>
+                <FormLabel
+                  ms='4px'
+                  fontSize='sm'
+                  fontWeight='500'
+                  color={textColor}
+                  display='flex'>
+                  {"Введите код"}<Text color={brandStars}>*</Text>
+                </FormLabel>
+                <InputGroup size='md'>
+                  <Input
+                    isRequired={true}
+                    fontSize='sm'
+                    placeholder={"-- --"}
+                    mb='24px'
+                    size='lg'
+                    variant='auth'
+                    onKeyDown={checkKeyPress}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </InputGroup>
+              </>
+            } */}
             {/* <InputGroup display={'flex'} alignItems={'center'}>
               <InputLeftElement mt={1}>
                 <Text fontSize="sm" fontWeight="500">
@@ -255,7 +300,7 @@ function SignIn() {
                 mb="24px"
                 type="submit"
               >
-                {loading ? 'Загрузка...' : 'Продолжить'}
+                {loading ? 'Загрузка...' : showPassword ? "Продолжить" : 'Отправить СМС-код'}
               </Button>
             </NavLink>
           </FormControl>

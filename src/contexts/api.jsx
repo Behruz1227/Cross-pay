@@ -6,6 +6,7 @@ export const getMeUrl = `${base_url}api/user/me`;
 export const user_register = `${base_url}api/user/register`;
 export const user_login = `${base_url}api/user/login`;
 export const user_sendCode = `${base_url}api/user/send-code`;
+export const checkPhoneUrl = `${base_url}api/user/check-phone?phone=` //
 export const user_request = `${base_url}request/save`;
 export const user_edit = `${base_url}api/user/update`;
 export const user_merchant = `${base_url}api/user/page`;
