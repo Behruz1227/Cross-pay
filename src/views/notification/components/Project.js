@@ -113,32 +113,43 @@ export default function Project(props) {
                   fontSize="md"
                   mb="4px"
                 >
-                  {item?.sellerName || '-'}
+                  {item?.title || '-'}
                 </Text>
-                <Text
+                {/* <Text
                   color={textColorPrimary}
                   fontWeight="500"
                   fontSize="md"
                   mb="4px"
                 >
                   {wordsListData?.EXCEL_MERCHANT || 'Торговец'} :{' '}
-                  {item.merchant || '0'}
-                </Text>
+                  {item?.partner || '0'}
+                </Text> */}
+                <Box>
+                   
+                  <Text
+                    color={textColorPrimary}
+                    fontWeight="500"
+                    fontSize="md"
+                    mb="4px"
+                  >
+                    {item?.priceUz || '0'} {wordsListData?.UZS || 'сум'}
+                  </Text>
+                  <Text
+                    color={textColorPrimary}
+                    fontWeight="500"
+                    fontSize="md"
+                    mb="4px"
+                  >
+                    {item?.priceRu || '0'} {wordsListData?.RUB || ''}
+                  </Text>
+                </Box>
                 <Text
                   color={textColorPrimary}
                   fontWeight="500"
                   fontSize="md"
                   mb="4px"
                 >
-                  {item?.amount || '0'} {wordsListData?.UZS || 'сум'}
-                </Text>
-                <Text
-                  color={textColorPrimary}
-                  fontWeight="500"
-                  fontSize="md"
-                  mb="4px"
-                >
-                  {wordsListData.CLIENT || 'Клиент'} : {item?.client || '-'}
+                  {wordsListData?.CLIENT || 'Клиент'} : {item?.partner || '-'}
                 </Text>
 
                 <Text
