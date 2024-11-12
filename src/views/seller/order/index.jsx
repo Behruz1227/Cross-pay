@@ -611,8 +611,9 @@ export default function SellerOrder() {
                   </Text>
                 </Flex> */}
 
-                <Flex
-                  width={'100%'}
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
@@ -620,12 +621,11 @@ export default function SellerOrder() {
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.QR_AMOUNT || 'QR - сумма'}:{' '}
                   </Text>
-                  <Text fontSize={'17px'}>
-                    {detailData?.chequeAmount || detailData?.chequeAmount === 0
-                      ? detailData.chequeAmount
-                      : '-'}
-                  </Text>
-                </Flex>
+                  <Flex gap={20} fontSize={'17px'}>
+                    <Box>{detailData?.chequeAmount + ' UZS  ' || '-'},</Box>
+                    <Box>{detailData?.qrAmount + '  RUB ' || '-'}</Box>
+                  </Flex>
+                </GridItem>
                 {/* <Flex width={"100%"} flexDirection={{base: "column", md: "row"}}
                                       justifyContent={"space-between"} pe={5}>
                                     <Text fontSize={"17px"} fontWeight={"700"}>{t("localQRId")}:</Text>
@@ -725,8 +725,9 @@ export default function SellerOrder() {
                       : '-'}
                   </Text>
                 </Flex>
-                <Flex
-                  width={'100%'}
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
@@ -734,11 +735,14 @@ export default function SellerOrder() {
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.PURPOSE || 'Цель'}:
                   </Text>
-                  <Text fontSize={'14px'}>{detailData?.purpose || '-'}</Text>
-                </Flex>
+                  <Text ml={5} fontSize={'17px'}>
+                    {detailData?.purpose || '-'}
+                  </Text>
+                </GridItem>
 
-                <Flex
-                  width={'100%'}
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
@@ -746,11 +750,12 @@ export default function SellerOrder() {
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.EXIT_ID || 'EXIT ID'}:
                   </Text>
-                  <Text fontSize={'15px'}>{detailData?.ext_id || '-'}</Text>
-                </Flex>
+                  <Text fontSize={'17px'}>{detailData?.ext_id || '-'}</Text>
+                </GridItem>
 
-                <Flex
-                  width={'100%'}
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
@@ -761,7 +766,7 @@ export default function SellerOrder() {
                   <Text fontSize={'17px'}>
                     {detailData?.redirect_url || '-'}
                   </Text>
-                </Flex>
+                </GridItem>
                 <GridItem
                   width={'100%'}
                   colSpan={{ base: 1, md: 2 }}
