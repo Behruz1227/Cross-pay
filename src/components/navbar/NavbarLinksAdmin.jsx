@@ -205,10 +205,10 @@ export default function HeaderLinks(props) {
       globalPutFunction({
         url: `${user_edit}`,
         putData: {
-          firstName: formValues.firstName,
-          lasttName: formValues.lastName,
-          email: formValues.email,
-          phone: `${formValues.phone.slice(1)}`,
+          firstName: formValues?.firstName,
+          lasttName: formValues?.lastName,
+          email: formValues?.email,
+          phone: `${formValues?.phone.slice(1)}`,
           inn: formValues.inn ? formValues.inn : null,
           filial_code: formValues.filial_code ? formValues.filial_code : null,
           password: '12345',
@@ -452,10 +452,10 @@ export default function HeaderLinks(props) {
                     {wordsListData?.MANAGER_FIO || 'Ф.И.О.'}:{' '}
                   </Text>
                   <Text fontSize="sm">
-                    {getMeeData && getMeeData.firstName
-                      ? getMeeData.firstName
+                    {getMeeData && getMeeData?.firstName
+                      ? getMeeData?.firstName
                       : '-'}{' '}
-                    {getMeeData.lastName || '-'}
+                    {getMeeData?.lastName || '-'}
                   </Text>
                 </MenuItem>
                 {/* <MenuItem
@@ -613,7 +613,7 @@ export default function HeaderLinks(props) {
                 )} */}
               </FormControl>
 
-              <FormControl mt={4} isInvalid={!!formErrors.lastName}>
+              <FormControl mt={4} isInvalid={!!formErrors?.lastName}>
                 <FormLabel>{wordsListData?.SURNAME || 'Ф.И.О.'}</FormLabel>
                 <Input
                   name="lastName"

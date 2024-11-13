@@ -63,6 +63,7 @@ const UserTerminal = () => {
   const [loading, setLoading] = useState(false);
   const [totalElement, setTotalElements] = useState(0);
   const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
   const [id, setId] = useState('');
   const { terminalData, setTerminalData } = TerminalStore();
 
@@ -136,19 +137,19 @@ const UserTerminal = () => {
 
   const validate = () => {
     const errors = {};
-    if (!formValues.terminalId)
+    if (!formValues?.terminalId)
       errors.terminalId = `${wordsListData?.TERMINAL || 'Терминал'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
-    if (!formValues.firstName.trim(''))
+    if (!formValues?.firstName.trim(''))
       errors.managerFio = `${wordsListData?.NAME || 'Имя'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
-    if (!formValues.lastName.trim(''))
+    if (!formValues?.lastName.trim(''))
       errors.managerFio = `${wordsListData?.SURNAME || 'Имя'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
-    if (!formValues.phone.trim('')) {
+    if (!formValues?.phone.trim('')) {
       errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
@@ -158,11 +159,11 @@ const UserTerminal = () => {
         'Номер телефона должен состоять ровно из 9 символов и содержать только цифры.'
       }`;
     }
-    if (!formValues.password.trim(''))
+    if (!formValues?.password.trim(''))
       errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
-    else if (formValues.password.length < 4) {
+    else if (formValues?.password.length < 4) {
       errors.password = `${
         wordsListData?.PASSWORD_ERROR_TERMINAL ||
         'Пароль должен содержать не менее 4 символов.'
@@ -175,11 +176,11 @@ const UserTerminal = () => {
   const handleSave = () => {
     if (validate()) {
       const data = {
-        terminalId: parseInt(formValues.terminalId, 10),
-        firstName: formValues.firstName,
-        lastName: formValues.lastName,
-        phone: `${formValues.phone.slice(1)}`,
-        password: formValues.password,
+        terminalId: parseInt(formValues?.terminalId, 10),
+        firstName: formValues?.firstName,
+        lastName: formValues?.lastName,
+        phone: `${formValues?.phone.slice(1)}`,
+        password: formValues?.password,
       };
       globalPostFunction({
         url: user_terminal_add,
@@ -271,11 +272,17 @@ const UserTerminal = () => {
           )}
         </ComplexTable>
         <Pagination
-          showSizeChanger={false}
+          showSizeChanger
           responsive={true}
-          current={page + 1}
+          defaultCurrent={1}
           total={totalElement}
-          onChange={(page) => setPage(page - 1)}
+          onChange={(page, size) => {
+            setPage(page - 1);
+          }}
+          onShowSizeChange={(current, pageSize) => {
+            setSize(pageSize);
+            setPage(0);
+          }}
         />
       </SimpleGrid>
 
@@ -356,7 +363,7 @@ const UserTerminal = () => {
                 )}
               </FormControl>
 
-              <FormControl mt={4} isInvalid={!!formErrors.lastName} isRequired>
+              <FormControl mt={4} isInvalid={!!formErrors?.lastName} isRequired>
                 <FormLabel>{wordsListData?.SURNAME || 'Фамилия'}</FormLabel>
                 <Input
                   name="lastName"

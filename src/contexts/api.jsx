@@ -1,4 +1,4 @@
-export const base_url = 'http://185.74.4.138:8080/';
+export const base_url = 'https://apk.qrpay.uz/';
 
 export const getMeUrl = `${base_url}api/user/me`;
 

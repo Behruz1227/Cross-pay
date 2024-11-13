@@ -31,6 +31,8 @@ export default function OrderStats() {
     totalPage,
     page,
     setTotalPages,
+    size,
+    setSize
   } = PaymentStore();
   const { wordsListData } = LanguageStore();
   const role = sessionStorage.getItem('ROLE');
@@ -83,13 +85,14 @@ export default function OrderStats() {
         createdAt ? `&createdAt=${createdAt}` : ''
       }${paymentDate ? `&paymentDate=${paymentDate}` : ''}${
         status ? `&status=${status}` : ''
-      }${amount ? `&amount=${amount}` : ''}`,
+      }${amount ? `&amount=${amount}` : ''}${fullName || mfo || createdAt || paymentDate || status || amount
+        ? '&'
+        : '?'}page=${page}&size=${size}`,
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
-      page: page,
     });
-  }, [page, fullName, mfo, createdAt, paymentDate, status, amount]);
+  }, [page, size, fullName, mfo, createdAt, paymentDate, status, amount]);
   const getFunction = () => {
     globalGetFunction({
       url: `${
@@ -109,7 +112,7 @@ export default function OrderStats() {
   };
 
   // console.log(downloadInterval);
-  const onChange = (page) => setPage(page - 1);
+  // const onChange = (page) => setPage(page - 1);
   const bgGenerator = (status) => {
     if (status === 'WAIT')
       return ['orange', wordsListData?.STATUS_WAIT || 'Ожидание'];
@@ -289,15 +292,21 @@ export default function OrderStats() {
         </ComplexTable>
       </SimpleGrid>
       <Flex alignItems={'center'} w={'full'} justifyContent="space-between">
-        {paymentData && paymentData?.object && (
+        {/* {paymentData && paymentData?.object && ( */}
           <Pagination
-            showSizeChanger={false}
-            responsive={true}
-            defaultCurrent={1}
-            total={totalPage}
-            onChange={onChange}
-          />
-        )}
+          showSizeChanger
+          responsive={true}
+          defaultCurrent={1}
+          total={totalPage}
+          onChange={(page, size) => {
+            setPage(page - 1);
+          }}
+          onShowSizeChange={(current, pageSize) => {
+            setSize(pageSize);
+            setPage(0);
+          }}
+        />
+          
         <Flex my={5} gap={5}>
           <Select
             placeholder={wordsListData?.INTERVAL || 'Интервал'}

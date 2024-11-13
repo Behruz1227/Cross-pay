@@ -86,7 +86,7 @@ export default function Partner() {
       fullName ? `fullName=${fullName}` : '',
       tin ? `tin=${tin}` : '',
       filialCode ? `filialCode=${filialCode}` : '',
-      phone ? `phone=${phone.slice(1)}` : '',
+      phone && phone.slice(1).length < 3 ? `phone=${phone.slice(1)}` : '',
     ]
       .filter(Boolean)
       .join('&');
