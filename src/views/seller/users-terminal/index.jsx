@@ -200,7 +200,7 @@ const UserTerminal = () => {
       <SimpleGrid
         mb="20px"
         columns={{ sm: 1 }}
-        spacing={{ base: '20px', xl: '20px' }} 
+        spacing={{ base: '20px', xl: '20px' }}
       >
         <ComplexTable
           buttonChild={

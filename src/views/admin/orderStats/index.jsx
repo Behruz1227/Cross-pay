@@ -133,42 +133,6 @@ export default function OrderStats() {
           name={
             <div>
               {wordsListData?.PAYMENT_STATS_TABLE || 'График отчета о платежах'}
-              <Flex my={5} gap={5}>
-                <Select
-                  placeholder={wordsListData?.INTERVAL || 'Интервал'}
-                  onChange={(value) => {
-                    setDownloadInterval(value);
-                  }}
-                  style={{ width: '200px', height: '40px' }}
-                >
-                  <Option disabled value="">
-                    {wordsListData?.INTERVAL || 'Интервал'}
-                  </Option>
-                  {intervalData &&
-                    intervalData?.map((item) => (
-                      <Option key={item.page} value={item.page}>
-                        {item.interval}
-                      </Option>
-                    ))}
-                </Select>
-                <Button
-                  style={{
-                    height: '40px',
-                    width: '130px',
-                    border: '1px solid #422AFB',
-                    borderRadius: '10px',
-                    background: '#422AFB',
-                    color: 'white',
-                  }}
-                  disabled={!downloadInterval}
-                  onClick={() => {
-                    handleDownloadFile();
-                    // setDownloadInterval('');
-                  }}
-                >
-                  {wordsListData?.DOWNLOAD_FILE || 'Скачать файл'}
-                </Button>
-              </Flex>
               <Flex gap={5} mt={5}>
                 {role !== 'ROLE_SELLER' && role !== 'ROLE_TERMINAL' && (
                   <Box>
@@ -324,15 +288,53 @@ export default function OrderStats() {
           )}
         </ComplexTable>
       </SimpleGrid>
-      {paymentData && paymentData?.object && (
-        <Pagination
-          showSizeChanger={false}
-          responsive={true}
-          defaultCurrent={1}
-          total={totalPage}
-          onChange={onChange}
-        />
-      )}
+      <Flex alignItems={'center'} w={'full'} justifyContent="space-between">
+        {paymentData && paymentData?.object && (
+          <Pagination
+            showSizeChanger={false}
+            responsive={true}
+            defaultCurrent={1}
+            total={totalPage}
+            onChange={onChange}
+          />
+        )}
+        <Flex my={5} gap={5}>
+          <Select
+            placeholder={wordsListData?.INTERVAL || 'Интервал'}
+            onChange={(value) => {
+              setDownloadInterval(value);
+            }}
+            style={{ width: '200px', height: '40px' }}
+          >
+            <Option disabled value="">
+              {wordsListData?.INTERVAL || 'Интервал'}
+            </Option>
+            {intervalData &&
+              intervalData?.map((item) => (
+                <Option key={item.page} value={item.page}>
+                  {item.interval}
+                </Option>
+              ))}
+          </Select>
+          <Button
+            style={{
+              height: '40px',
+              width: '130px',
+              border: '1px solid #422AFB',
+              borderRadius: '10px',
+              background: '#422AFB',
+              color: 'white',
+            }}
+            disabled={!downloadInterval}
+            onClick={() => {
+              handleDownloadFile();
+              // setDownloadInterval('');
+            }}
+          >
+            {wordsListData?.DOWNLOAD_FILE || 'Скачать файл'}
+          </Button>
+        </Flex>
+      </Flex>
     </Box>
   );
 }
