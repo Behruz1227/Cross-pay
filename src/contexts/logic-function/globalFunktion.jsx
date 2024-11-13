@@ -95,15 +95,20 @@ export async function globaldeleteFunction({url, setLoading, getFunction}) {
 export async function globalPutFunction({url, putData, setLoading, getFunction, setResponse}) {
     try {
         if (setLoading) setLoading(true);
-        const {data} = await axios.put(url, putData, config)
-        if (data?.error?.message) toast.error(data.error.message)
-        else {
-            if (setResponse) setResponse(data.data)
-            if (getFunction) getFunction()
-            toast.success("Task completed successfully")
-        }
+        axios.put(url, putData, config)
+        .then((res) => {
+            if (res?.data?.error?.message) toast.error(res?.data?.error?.message)
+            else {
+                if (setResponse) setResponse(res?.data?.data)
+                if (getFunction) getFunction()
+                toast.success("Task completed successfully")
+            }}
+        )
+        .catch(() => {}) 
     } catch (error) {
         // toast.error('Error during update operation:');
+        console.log(error);
+        
     } finally {
         if (setLoading) setLoading(false);
     consoleClear()

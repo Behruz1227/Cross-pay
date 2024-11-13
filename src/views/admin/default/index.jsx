@@ -234,8 +234,8 @@ export default function Dashboard() {
                             />
                         }
                         name={`${wordsListData?.WAIT_BALANCE || "Ожидающий баланс"}`}
-                        value={`${statisticData?.waitCount ?
-                            (statisticData.waitCount).toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+                        value={`${statisticData?.balanceWait ?
+                            (statisticData.balanceWait).toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
                             "0"} UZS`}
                     />
                 </SimpleGrid>
@@ -257,8 +257,8 @@ export default function Dashboard() {
                             />
                         }
                         name={`${wordsListData?.CANCEL_BALANCE || "Отмененный баланс"}`}
-                        value={`${statisticData?.cancelCount ?
-                            (statisticData.cancelCount).toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+                        value={`${statisticData?.balanceCancel ?
+                            (statisticData.balanceCancel).toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
                             "0"} UZS`}
                     />
 

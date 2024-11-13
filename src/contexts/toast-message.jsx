@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 
 // export const consoleClear = () => console.clear()
 export const consoleClear = () => {
-  console.clear()
+  // console.clear()
 };
 
 export const toastMessage = (code) => {

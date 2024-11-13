@@ -186,10 +186,6 @@ export default function HeaderLinks(props) {
       .forEach((key) => {
         if (key === 'phone' && formValues[key].slice(1).length !== 12) {
           errors.phone = t('phoneError');
-        } else if (key === 'managerFio') {
-          if (formValues[key].trim() === '') {
-            errors[key] = `${t(key)}${t('error')}`;
-          }
         } else if (key === 'email') {
           if (formValues[key].trim() === '') {
             errors[key] = `${t(key)}${t('error')}`;
@@ -218,7 +214,7 @@ export default function HeaderLinks(props) {
           password: '12345',
         },
         setLoading: setEditLoading,
-        setResponse,
+        setResponse: setResponse,
       });
       resetValue();
     } else setFormErrors(errors);
