@@ -82,10 +82,11 @@ export default function HeaderLinks(props) {
   const role = sessionStorage.getItem('ROLE');
 
   const initialValue = {
-    managerFio: '',
-    bankBik: '',
+    firstName: '',
+    lastName: '',
+    filial_code: '',
     email: '',
-    tin: '',
+    inn: '',
     phone: '',
     password: '12345',
   };
@@ -109,10 +110,10 @@ export default function HeaderLinks(props) {
         role === 'ROLE_TERMINAL'
           ? terminal_notification_count
           : role === 'ROLE_SELLER'
-            ? seller_notification_count
-            : role === 'ROLE_SUPER_ADMIN'
-              ? admin_notification_count
-              : '',
+          ? seller_notification_count
+          : role === 'ROLE_SUPER_ADMIN'
+          ? admin_notification_count
+          : '',
       setData: setCountData,
     });
     userGetMe({ setData: setGetMeeData });
@@ -149,15 +150,15 @@ export default function HeaderLinks(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-      setFormValues((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
     const errors = {};
     if (name === 'phone' && value.slice(1).length !== 12) {
       errors.phone =
         'Phone number must be exactly 9 characters long and only contain numbers.';
-    } else if (name === 'managerFio') {
+    } else if (name === 'firstName') {
       if (value.trim() === '') {
         errors[name] = `${t(name)}${t('error')}`;
       }
@@ -165,8 +166,6 @@ export default function HeaderLinks(props) {
       if (value.trim() === '') {
         errors[name] = `${t(name)}${t('error')}`;
       }
-    } else if (name === 'password') {
-      errors[name] = '';
     } else if (
       role !== 'SUPER_ADMIN' ||
       role === 'SELLER' ||
@@ -185,10 +184,7 @@ export default function HeaderLinks(props) {
     Object.keys(formValues)
       .filter((item) => item !== 'phones')
       .forEach((key) => {
-        if (
-          key === 'phone' &&
-          formValues[key].slice(1).length !== 12
-        ) {
+        if (key === 'phone' && formValues[key].slice(1).length !== 12) {
           errors.phone = t('phoneError');
         } else if (key === 'managerFio') {
           if (formValues[key].trim() === '') {
@@ -198,8 +194,6 @@ export default function HeaderLinks(props) {
           if (formValues[key].trim() === '') {
             errors[key] = `${t(key)}${t('error')}`;
           }
-        } else if (key === 'password') {
-          errors[key] = '';
         } else if (
           role !== 'ROLE_SUPER_ADMIN' ||
           role === 'ROLE_SELLER' ||
@@ -215,12 +209,13 @@ export default function HeaderLinks(props) {
       globalPutFunction({
         url: `${user_edit}`,
         putData: {
-          managerFio: formValues.managerFio,
+          firstName: formValues.firstName,
+          lasttName: formValues.lastName,
           email: formValues.email,
           phone: `${formValues.phone.slice(1)}`,
-          tin: formValues.tin ? formValues.tin : null,
-          bankBik: formValues.bankBik ? formValues.bankBik : null,
-          password: formValues.password ? formValues.password : null,
+          inn: formValues.inn ? formValues.inn : null,
+          filial_code: formValues.filial_code ? formValues.filial_code : null,
+          password: '12345',
         },
         setLoading: setEditLoading,
         setResponse,
@@ -320,8 +315,8 @@ export default function HeaderLinks(props) {
                   borderRadius="full"
                   src={
                     languageData &&
-                      typeof languageData === 'string' &&
-                      languageData?.toUpperCase() === 'UZ'
+                    typeof languageData === 'string' &&
+                    languageData?.toUpperCase() === 'UZ'
                       ? 'https://cdn-icons-png.flaticon.com/512/6211/6211657.png'
                       : 'https://cdn-icons-png.flaticon.com/512/6211/6211549.png'
                   }
@@ -402,7 +397,7 @@ export default function HeaderLinks(props) {
               borderRadius="20px"
               bg={menuBg}
               border="none"
-            // boxSize={"sm"}
+              // boxSize={"sm"}
             >
               <Flex
                 borderBottom="1px solid"
@@ -416,8 +411,8 @@ export default function HeaderLinks(props) {
               >
                 <Text fontSize="sm" fontWeight="700" color={textColor}>
                   {/* 👋&nbsp; {w},{" "} */}
-                  {getMeeData && getMeeData.managerFio
-                    ? getMeeData.managerFio
+                  {getMeeData && getMeeData.firstName
+                    ? getMeeData.firstName
                     : 'Пользователь'}
                 </Text>
                 <Button
@@ -431,10 +426,11 @@ export default function HeaderLinks(props) {
                   textColor={navbarIcon}
                   onClick={() => {
                     setFormValues({
-                      managerFio: getMeeData?.managerFio || '',
-                      bankBik: getMeeData?.bankBik || '',
+                      firstName: getMeeData?.firstName || '',
+                      lastName: getMeeData?.lastName || '',
+                      filial_code: getMeeData?.filial_code || '',
                       email: getMeeData?.email || '',
-                      tin: getMeeData?.tin || '',
+                      inn: getMeeData?.inn || '',
                       phone: getMeeData?.phone ? `+${getMeeData?.phone}` : '',
                       password: '12345',
                     });
@@ -460,9 +456,10 @@ export default function HeaderLinks(props) {
                     {wordsListData?.MANAGER_FIO || 'Ф.И.О.'}:{' '}
                   </Text>
                   <Text fontSize="sm">
-                    {getMeeData && getMeeData.managerFio
-                      ? getMeeData.managerFio
-                      : '-'}
+                    {getMeeData && getMeeData.firstName
+                      ? getMeeData.firstName
+                      : '-'}{' '}
+                    {getMeeData.lastName || '-'}
                   </Text>
                 </MenuItem>
                 {/* <MenuItem
@@ -533,9 +530,7 @@ export default function HeaderLinks(props) {
                       <Text fontSize="sm" fontWeight={'800'}>
                         {wordsListData?.INN || 'ИНН'}:{' '}
                       </Text>
-                      <Text fontSize="sm">
-                        {getMeeData && getMeeData.tin ? getMeeData.tin : '-'}
-                      </Text>
+                      <Text fontSize="sm">{getMeeData?.inn || '-'}</Text>
                     </MenuItem>
                     <MenuItem
                       bg={menuBg}
@@ -551,9 +546,7 @@ export default function HeaderLinks(props) {
                         {wordsListData?.EXCEL_MFO || 'MFO'}:{' '}
                       </Text>
                       <Text fontSize="sm">
-                        {getMeeData && getMeeData.bankBik
-                          ? getMeeData.bankBik
-                          : '-'}
+                        {getMeeData?.filial_code || '-'}
                       </Text>
                     </MenuItem>
                   </>
@@ -605,16 +598,15 @@ export default function HeaderLinks(props) {
               gap={{ base: 0, md: 6 }}
               px={5}
             >
-              <FormControl mt={4} isInvalid={!!formErrors.managerFio}>
-                <FormLabel>{wordsListData?.MANAGER_FIO || 'Ф.И.О.'}</FormLabel>
+              <FormControl mt={4} isInvalid={!!formErrors.firstName}>
+                <FormLabel>{wordsListData?.NAME || 'Ф.И.О.'}</FormLabel>
                 <Input
-                  name="managerFio"
+                  name="firstName"
                   ref={initialRef}
                   placeholder={
-                    wordsListData?.MANAGER_FIO_PLACEHOLDER ||
-                    'Введите ваше Ф.И.О.'
+                    wordsListData?.NAME_PLACEHOLDER || 'Введите ваше Ф.И.О.'
                   }
-                  value={formValues.managerFio}
+                  value={formValues.firstName}
                   onChange={handleChange}
                   color={inputTextColor}
                 />
@@ -624,6 +616,24 @@ export default function HeaderLinks(props) {
                   </Text>
                 )} */}
               </FormControl>
+
+              <FormControl mt={4} isInvalid={!!formErrors.lastName}>
+                <FormLabel>{wordsListData?.SURNAME || 'Ф.И.О.'}</FormLabel>
+                <Input
+                  name="lastName"
+                  ref={initialRef}
+                  placeholder={wordsListData?.SURNAME || ''}
+                  value={formValues.lastName}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+                {/* {formErrors.managerFio && (
+                  <Text color="red.500" fontSize="sm">
+                    {formErrors.managerFio}
+                  </Text>
+                )} */}
+              </FormControl>
+
               <FormControl mt={4} isInvalid={!!formErrors.email}>
                 <FormLabel>{wordsListData?.EMAIL || 'Email'}</FormLabel>
                 <Input
@@ -667,7 +677,9 @@ export default function HeaderLinks(props) {
                   required
                   defaultCountry="uz"
                   value={formValues.phone}
-                  onChange={(phone) => handleChange({ target: { name: 'phone', value: phone } })}
+                  onChange={(phone) =>
+                    handleChange({ target: { name: 'phone', value: phone } })
+                  }
                   style={{
                     width: '100%',
                     height: '50px',
@@ -677,7 +689,7 @@ export default function HeaderLinks(props) {
                     padding: '0 15px',
                     display: 'flex',
                     alignItems: 'center',
-                    color: textColor
+                    color: textColor,
                   }}
                   inputStyle={{
                     width: '100%',
@@ -686,7 +698,7 @@ export default function HeaderLinks(props) {
                     outline: 'none',
                     backgroundColor: 'transparent',
                     fontSize: '16px',
-                    color: textColor
+                    color: textColor,
                   }}
                   inputClass="phone-input"
                   containerClass="phone-input-container"
@@ -701,38 +713,38 @@ export default function HeaderLinks(props) {
               </FormControl>
               {role !== 'ROLE_SUPER_ADMIN' && (
                 <>
-                  <FormControl mt={4} isInvalid={!!formErrors.tin}>
+                  <FormControl mt={4} isInvalid={!!formErrors.inn}>
                     <FormLabel>{wordsListData?.INN || 'ИНН'}</FormLabel>
                     <Input
-                      name="tin"
+                      name="inn"
                       placeholder={
                         wordsListData?.INN_PLACEHOLDER || 'Введите ваш ИНН'
                       }
-                      value={formValues.tin}
+                      value={formValues.inn}
                       onChange={handleChange}
                       color={inputTextColor}
                     />
-                    {formErrors.tin && (
+                    {formErrors.inn && (
                       <Text color="red.500" fontSize="sm">
-                        {formErrors.tin}
+                        {formErrors.inn}
                       </Text>
                     )}
                   </FormControl>
-                  <FormControl mt={4} isInvalid={!!formErrors.bankBik}>
+                  <FormControl mt={4} isInvalid={!!formErrors.filial_code}>
                     <FormLabel>{wordsListData?.EXCEL_MFO || 'MFO'}</FormLabel>
                     <Input
-                      name="bankBik"
+                      name="filial_code"
                       placeholder={
                         wordsListData?.FILIAL_CODE_PLACEHOLDER ||
                         'Введите ваш MFO'
                       }
-                      value={formValues.bankBik}
+                      value={formValues.filial_code}
                       onChange={handleChange}
                       color={inputTextColor}
                     />
-                    {formErrors.bankBik && (
+                    {formErrors.filial_code && (
                       <Text color="red.500" fontSize="sm">
-                        {formErrors.bankBik}
+                        {formErrors.filial_code}
                       </Text>
                     )}
                   </FormControl>

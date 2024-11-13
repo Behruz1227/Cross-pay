@@ -336,7 +336,7 @@ function SignUp() {
                   <Text
                     color={textColorBrand}
                     as="span"
-                    ms="5px"
+                    ms="5px" 
                     fontWeight="500"
                   >
                     Войти в систему

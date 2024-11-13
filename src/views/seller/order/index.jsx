@@ -116,7 +116,7 @@ export default function SellerOrder() {
 
   const [formValues, setFormValues] = useState({
     amount: '',
-    terminalId: 0,
+    terminalId: terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -127,7 +127,7 @@ export default function SellerOrder() {
   const resetValue = () => {
     setFormValues({
       amount: '',
-      terminalId: 0,
+      terminalId: terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
     });
     setFormErrors({
       amount: '',
@@ -504,11 +504,6 @@ export default function SellerOrder() {
                     value={formValues.terminalId}
                     onChange={handleChange}
                   >
-                    {terminalData && terminalData?.length > 0 && (
-                      <option disabled selected value={0}>
-                        {wordsListData?.SELECT_TERMINAL || 'Выберите терминал'}
-                      </option>
-                    )}
                     {terminalData && terminalData?.length > 0 ? (
                       terminalData?.map((item) => (
                         <option key={item.id} value={item.id}>
@@ -516,7 +511,7 @@ export default function SellerOrder() {
                         </option>
                       ))
                     ) : (
-                      <option disabled selected value={0}>
+                      <option disabled value={0}>
                         {wordsListData?.NOT_FOUND || 'Не найдено'}
                       </option>
                     )}
