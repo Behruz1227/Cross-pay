@@ -295,7 +295,7 @@ export default function OrderStats() {
             responsive={true}
             defaultCurrent={1}
             total={totalPage}
-            onChange={onChange}
+            onChange={onChange}  
           />
         )}
         <Flex my={5} gap={5}>
