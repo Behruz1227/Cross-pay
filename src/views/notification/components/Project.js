@@ -44,7 +44,18 @@ export default function Project(props) {
       mb={'20px'}
     >
       <AccordionItem>
-        <AccordionButton>
+        <AccordionButton
+          onClick={() => {
+            if (!item.isRead) {
+              globalPostFunction({
+                url: isRead_notification,
+                postData: { ids: [item.id] },
+                setLoading: setLoading,
+                getFunction: getFunction,
+              });
+            }
+          }}
+        >
           {item.isRead ? (
             <MdNotifications size={30} color="#686868" />
           ) : (
@@ -76,18 +87,7 @@ export default function Project(props) {
           >
             <MdDelete color={item.isRead ? '#686868' : navbarIcon} size={23} />
           </Button>
-          <Button
-            onClick={() =>
-              globalPostFunction({
-                url: isRead_notification,
-                postData: { ids: [item.id] },
-                setLoading: setLoading,
-                getFunction: getFunction,
-              })
-            }
-            variant="no-hover"
-            bg="transparent"
-          >
+          <Button variant="no-hover" bg="transparent">
             {item.isRead ? (
               <MdDoneAll
                 color={item.isRead ? '#686868' : navbarIcon}
@@ -125,7 +125,6 @@ export default function Project(props) {
                   {item?.partner || '0'}
                 </Text> */}
                 <Box>
-                   
                   <Text
                     color={textColorPrimary}
                     fontWeight="500"
@@ -149,7 +148,7 @@ export default function Project(props) {
                   fontSize="md"
                   mb="4px"
                 >
-                  {wordsListData?.CLIENT || 'Клиент'} : {item?.partner || '-'}
+                  {wordsListData?.PARTNER || 'Партнер'} : {item?.partner || '-'}
                 </Text>
 
                 <Text

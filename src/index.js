@@ -12,8 +12,8 @@ root.render(
     <BrowserRouter>
         <App/>
         <Toaster
-            position="top-center"
-            reverseOrder={false}
+            position="bottom-right"
+            reverseOrder={false} 
         />
-    </BrowserRouter>,
+    </BrowserRouter>, 
 );

@@ -61,7 +61,6 @@ export default function Projects() {
   const role = sessionStorage.getItem('ROLE');
   const bg = useColorModeValue('white', 'navy.700');
 
-  const { t } = useTranslation();
 
   useEffect(() => {
     getFunction();
