@@ -89,6 +89,7 @@ function CheckCodeBank() {
                 sessionStorage.setItem("token", data.data.token)
                 sessionStorage.setItem("ROLE", data.data.role)
                 setRoles(data.data.role)
+                console.log(data);
                 await userGetMe({ setData: setGetMeeData, token: data.data.token });
                 // await globalGetFunction({
                 //     url: data.data.role === "ROLE_TERMINAL" ? terminal_notification_count : data.data.role === "ROLE_SELLER" ? seller_notification_count : data.data.role === "ROLE_SUPER_ADMIN" ? admin_notification_count : "",
