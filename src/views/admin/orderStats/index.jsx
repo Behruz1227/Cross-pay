@@ -309,13 +309,14 @@ export default function OrderStats() {
           
         <Flex my={5} gap={5}>
           <Select
-            placeholder={wordsListData?.INTERVAL || 'Интервал'}
+            // placeholder={wordsListData?.INTERVAL || 'Интервал'}
             onChange={(value) => {
               setDownloadInterval(value);
             }}
             style={{ width: '200px', height: '40px' }}
+            // placement={wordsListData?.INTERVAL || 'Интервал'}
           >
-            <Option disabled value="">
+            <Option value="">
               {wordsListData?.INTERVAL || 'Интервал'}
             </Option>
             {intervalData &&
