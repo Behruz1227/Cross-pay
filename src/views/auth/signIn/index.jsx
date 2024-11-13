@@ -277,7 +277,7 @@ return (
           </Flex>
           <NavLink
             onClick={() => {
-              if (policy) {
+              if (policy && !loading) {
                 if (phonenumber.slice(1).length === 12)
                   if (!showPassword) authLogin();
                   else navigate("/auth/check-password")
@@ -291,7 +291,7 @@ return (
             to={(showPassword && policy) && '/auth/check-password'}
           >
             <Button
-              disabled={!policy}
+              disabled={!policy || loading}
               fontSize="sm"
               variant="brand"
               fontWeight="500"

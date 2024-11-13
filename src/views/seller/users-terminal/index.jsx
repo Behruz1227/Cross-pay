@@ -74,14 +74,13 @@ const UserTerminal = () => {
     password: '12345',
   });
   const [formErrors, setFormErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const inputTextColor = useColorModeValue('gray.800', 'white');
-  const navbarIcon = useColorModeValue('#1B255A', 'white');
+  // const navbarIcon = useColorModeValue('#1B255A', 'white');
   const bgColor = useColorModeValue('#422AFB', '#7551FF');
   const hoverBgColor = useColorModeValue('blue.600', 'purple.600');
   const textColor = useColorModeValue('secondaryGray.900', 'white');
-  console.log(formValues.firstName, formValues.lastName);
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
@@ -96,17 +95,15 @@ const UserTerminal = () => {
 
   const getFunctionUsersTerm = async () => {
     await globalGetFunction({
-      url: user_terminal,
+      url: `${user_terminal}?page=${page}&size=${size}`,
       setData: setUsersTerminal,
       setLoading,
       setTotalElements,
-      page,
     });
     await globalGetFunction({
       url: terminal_get_list,
       setData: setTerminalData,
       setTotalElements,
-      page,
     });
   };
 
@@ -116,7 +113,7 @@ const UserTerminal = () => {
 
   useEffect(() => {
     getFunctionUsersTerm();
-  }, [page]);
+  }, [page, size]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
