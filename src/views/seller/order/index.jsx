@@ -568,7 +568,7 @@ export default function SellerOrder() {
                     value={formValues.phone}
                     onChange={(phone) =>
                       handleChange({ target: { name: 'phone', value: phone } })
-                    }
+                    }  
                     style={{
                       width: '100%',
                       height: '50px',
@@ -637,7 +637,7 @@ export default function SellerOrder() {
                       : '-'}
                   </Text>
                 </GridItem>
-                <GridItem
+                {/* <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
@@ -653,7 +653,7 @@ export default function SellerOrder() {
                       ? detailData.chequeCurrency
                       : '-'}
                   </Text>
-                </GridItem>
+                </GridItem> */}
                 <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
