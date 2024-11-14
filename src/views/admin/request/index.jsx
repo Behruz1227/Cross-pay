@@ -15,6 +15,7 @@ const Request = () => {
   const [loading, setLoading] = useState(false);
   const [totalElement, setTotalElements] = useState(0);
   const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
@@ -29,17 +30,16 @@ const Request = () => {
 
   const getFunctionRequest = async () => {
     await globalGetFunction({
-      url: requestGetAdmin,
+      url: `${requestGetAdmin}?page=${page}&size=${size}`,
       setData: setRequestList,
       setLoading,
       setTotalElements,
-      page,
     });
   };
 
   useEffect(() => {
     getFunctionRequest();
-  }, [page]); // Combined the two useEffect hooks
+  }, [page, size]); // Combined the two useEffect hooks
 
   const bgGenerator = (status) => {
     if (status === 'WAIT')
@@ -134,12 +134,25 @@ const Request = () => {
           )}
         </ComplexTable>
         <Pagination
+          showSizeChanger
+          responsive={true}
+          defaultCurrent={1}
+          total={totalElement}
+          onChange={(page, size) => {
+            setPage(page - 1);
+          }}
+          onShowSizeChange={(current, pageSize) => {
+            setSize(pageSize);
+            setPage(0);
+          }}
+        />
+        {/* <Pagination
           showSizeChanger={false}
           responsive={true}
           current={page + 1} // Ant Design's Pagination is 1-based
           total={totalElement}
           onChange={(newPage) => setPage(newPage - 1)} // Convert to 0-based
-        />
+        /> */}
       </SimpleGrid>
     </Box>
   );

@@ -466,12 +466,25 @@ export default function SellerOrder() {
       </SimpleGrid>
       {paymentData && paymentData?.object && (
         <Pagination
-          showSizeChanger={true}
-          responsive={true}
-          defaultCurrent={1}
-          total={totalPage}
-          onChange={onChange}
-        />
+        showSizeChanger
+        responsive={true}
+        defaultCurrent={1}
+        total={totalPage}
+        onChange={(page, size) => {
+          setPage(page - 1);
+        }}
+        onShowSizeChange={(current, pageSize) => {
+          setSize(pageSize);
+          setPage(0);
+        }}
+      />
+        // <Pagination
+        //   showSizeChanger={true}
+        //   responsive={true}
+        //   defaultCurrent={1}
+        //   total={totalPage}
+        //   onChange={onChange}
+        // />
       )}
       <Modal
         size={isCreate ? 'lg' : '3xl'}

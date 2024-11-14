@@ -552,7 +552,7 @@ return (
                   textClass="phone-input-text"
                 /> */}
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={!!formErrors.terminalSerialCode}>
               <FormLabel>
                 {wordsListData?.SERIAL_CODE || 'Серийный код'}
               </FormLabel>
