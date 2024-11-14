@@ -116,7 +116,8 @@ export default function SellerOrder() {
 
   const [formValues, setFormValues] = useState({
     amount: '',
-    terminalId: terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
+    terminalId:
+      terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -127,7 +128,8 @@ export default function SellerOrder() {
   const resetValue = () => {
     setFormValues({
       amount: '',
-      terminalId: terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
+      terminalId:
+        terminalData && terminalData.length > 0 ? terminalData[0].id : 0,
     });
     setFormErrors({
       amount: '',
@@ -466,18 +468,18 @@ export default function SellerOrder() {
       </SimpleGrid>
       {paymentData && paymentData?.object && (
         <Pagination
-        showSizeChanger
-        responsive={true}
-        defaultCurrent={1}
-        total={totalPage}
-        onChange={(page, size) => {
-          setPage(page - 1);
-        }}
-        onShowSizeChange={(current, pageSize) => {
-          setSize(pageSize);
-          setPage(0);
-        }}
-      />
+          showSizeChanger
+          responsive={true}
+          defaultCurrent={1}
+          total={totalPage}
+          onChange={(page, size) => {
+            setPage(page - 1);
+          }}
+          onShowSizeChange={(current, pageSize) => {
+            setSize(pageSize);
+            setPage(0);
+          }}
+        />
         // <Pagination
         //   showSizeChanger={true}
         //   responsive={true}
@@ -532,8 +534,8 @@ export default function SellerOrder() {
                   {/* {formErrors.terminalId && formValues.terminalId !== 0 && (
                     <Text color="red.500" fontSize="sm">
                       {formErrors.terminalId}
-                    </Text>
-                  )} */}
+                    </Text>  
+                  )} */} 
                 </FormControl>
                 <FormControl mt={4} isInvalid={!!formErrors.amount}>
                   <FormLabel>
