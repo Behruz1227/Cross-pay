@@ -138,7 +138,7 @@ const UserTerminal = () => {
   const validate = () => {
     const errors = {};
     if (!formValues?.terminalId)
-      errors.terminalId = `${wordsListData?.TERMINAL || 'Терминал'}${
+      errors.terminalId = `${wordsListData?.PANEL_TERMINAL || 'Терминал'}${
         wordsListData?.IS_REQUIRED || '  требуется '
       }`;
     if (!formValues?.firstName.trim(''))
@@ -311,7 +311,7 @@ const UserTerminal = () => {
                 isInvalid={!!formErrors.terminalId}
                 isRequired
               >
-                <FormLabel>{wordsListData?.TERMINAL || 'Терминал'}</FormLabel>
+                <FormLabel>{wordsListData?.PANEL_TERMINAL || 'Терминал'}</FormLabel>
                 <Select
                   name="terminalId"
                   //   placeholder={t("selectTerminal")}
@@ -332,7 +332,7 @@ const UserTerminal = () => {
                     ))
                   ) : (
                     <option value="" disabled>
-                      {wordsListData?.TERMINAL || 'Терминал'}
+                      {wordsListData?.TERMINALPANEL_TERMINAL || 'Терминал'}
                       {wordsListData?.NOT_FOUND || 'не найдено'}
                     </option>
                   )}

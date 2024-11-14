@@ -106,7 +106,7 @@ export default function SellerOrder() {
     wordsListData?.TABLE_TR || 'T/r',
     // wordsListData?.SELLER_NAME || 'Название компании',
     wordsListData?.QR_AMOUNT || 'QR - сумма',
-    wordsListData?.CURRENCY || 'Валюта',
+    wordsListData?.EXCEL_RATE || 'Валюта',
     // wordsListData?.POS_ID || 'ИД терминала',
     wordsListData?.DATE_CREATED || 'Дата создания',
     // wordsListData?.VALID_TILL || 'Срок действия',
@@ -531,10 +531,10 @@ export default function SellerOrder() {
                       </option>
                     )}
                   </Select>
-                  {/* {formErrors.terminalId && formValues.terminalId !== 0 && (
-                    <Text color="red.500" fontSize="sm">
-                      {formErrors.terminalId}
-                    </Text>  
+                  {/* {formErrors.terminalId && formValues.terminalId !== 0 && ( 
+                    <Text color="red.500" fontSize="sm">   
+                      {formErrors.terminalId} 
+                    </Text>     
                   )} */}
                 </FormControl>
                 <FormControl mt={4} isInvalid={!!formErrors.amount}>
@@ -605,22 +605,6 @@ export default function SellerOrder() {
                 gap={6}
                 px={5}
               >
-                {/* <Flex
-                  width={'100%'}
-                  flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-between'}
-                  pe={5}
-                >
-                  <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.SELLER_NAME || 'Название компании'}:{' '}
-                  </Text>
-                  <Text fontSize={'17px'}>
-                    {detailData?.sellerName || detailData?.sellerName === 0
-                      ? detailData.sellerName
-                      : '-'}
-                  </Text>
-                </Flex> */}
-
                 <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
@@ -637,12 +621,6 @@ export default function SellerOrder() {
                     <Box>{detailData?.qrAmount + '  RUB ' || '-'}</Box>
                   </Flex>
                 </GridItem>
-                {/* <Flex width={"100%"} flexDirection={{base: "column", md: "row"}}
-                                      justifyContent={"space-between"} pe={5}>
-                                    <Text fontSize={"17px"} fontWeight={"700"}>{t("localQRId")}:</Text>
-                                    <Text
-                                        fontSize={"17px"}>{detailData.local_qrc_id || detailData.local_qrc_id === 0 ? detailData.local_qrc_id : "-"}</Text>
-                                </Flex> */}
                 <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
@@ -676,21 +654,6 @@ export default function SellerOrder() {
                       : '-'}
                   </Text>
                 </GridItem>
-                {/* <Flex
-                  width={'100%'}
-                  flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-between'}
-                  pe={5}
-                >
-                  <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.POS_ID || 'ИД терминала'}:
-                  </Text>
-                  <Text fontSize={'17px'}>
-                    {detailData?.posId || detailData?.posId === 0
-                      ? detailData.posId
-                      : '-'}
-                  </Text>
-                </Flex> */}
                 <Flex
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
@@ -706,15 +669,22 @@ export default function SellerOrder() {
                   width={'100%'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
+                  alignItems={'center'}
                   pe={5}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.STATUS || 'Статус'}:
                   </Text>
-                  <Text fontSize={'17px'}>
-                    {detailData?.status || detailData?.status === 0
-                      ? detailData.status
-                      : '-'}
+                  <Text
+                    background={'#ECEFF8'}
+                    color={bgGenerator(detailData?.status)[0]}
+                    py="10px"
+                    fontWeight="700"
+                    borderRadius="10px"
+                    textAlign={'center'}
+                    width={'130px'}
+                  >
+                    {bgGenerator(detailData?.status)[1]}
                   </Text>
                 </Flex>
                 <Flex
