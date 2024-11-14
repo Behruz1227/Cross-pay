@@ -201,6 +201,7 @@ function SignUp() {
                   Номер телефона<Text color={brandStars}>*</Text>
                 </FormLabel>
                 <PhoneInput
+                disableCountryCodeEdit
                   required
                   defaultCountry="uz"
                   value={auth.phone}

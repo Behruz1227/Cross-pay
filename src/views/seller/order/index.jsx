@@ -561,6 +561,7 @@ export default function SellerOrder() {
                     {wordsListData?.PHONE_NUMBER || 'Телефон'}
                   </FormLabel>
                   <PhoneInput
+                  disableCountryCodeEdit
                     required
                     defaultCountry="ru"
                     value={formValues.phone}

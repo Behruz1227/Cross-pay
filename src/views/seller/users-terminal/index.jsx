@@ -405,6 +405,7 @@ const UserTerminal = () => {
                   />
                 </InputGroup> */}
                 <PhoneInput
+                disableCountryCodeEdit
                   required
                   defaultCountry="uz"
                   value={formValues.phone}

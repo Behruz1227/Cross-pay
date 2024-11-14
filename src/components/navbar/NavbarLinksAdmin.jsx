@@ -634,6 +634,7 @@ export default function HeaderLinks(props) {
                 <FormLabel>{wordsListData?.EMAIL || 'Email'}</FormLabel>
                 <Input
                   name="email"
+                  type='email'
                   placeholder={
                     wordsListData?.EMAIL_PLACEHOLDER || 'Введите ваш email'
                   }
@@ -699,6 +700,7 @@ export default function HeaderLinks(props) {
                   inputClass="phone-input"
                   containerClass="phone-input-container"
                   textClass="phone-input-text"
+                  disableCountryCodeEdit
                 />
 
                 {/* {formErrors.phone && (

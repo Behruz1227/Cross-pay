@@ -166,6 +166,7 @@ return (
             {'Введите номер телефона'} <Text color={brandStars}>*</Text>
           </FormLabel>
           <PhoneInput
+          disableCountryCodeEdit
             required
             defaultCountry="uz"
             value={phonenumber}
