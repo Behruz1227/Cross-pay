@@ -49,8 +49,8 @@ export default function OrderStats() {
     wordsListData?.EXCEL_AMOUNT || 'Количество',
     wordsListData?.EXCEL_TERMINAL_NAME || 'Терминал',
     wordsListData?.EXCEL_MFO || 'МФО',
-    // wordsListData?.INN || 'INN', //
-    // wordsListData?.MERCHANT_ACCOUNT || 'Merchant accaount',
+    wordsListData?.INN_WEB || 'ИНН', //
+    wordsListData?.ACCOUNT_WEB || 'Счет',
     // wordsListData?.CLIENT_ACCOUNT || 'Client accaount',
     wordsListData?.EXCEL_RATE || 'Курс',
     wordsListData?.EXCEL_CREATED_AT || 'Дата создания',
@@ -260,7 +260,9 @@ export default function OrderStats() {
                   {item.fromAccount ? item.filial_code : '-'}
                 </Td> */}
 
-                <Td>{item.rate ? item.rate : '-'}</Td>
+                <Td minWidth={'200px'}>{item.rate || '-'}</Td>
+                <Td minWidth={'200px'}>{item.account || '-'}</Td>
+                <Td minWidth={'200px'}>{item.inn || '-'}</Td>
                 <Td minWidth={'250px'}>{item.createdAt || '-'}</Td>
                 <Td minWidth={'250px'}>{item.paymentDate || '-'}</Td>
                 <Td alignSelf="flex-start">
