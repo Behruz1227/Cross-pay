@@ -535,7 +535,7 @@ export default function SellerOrder() {
                     <Text color="red.500" fontSize="sm">
                       {formErrors.terminalId}
                     </Text>  
-                  )} */} 
+                  )} */}
                 </FormControl>
                 <FormControl mt={4} isInvalid={!!formErrors.amount}>
                   <FormLabel>
