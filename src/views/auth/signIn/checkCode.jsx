@@ -59,7 +59,7 @@ function CheckCode() {
 
     useEffect(() => {
         if (roles === 'ROLE_SUPER_ADMIN') {
-            toast.success('Вы успешно вошли в систему')
+             toast.success('Вы успешно вошли в систему')
             navigate('/admin/dashboard')
             sessionStorage.setItem('pathname', 'Dashboard')
             setAuth(defVal)
@@ -76,7 +76,7 @@ function CheckCode() {
         }
     }, [roles]);
 
-    const authLogin = async () => {
+    const authLogin = async () => { 
         setLoading(true)
         try {
             const { data } = await axios.post(user_login, {
