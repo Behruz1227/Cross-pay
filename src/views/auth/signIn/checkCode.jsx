@@ -59,7 +59,7 @@ function CheckCode() {
 
     useEffect(() => {
         if (roles === 'ROLE_SUPER_ADMIN') {
-            toast.success('Вы успешно вошли в систему')
+             toast.success('Вы успешно вошли в систему')
             navigate('/admin/dashboard')
             sessionStorage.setItem('pathname', 'Dashboard')
             setAuth(defVal)
@@ -76,12 +76,12 @@ function CheckCode() {
         }
     }, [roles]);
 
-    const authLogin = async () => {
+    const authLogin = async () => { 
         setLoading(true)
         try {
             const { data } = await axios.post(user_login, {
                 phone: `${phonenumber.slice(1)}`,
-                code: auth.password
+                code: auth.password.replace(/\D/g, '')
             })
             if (data?.error?.code) {
                 setLoading(false)
@@ -130,10 +130,21 @@ function CheckCode() {
     }
 
     const handleAuth = (name, val) => {
+        // Remove all non-digit characters
+        let cleanedValue = val.replace(/\D/g, '');
+    
+        // Limit to 4 digits
+        if (cleanedValue.length > 4) {
+            cleanedValue = cleanedValue.slice(0, 4);
+        }
+    
+        // Add space after each digit
+        const formattedValue = cleanedValue.split('').join(' ');
+    
         setAuth({
-            ...auth, [name]: val
-        })
-    }
+            ...auth, [name]: formattedValue
+        });
+    }   
 
     function checkKeyPress(event) {
         if (event.key === "Enter") {
@@ -222,17 +233,17 @@ function CheckCode() {
                             {"Введите код"}<Text color={brandStars}>*</Text>
                         </FormLabel>
                         <InputGroup size='md'>
-                            <Input
-                                isRequired={true}
-                                fontSize='sm'
-                                placeholder={"-- --"}
-                                mb='24px'
-                                size='lg'
-                                variant='auth'
-                                onKeyDown={checkKeyPress}
-                                value={auth.password}
-                                onChange={e => handleAuth('password', e.target.value)}
-                            />
+                        <Input
+    isRequired={true}
+    fontSize='sm'
+    placeholder={"- - - -"}
+    mb='24px'
+    size='lg'
+    variant='auth'
+    onKeyDown={checkKeyPress}
+    value={auth.password}
+    onChange={e => handleAuth('password', e.target.value)}
+/>
                             
                         </InputGroup>
                        

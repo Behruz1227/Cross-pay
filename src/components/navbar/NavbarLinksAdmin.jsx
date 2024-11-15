@@ -206,7 +206,7 @@ export default function HeaderLinks(props) {
         url: `${user_edit}`,
         putData: {
           firstName: formValues?.firstName,
-          lasttName: formValues?.lastName,
+          lastName: formValues?.lastName,
           email: formValues?.email,
           phone: `${formValues?.phone.slice(1)}`,
           inn: formValues.inn ? formValues.inn : null,
