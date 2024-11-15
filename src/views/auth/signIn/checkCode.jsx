@@ -137,15 +137,12 @@ function CheckCode() {
   };
 
   const handleAuth = (name, val) => {
-    // Remove all non-digit characters
     let cleanedValue = val.replace(/\D/g, '');
 
-    // Limit to 4 digits
     if (cleanedValue.length > 4) {
       cleanedValue = cleanedValue.slice(0, 4);
     }
 
-    // Add space after each digit
     const formattedValue = cleanedValue.split('').join(' ');
 
     setAuth({
@@ -234,6 +231,11 @@ function CheckCode() {
                                 onKeyDown={checkKeyPress}
                                 onChange={e => handleAuth('phone', e.target.value)}
                             /> */}
+
+
+
+
+
 
             {/* </InputGroup> */}
             <FormLabel
