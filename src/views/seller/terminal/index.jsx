@@ -492,6 +492,7 @@ return (
                 {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
               </FormLabel>
               <PhoneInput
+              disableCountryCodeEdit
                 required
                 defaultCountry="uz"
                 value={formValues.phone}

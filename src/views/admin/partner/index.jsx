@@ -228,6 +228,7 @@ export default function Partner() {
               fontSize: '16px',
               color: textColor,
             }}
+            disableCountryCodeEdit
             inputClass="phone-input"
             containerClass="phone-input-container"
             textClass="phone-input-text"
@@ -503,6 +504,7 @@ export default function Partner() {
                   />
                 </InputGroup> */}
                 <PhoneInput
+                disableCountryCodeEdit
                   required
                   defaultCountry="uz"
                   value={data?.phone}
