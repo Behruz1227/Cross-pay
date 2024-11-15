@@ -243,7 +243,7 @@ function CheckCode() {
               fontSize="sm"
               fontWeight="500"
               color={textColor}
-              display="flex"
+              display="flex"   
             >
               {'Введите код'}
               <Text color={brandStars}>*</Text>
