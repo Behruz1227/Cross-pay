@@ -80,7 +80,7 @@ function CheckCode() {
     try {
       const { data } = await axios.post(user_login, {
         phone: `${phonenumber.slice(1)}`,
-        code: auth.password.replace(/\D/g, ''), 
+        code: auth.password.replace(/\D/g, ''),
       });
       if (data?.error?.code) {
         setLoading(false);
