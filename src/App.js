@@ -68,7 +68,7 @@ export default function Main() {
   const tokenExpiry = sessionStorage.getItem('tokenExpiry');
 
   useEffect(() => {
-    siteSecurity();
+    // siteSecurity();
   }, []);
 
   useEffect(() => {
