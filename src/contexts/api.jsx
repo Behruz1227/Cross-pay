@@ -1,4 +1,11 @@
+// import { io } from "socket.io-client";
+
+// export const base_url = 'http://185.74.4.138:8080';
 export const base_url = 'https://apk.qrpay.uz/';
+// export const socket = io('https://socket.qrpay.uz', {
+//       secure: true,
+//       transports: ['websocket', 'polling'], // WebSocket va Pollingni qo'llash
+//     });
 
 export const getMeUrl = `${base_url}api/user/me`;
 
@@ -6,6 +13,7 @@ export const getMeUrl = `${base_url}api/user/me`;
 export const user_register = `${base_url}api/user/register`;
 export const user_login = `${base_url}api/user/login`;
 export const bank_login = `${base_url}api/user/bank-login`;
+export const set_socket = `${base_url}api/user/save-socket-id?socketId=`;
 export const user_sendCode = `${base_url}api/user/send-code`;
 export const checkPhoneUrl = `${base_url}api/user/check-phone?phone=`; //
 export const user_request = `${base_url}request/save`;

@@ -216,7 +216,6 @@ function CheckCodeBank() {
                                 <Icon as={FaEye} onClick={() => setShowPassword(!showPassword)} />
                             </InputRightElement>
                         </InputGroup>
-
                         <Button
                             fontSize='sm'
                             variant='brand'

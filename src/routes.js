@@ -1,7 +1,7 @@
 import { Icon } from '@chakra-ui/react';
 import { MdHome, MdLock, MdOutlineShoppingCart } from 'react-icons/md';
 import { TbCashRegister } from 'react-icons/tb';
-import { IoLogoUsd, IoQrCode, IoStatsChart, IoTerminal } from 'react-icons/io5';
+import { IoQrCode, IoStatsChart, IoTerminal } from 'react-icons/io5';
 import { RiFileList3Line, RiRefund2Line } from 'react-icons/ri';
 import { SiContactlesspayment } from 'react-icons/si';
 import { FaCodePullRequest } from 'react-icons/fa6';
@@ -20,7 +20,7 @@ import CheckCode from 'views/auth/signIn/checkCode';
 import PrivacyTermsPage from 'views/shartlar/PrivacyTermsPage';
 import WordsPage from 'views/admin/words';
 import OrderStats from 'views/admin/orderStats';
-import Rate from 'views/admin/rate/rate';
+// import Rate from 'views/admin/rate/rate';
 import CheckCodeBank from 'views/auth/signIn/checkCodeBank';
 
 export const generateRoutes = (wordsListData) => [

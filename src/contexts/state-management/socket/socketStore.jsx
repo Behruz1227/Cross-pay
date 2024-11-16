@@ -9,7 +9,7 @@ export const SocketStore = create((set) => ({
     setSocketModal: (val) => set({ socketModal: val }),
     socketLoading: false,
     setSocketLoading: (val) => set({ socketLoading: val }),
-    timer: 60,
+    timer: 10,
     setTimer: (val) => set({ timer: val }),
     
 }))

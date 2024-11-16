@@ -119,13 +119,17 @@ export default function Projects() {
       const ids = await notificationData.object
         .filter((item) => !item.isRead)
         .map((item) => item.id);
+        if ( ids.length > 0) {
 
-      globalPostFunction({
-        url: isRead_notification,
-        postData: ids.length > 0 ? { ids: ids } : { ids: [] },
-        setLoading: setLoading,
-        getFunction: getFunction,
-      });
+          globalPostFunction({
+            url: isRead_notification,
+            postData: { ids: ids },
+            setLoading: setLoading,
+            getFunction: getFunction,
+          });
+        } else {
+          toast.error("Sizda bildirishnoma yo'q");
+        }
     }
   };
 
@@ -282,27 +286,31 @@ export default function Projects() {
                 transform: 'scale(0.98)',
               }}
               onClick={async () => {
-                await globalPostFunction({
-                  url: delete_notification,
-                  postData:
-                    selectedIds.length > 0 ? { ids: selectedIds } : { ids: [] },
-                  setLoading: setLoading,
-                  getFunction: () => {
-                    globalGetFunction({
-                      url:
-                        role === 'ROLE_TERMINAL'
-                          ? terminal_notification
-                          : role === 'ROLE_SELLER'
-                          ? seller_notification
-                          : role === 'ROLE_SUPER_ADMIN'
-                          ? admin_notification
-                          : '',
-                      setData: setNotificationData,
-                      setLoading: setLoading,
-                    });
-                    onClose();
-                  },
-                });
+                if (selectedIds.length > 0) {
+
+                  await globalPostFunction({
+                    url: delete_notification,
+                    postData: { ids: selectedIds },
+                    setLoading: setLoading,
+                    getFunction: () => {
+                      globalGetFunction({
+                        url:
+                          role === 'ROLE_TERMINAL'
+                            ? terminal_notification
+                            : role === 'ROLE_SELLER'
+                            ? seller_notification
+                            : role === 'ROLE_SUPER_ADMIN'
+                            ? admin_notification
+                            : '',
+                        setData: setNotificationData,
+                        setLoading: setLoading,
+                      });
+                      onClose();
+                    }
+                  });
+                } else {
+                  toast.error("Sizda bildirishnoma yo'q")
+                }
               }}
             >
               {wordsListData?.CONTINUE || 'Продолжить'}

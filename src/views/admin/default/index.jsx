@@ -14,7 +14,7 @@ import { get_payment_statistic_forSeller, get_admin_request_web, get_seller_stat
 import { globalGetFunction } from "contexts/logic-function/globalFunktion";
 import { DashboardStore } from "contexts/state-management/dashboard/dashboardStore";
 import { setConfig } from "contexts/token";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BsCalculator } from "react-icons/bs";
 import { FaUsers, FaRegMoneyBillAlt } from "react-icons/fa";
@@ -56,20 +56,80 @@ export default function Dashboard() {
     const theadPayment = [wordsListData?.TABLE_TR || "Т/р", wordsListData?.PARTNER || "Партнер", wordsListData?.DATE || "Дата", wordsListData?.EXCEL_AMOUNT || "Количество", wordsListData?.STATUS || "Статус"];
 
     const role = sessionStorage.getItem("ROLE");
+    const socketRef = useRef(null);
+    const { setSocketData, socketData, setSocketModalData } = SocketStore();
 
     useEffect(() => {
         const getWords = () => {
-          globalGetFunction({
-            url: `${words_get_data}WEB`,
-            setData: setWordsListData,
-          });
-          globalGetFunction({
-            url: `${words_get_language}WEB`,
-            setData: setLanguageData
-          })
+            globalGetFunction({
+                url: `${words_get_data}WEB`,
+                setData: setWordsListData,
+            });
+            globalGetFunction({
+                url: `${words_get_language}WEB`,
+                setData: setLanguageData
+            })
         };
         getWords();
     }, []);
+
+    const connectSocket = () => {
+        if (socketRef.current) {
+            socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
+        }
+        // socketRef.current = io('https://socket.qrpay.uz', {
+        socketRef.current = io('http://185.74.4.138:8082', {
+            secure: true,
+            transports: ['websocket', 'polling'],
+        });
+
+        socketRef.current.on('connect', () => {
+            console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
+            setSocketData(socketRef.current);
+        });
+
+        socketRef.current.on('callback-web-or-app', (data) => {
+            console.log('Received data:', data);
+            setSocketModalData(data);
+        });
+
+        socketRef.current.on('test', (data) => {
+            console.log('Received data:', data);
+            setSocketModalData(data);
+        });
+
+        socketRef.current.on('connect_error', (error) => {
+            console.error('Socket connection error:', error);
+            setTimeout(() => {
+                console.log('Retrying to connect socket...');
+                connectSocket(); // Qayta ulanish
+            }, 5000);
+        });
+
+        consoleClear();
+    };
+
+    useEffect(() => {
+        connectSocket(); // Ilk bor socketni ulaymiz
+
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (socketRef.current && !socketRef.current.connected) {
+            connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
+        }
+    }, [socketRef]);
+
+    
+  console.log("socketData", socketData);
+  console.log("socketData id", socketData?.id);
+  console.log("socketData connected", socketData?.connected);
+  console.log("socket2", socketData);
 
     const getStatistcs = () => {
         globalGetFunction({

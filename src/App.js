@@ -42,6 +42,8 @@ import { order_confirm } from 'contexts/api';
 import { seller_order_get } from 'contexts/api';
 import { order_cancel } from 'contexts/api';
 import { siteSecurity } from 'contexts/allRequest';
+import { globalPutFunction } from 'contexts/logic-function/globalFunktion';
+import { set_socket } from 'contexts/api';
 
 export default function Main() {
   const { languageData, setWordsListData, wordsListData } = LanguageStore();
@@ -54,6 +56,7 @@ export default function Main() {
     timer,
     setTimer,
     setSocketModalData,
+    socketData
   } = SocketStore();
   const { page, setPaymentData, setTotalPages, size, setCreateLoading } =
     PaymentStore();
@@ -68,29 +71,38 @@ export default function Main() {
     siteSecurity();
   }, []);
 
-  // useEffect(() => {
-  //   if (socketModalData) {
-  //     setSocketModal(true);
-  //     setTimer(60); // 60 senlik sanashni o'qishni bosqichga olish
-  //   }
-  // }, [socketModalData]);
+  useEffect(() => {
+    if (socketData?.id) {
+      globalPostFunction({
+        url: `${set_socket}${socketData?.id}`,
+        postData: {}
+      })
+    }
+  }, [socketData?.id]);
 
-  // useEffect(() => {
-  //   let interval = null;
+  useEffect(() => {
+    if (socketModalData) {
+      setSocketModal(true);
+      setTimer(10); // 10 senlik sanashni o'qishni bosqichga olish
+    }
+  }, [socketModalData]);
 
-  //   if (socketModal && timer > 0) {
-  //     interval = setInterval(() => {
-  //       setTimer(timer - 1); // Har soniyada sanashni kamaytirish
-  //     }, 900);
-  //   } else if (timer === 0) {
-  //     setSocketModal(false); // Sanash tugagach modalni yopish
-  //     setTimer(0);
-  //     setSocketModalData(null);
-  //     consoleClear();
-  //   }
+  useEffect(() => {
+    let interval = null;
 
-  //   return () => clearInterval(interval); // Komponent o'chirilganda intervalni to'xtatish
-  // }, [socketModal, timer]);
+    if (socketModal && timer > 0) {
+      interval = setInterval(() => {
+        setTimer(timer - 1); // Har soniyada sanashni kamaytirish
+      }, 900);
+    } else if (timer === 0) {
+      setSocketModal(false); // Sanash tugagach modalni yopish
+      setTimer(0);
+      setSocketModalData(null);
+      consoleClear();
+    }
+
+    return () => clearInterval(interval); // Komponent o'chirilganda intervalni to'xtatish
+  }, [socketModal, timer]);
 
   useEffect(() => {
     // i18n.changeLanguage(languageData);
@@ -165,11 +177,12 @@ export default function Main() {
   return (
     <ChakraProvider theme={currentTheme}>
       <Modal
+        // isOpen={true}
         isOpen={socketModal}
         size={'xl'}
-        // onClose={() => {
-        //   setSocketModal(false);
-        // }}
+        onClose={() => {
+          setSocketModal(false);
+        }}
       >
         <ModalOverlay />
         <ModalContent>
@@ -181,6 +194,7 @@ export default function Main() {
           >
             {wordsListData?.COMPLATE_PAYMENT || 'Завершить платеж'}
             <Text
+              me={10}
               color={useColorModeValue('green', 'yellow')}
               fontSize={20}
               fontWeight={700}
@@ -188,7 +202,7 @@ export default function Main() {
               {timer}
             </Text>
           </ModalHeader>
-          {/* <ModalCloseButton /> */}
+          <ModalCloseButton />
           <ModalBody>
             <Grid
               overflow={'hidden'}
@@ -240,7 +254,7 @@ export default function Main() {
             </Grid>
           </ModalBody>
 
-          <ModalFooter
+          {/* <ModalFooter
             display={'flex'}
             width={'100%'}
             justifyContent={'center'}
@@ -341,7 +355,7 @@ export default function Main() {
                 ? wordsListData?.LOADING || 'Загрузка...'
                 : wordsListData?.CONFIRM_MODAL || 'Подтверждение платежа'}
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
 
