@@ -77,8 +77,8 @@ export default function Dashboard() {
         if (socketRef.current) {
             socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
         }
-        // socketRef.current = io('https://socket.qrpay.uz', {
-        socketRef.current = io('http://185.74.4.138:8082', {
+        socketRef.current = io('https://socket.qrpay.uz', {
+        // socketRef.current = io('http://185.74.4.138:8082', {
             secure: true,
             transports: ['websocket', 'polling'],
         });
