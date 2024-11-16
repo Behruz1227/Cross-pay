@@ -35,19 +35,27 @@ import io from 'socket.io-client';
 import { SocketStore } from 'contexts/state-management/socket/socketStore';
 import { consoleClear } from 'contexts/toast-message';
 
-const socket = io('https://my.qrpay.uz/');
-socket.onopen = () => {
-  console.log('WebSocket ulanishi o‘rnatildi');
-};
-socket.onmessage = (event) => {
-  console.log('Xabar: ', event.data);
-};
-socket.onerror = (error) => {
-  console.error('Xatolik: ', error);
-};
-socket.onclose = () => {
-  console.log('Ulanish yopildi');
-};
+const socket = io('https://my.qrpay.uz', {
+    transports: ['websocket'], // Faqat WebSocket transportini ishlatish
+    secure: true
+});
+
+socket.on('connect', () => {
+    console.log('Socket.IO ulanish o‘rnatildi.');
+});
+
+socket.on('message', (data) => {
+    console.log('Serverdan xabar:', data);
+});
+
+socket.on('disconnect', () => {
+    console.log('Ulanish yopildi.');
+});
+
+socket.on('connect_error', (error) => {
+    console.error('Ulanishda xatolik:', error);
+});
+
 
 export default function Dashboard() {
   const { wordsListData, setLanguageData, setWordsListData } = LanguageStore();
