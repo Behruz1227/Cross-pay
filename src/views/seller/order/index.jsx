@@ -150,7 +150,7 @@ export default function SellerOrder() {
     if (socketRef.current) {
       socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
     }
-    socketRef.current = io('https://socket.qrpay.uz/ap', {
+    socketRef.current = io('https://my.qrpay.uz/', {
       secure: true,
       transports: ['websocket', 'polling'],
     });

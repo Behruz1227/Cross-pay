@@ -35,7 +35,7 @@ import io from 'socket.io-client';
 import { SocketStore } from 'contexts/state-management/socket/socketStore';
 import { consoleClear } from 'contexts/toast-message';
 
-const socket = io('https://socket.qrpay.uz/');
+const socket = io('https://my.qrpay.uz/');
 socket.onopen = () => {
   console.log('WebSocket ulanishi o‘rnatildi');
 };
