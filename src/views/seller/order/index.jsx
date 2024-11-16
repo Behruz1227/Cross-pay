@@ -150,8 +150,7 @@ export default function SellerOrder() {
     if (socketRef.current) {
       socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
     }
-    // socketRef.current = io('https://socket.qrpay.uz', {
-      socketRef.current = io('http://185.74.4.138:8082', {
+    socketRef.current = io('wss://socket.qrpay.uz/ap', {
       secure: true,
       transports: ['websocket', 'polling'],
     });
@@ -162,11 +161,6 @@ export default function SellerOrder() {
     });
 
     socketRef.current.on('callback-web-or-app', (data) => {
-      console.log('Received data:', data);
-      setSocketModalData(data);
-    });
-
-    socketRef.current.on('test', (data) => {
       console.log('Received data:', data);
       setSocketModalData(data);
     });
@@ -198,6 +192,10 @@ export default function SellerOrder() {
     }
   }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
 
+  console.log("socketData", socketData);
+  console.log("socketData id", socketData?.id);
+  console.log("socketData connected", socketData?.connected);
+  console.log("socket2", socketData);
 
   useEffect(() => {
     if (modalOpen) {
