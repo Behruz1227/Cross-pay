@@ -199,10 +199,10 @@ export default function SellerOrder() {
       openModal();  
     } 
   }, [modalOpen]); 
-  
+    
   const openModal = () => { 
     // setIsCreate(true); 
-    onOpen();
+    onOpen();  
   };
 
   useEffect(() => {
@@ -523,13 +523,13 @@ export default function SellerOrder() {
                   </Select>
                   {/* {formErrors.terminalId && formValues.terminalId !== 0 && ( 
                     <Text color="red.500" fontSize="sm">   
-                      {formErrors.terminalId} 
-                    </Text>     
-                  )} */}
-                </FormControl>
-                <FormControl mt={4} isInvalid={!!formErrors.amount}>
-                  <FormLabel>
-                    {wordsListData?.EXCEL_AMOUNT || 'Сумма'}
+                      {formErrors.terminalId}   
+                    </Text>       
+                  )} */} 
+                </FormControl> 
+                <FormControl mt={4} isInvalid={!!formErrors.amount}>  
+                  <FormLabel> 
+                    {wordsListData?.EXCEL_AMOUNT || 'Сумма'} 
                   </FormLabel>
                   <Input
                     type="number"
