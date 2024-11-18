@@ -379,7 +379,7 @@ export default function SellerTerminal() {
               <Td textAlign={'center'} colSpan={thead.length}>
                 {wordsListData?.PANEL_TERMINAL || 'Терминал'}{' '}
                 {wordsListData?.NOT_FOUND || 'не найден'}
-              </Td>
+              </Td>  
             </Tr>
           )}
         </ComplexTable>
