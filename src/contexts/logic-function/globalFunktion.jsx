@@ -55,7 +55,7 @@ export async function globalGetFunction({url, setData, setLoading, setTotalEleme
 }
 
 
-export async function globalPostFunction({url, postData, setLoading, getFunction, setData, isToast}) {
+export async function globalPostFunction({url, postData, setLoading, getFunction, setData, isToast = true}) {
     if (setLoading) setLoading(true);
     try {
         const {data} = await axios.post(url, postData, config)

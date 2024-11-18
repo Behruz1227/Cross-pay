@@ -75,7 +75,8 @@ export default function Main() {
     if (socketData?.id) {
       globalPostFunction({
         url: `${set_socket}${socketData?.id}`,
-        postData: {}
+        postData: {},
+        isToast: false
       })
     }
   }, [socketData?.id]);

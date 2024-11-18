@@ -334,6 +334,7 @@ export default function HeaderLinks(props) {
                     url: `${words_post_language}?lang=uz&webOrMobile=WEB`,
                     postData: {},
                     setData: setDataLang,
+                    isToast: false
                     // getFunction: globalGetFunction({
                     //   url: `${words_get_language}WEB`,
                     //   setData: setLanguageData
@@ -357,6 +358,7 @@ export default function HeaderLinks(props) {
                     url: `${words_post_language}?lang=ru&webOrMobile=WEB`,
                     postData: {},
                     setData: setDataLang,
+                    isToast: false
                     // getFunction: globalGetFunction({
                     //   url: `${words_get_language}WEB`,
                     //   setData: setLanguageData
