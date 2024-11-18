@@ -20,7 +20,7 @@ import {
 import { globalGetFunction } from 'contexts/logic-function/globalFunktion';
 import { DashboardStore } from 'contexts/state-management/dashboard/dashboardStore';
 import { setConfig } from 'contexts/token';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsCalculator } from 'react-icons/bs';
 import { FaUsers, FaRegMoneyBillAlt } from 'react-icons/fa';
@@ -44,17 +44,17 @@ socket.on('connect', () => {
     console.log('Socket.IO ulanish o‘rnatildi.');
 });
 
-socket.on('message', (data) => {
-    console.log('Serverdan xabar:', data);
-});
+// socket.on('message', (data) => {
+//     console.log('Serverdan xabar:', data);
+// });
 
-socket.on('disconnect', () => {
-    console.log('Ulanish yopildi.');
-});
+// socket.on('disconnect', () => {
+//     console.log('Ulanish yopildi.');
+// });
 
-socket.on('connect_error', (error) => {
-    console.error('Ulanishda xatolik:', error);
-});
+// socket.on('connect_error', (error) => {
+//     console.error('Ulanishda xatolik:', error);
+// });
 
 
 export default function Dashboard() {
@@ -71,9 +71,78 @@ export default function Dashboard() {
     PaymentData,
     setPaymentData,
   } = DashboardStore();
+  const socketRef = useRef(null);
+  const { setSocketData, socketData, setSocketModalData, setNotificationSocket} = SocketStore();
 
   const brandColor = useColorModeValue('brand.500', 'white');
   const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
+
+  const role = sessionStorage.getItem('ROLE');
+
+  const connectSocket = () => {
+    if (role !== "ROLE_SUPER_ADMIN") {
+      
+      if (socketRef.current) {
+        socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
+      }
+      socketRef.current = io('https://my.qrpay.uz', {
+        transports: ['websocket'], // Faqat WebSocket transportini ishlatish
+    secure: true
+      });
+      console.log("DEEEeeeeeejhiuuuuuuuuuuuuuuuuuuv  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrhui                          ");
+      
+
+      socketRef.current.on('connect', () => {
+        console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
+        setSocketData(socketRef.current);
+      });
+
+      socketRef.current.on('notification', (data) => {
+        console.log('Received data:', data);
+        setNotificationSocket(data);
+      });
+
+      socketRef.current.on('callback-web-or-app', (data) => {
+        console.log('Received data:', data);
+        setSocketModalData(data);
+      });
+
+      socketRef.current.on('connect_error', (error) => {
+        console.error('Socket connection error:', error);
+        setTimeout(() => {
+          console.log('Retrying to connect socket...');
+          connectSocket(); // Qayta ulanish
+        }, 5000);
+      });
+    }
+
+    consoleClear();
+  };
+
+  useEffect(() => {
+    // if (role === "ROLE_SUPER_ADMIN") {
+      connectSocket(); // Ilk bor socketni ulaymiz
+    // }
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
+      }
+    };
+
+  }, []);
+
+  useEffect(() => {
+    if (role !== "ROLE_SUPER_ADMIN") {
+      if (socketRef.current && !socketRef.current.connected) {
+        connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
+      }
+    }
+  }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
+
+  console.log("socketData", socketData);
+  console.log("socketData id", socketData?.id);
+  console.log("socketData connected", socketData?.connected);
+  console.log("socket2", socketData);
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
@@ -92,7 +161,6 @@ export default function Dashboard() {
     wordsListData?.STATUS || 'Статус',
   ];
 
-  const role = sessionStorage.getItem('ROLE');
 
   useEffect(() => {
     const getWords = () => {
@@ -114,8 +182,8 @@ export default function Dashboard() {
         role === 'ROLE_SUPER_ADMIN'
           ? get_admin_statistic
           : role === 'ROLE_SELLER'
-          ? get_seller_statistic
-          : '',
+            ? get_seller_statistic
+            : '',
       setLoading: setStatisticLoading,
       setData: setStatisticData,
     });
@@ -191,10 +259,9 @@ export default function Dashboard() {
                 }
               />
             }
-            name={`${
-              wordsListData?.TERMINAL_USERS_COUNT ||
+            name={`${wordsListData?.TERMINAL_USERS_COUNT ||
               'Количество пользователей терминала'
-            }`}
+              }`}
             value={statisticData?.userCount || '0'}
           />
         </SimpleGrid>
@@ -215,9 +282,8 @@ export default function Dashboard() {
                 }
               />
             }
-            name={`${
-              wordsListData?.COMPLETED_TRANSACTIONS || 'Выполненные транзакции'
-            }`}
+            name={`${wordsListData?.COMPLETED_TRANSACTIONS || 'Выполненные транзакции'
+              }`}
             value={statisticData?.completedCount || '0'}
           />
           <MiniStatistics
@@ -236,9 +302,8 @@ export default function Dashboard() {
                 }
               />
             }
-            name={`${
-              wordsListData?.WAIT_TRANSACTIONS || 'Ожидающие транзакции'
-            }`}
+            name={`${wordsListData?.WAIT_TRANSACTIONS || 'Ожидающие транзакции'
+              }`}
             value={statisticData?.waitCount || '0'}
           />
           <MiniStatistics
@@ -257,9 +322,8 @@ export default function Dashboard() {
                 }
               />
             }
-            name={`${
-              wordsListData?.CANCEL_TRANSACTIONS || 'Отмененные транзакции'
-            }`}
+            name={`${wordsListData?.CANCEL_TRANSACTIONS || 'Отмененные транзакции'
+              }`}
             value={statisticData?.cancelCount || '0'}
           />
         </SimpleGrid>
@@ -281,14 +345,13 @@ export default function Dashboard() {
               />
             }
             name={`${wordsListData?.COMPLETED_BALANCE || 'Выполненный баланс'}`}
-            value={`${
-              statisticData?.balanceCompleted
-                ? statisticData.balanceCompleted.toLocaleString('uz-UZ', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : '0'
-            } UZS`}
+            value={`${statisticData?.balanceCompleted
+              ? statisticData.balanceCompleted.toLocaleString('uz-UZ', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+              : '0'
+              } UZS`}
           />
           <MiniStatistics
             startContent={
@@ -307,14 +370,13 @@ export default function Dashboard() {
               />
             }
             name={`${wordsListData?.WAIT_BALANCE || 'Ожидающий баланс'}`}
-            value={`${
-              statisticData?.balanceWait
-                ? statisticData.balanceWait.toLocaleString('uz-UZ', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : '0'
-            } UZS`}
+            value={`${statisticData?.balanceWait
+              ? statisticData.balanceWait.toLocaleString('uz-UZ', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+              : '0'
+              } UZS`}
           />
         </SimpleGrid>
         <SimpleGrid columns={{ base: 1, md: 2 }} gap="20px" mb="20px">
@@ -335,14 +397,13 @@ export default function Dashboard() {
               />
             }
             name={`${wordsListData?.CANCEL_BALANCE || 'Отмененный баланс'}`}
-            value={`${
-              statisticData?.balanceCancel
-                ? statisticData.balanceCancel.toLocaleString('uz-UZ', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : '0'
-            } UZS`}
+            value={`${statisticData?.balanceCancel
+              ? statisticData.balanceCancel.toLocaleString('uz-UZ', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+              : '0'
+              } UZS`}
           />
 
           {role === 'ROLE_SUPER_ADMIN' && (
@@ -394,12 +455,12 @@ export default function Dashboard() {
                     <Td minWidth={'300px'}>
                       {item?.phone
                         ? `+998 (${item?.phone.slice(
-                            3,
-                            5,
-                          )}) ${item?.phone.slice(5, 8)} ${item?.phone.slice(
-                            8,
-                            10,
-                          )} ${item?.phone.slice(10)}`
+                          3,
+                          5,
+                        )}) ${item?.phone.slice(5, 8)} ${item?.phone.slice(
+                          8,
+                          10,
+                        )} ${item?.phone.slice(10)}`
                         : '-'}
                     </Td>
                     <Td minWidth={'250px'}>{item?.filialCode || '-'}</Td>
@@ -446,9 +507,8 @@ export default function Dashboard() {
                     <Td>{i + 1}</Td>
                     <Td>{item?.partner}</Td>
                     <Td>{item?.date}</Td>
-                    <Td>{`${
-                      item?.amount ? item?.amount.toFixed(2) : '0'
-                    } UZS`}</Td>
+                    <Td>{`${item?.amount ? item?.amount.toFixed(2) : '0'
+                      } UZS`}</Td>
                     <Td alignSelf="flex-start">
                       <Text
                         background={'#ECEFF8'}
