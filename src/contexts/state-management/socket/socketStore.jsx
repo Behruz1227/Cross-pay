@@ -11,5 +11,8 @@ export const SocketStore = create((set) => ({
     setSocketLoading: (val) => set({ socketLoading: val }),
     timer: 10,
     setTimer: (val) => set({ timer: val }),
-    
+    setNotificationSocket: (val) => set({
+        notificationSocket: val
+    }),
+    notificationSocket: false,
 }))

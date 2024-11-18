@@ -70,9 +70,6 @@ export default function SellerOrder() {
     createLoading,
     setCreateLoading,
   } = PaymentStore();
-  const { t } = useTranslation();
-  const socketRef = useRef(null);
-  const { setSocketData, socketData, setSocketModalData } = SocketStore();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -146,56 +143,56 @@ export default function SellerOrder() {
     });
   }, []);
 
-  const connectSocket = () => {
-    if (socketRef.current) {
-      socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
-    }
-    socketRef.current = io('https://my.qrpay.uz/', {
-      secure: true,
-      transports: ['websocket', 'polling'],
-    });
+  // const connectSocket = () => {
+  //   if (socketRef.current) {
+  //     socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
+  //   }
+  //   socketRef.current = io('https://my.qrpay.uz/', {
+  //     secure: true,
+  //     transports: ['websocket', 'polling'],
+  //   });
 
-    socketRef.current.on('connect', () => {
-      console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
-      setSocketData(socketRef.current);
-    });
+  //   socketRef.current.on('connect', () => {
+  //     console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
+  //     setSocketData(socketRef.current);
+  //   });
 
-    socketRef.current.on('callback-web-or-app', (data) => {
-      console.log('Received data:', data);
-      setSocketModalData(data);
-    });
+  //   socketRef.current.on('callback-web-or-app', (data) => {
+  //     console.log('Received data:', data);
+  //     setSocketModalData(data);
+  //   });
 
-    socketRef.current.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-      setTimeout(() => {
-        console.log('Retrying to connect socket...');
-        connectSocket(); // Qayta ulanish
-      }, 5000);
-    });
+  //   socketRef.current.on('connect_error', (error) => {
+  //     console.error('Socket connection error:', error);
+  //     setTimeout(() => {
+  //       console.log('Retrying to connect socket...');
+  //       connectSocket(); // Qayta ulanish
+  //     }, 5000);
+  //   });
 
-    consoleClear();
-  };
+  //   consoleClear();
+  // };
 
-  useEffect(() => {
-    connectSocket(); // Ilk bor socketni ulaymiz
+  // useEffect(() => {
+  //   connectSocket(); // Ilk bor socketni ulaymiz
 
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (socketRef.current) {
+  //       socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
+  //     }
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    if (socketRef.current && !socketRef.current.connected) {
-      connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
-    }
-  }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
+  // useEffect(() => {
+  //   if (socketRef.current && !socketRef.current.connected) {
+  //     connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
+  //   }
+  // }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
 
-  console.log("socketData", socketData);
-  console.log("socketData id", socketData?.id);
-  console.log("socketData connected", socketData?.connected);
-  console.log("socket2", socketData);
+  // console.log("socketData", socketData);
+  // console.log("socketData id", socketData?.id);
+  // console.log("socketData connected", socketData?.connected);
+  // console.log("socket2", socketData);
 
   useEffect(() => {
     if (modalOpen) {
@@ -259,13 +256,7 @@ export default function SellerOrder() {
     });
   };
 
-  // State to manage form values and validation
-
-  const onChange = (page, size) => {
-    setPage(page - 1);
-    setSize(size);
-  };
-
+ 
   const bgGenerator = (status) => {
     if (status === 'WAIT')
       return ['orange', wordsListData?.STATUS_WAIT || 'Ожидание'];
@@ -289,9 +280,9 @@ export default function SellerOrder() {
 
     const errors = {};
     if (name !== 'terminalId' && value.trim() === '') {
-      errors[name] = `${t(name)}${wordsListData?.ERROR || 'Ошибка'}`;
+      errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
     } else if (name === 'terminalId' && (value < 1 || !value)) {
-      errors[name] = `${t(name)}${wordsListData?.ERROR || 'Ошибка'}`;
+      errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
     } else {
       errors[name] = '';
     }
@@ -304,14 +295,14 @@ export default function SellerOrder() {
     Object.keys(formValues).forEach((key) => {
       if (key === 'terminalId') {
         if (formValues[key] < 1 || !formValues[key]) {
-          errors[key] = `${t(key)} ${wordsListData?.ERROR || 'Ошибка'}`;
+          errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
         }
       } else if (key === 'phone') {
         if (formValues.phone.slice(1).length < 11) {
-          errors[key] = `${t(key)} ${wordsListData?.ERROR || 'Ошибка'}`;
+          errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
         }
       } else if (formValues[key].trim() === '') {
-        errors[key] = `${t(key)} ${wordsListData?.ERROR || 'Ошибка'}`;
+        errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
       }
     });
     if (Object.keys(errors).length === 0) {
@@ -609,7 +600,7 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-start'}
+                  justifyContent={'space-between'}
                   pe={5}
                   gap={20}
                 >

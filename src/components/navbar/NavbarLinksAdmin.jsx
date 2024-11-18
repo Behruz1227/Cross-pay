@@ -50,6 +50,7 @@ import { words_post_language } from 'contexts/api';
 import { words_get_language } from 'contexts/api';
 import { globalPostFunction } from 'contexts/logic-function/globalFunktion';
 import { PhoneInput } from 'react-international-phone';
+import { SocketStore } from 'contexts/state-management/socket/socketStore';
 
 export default function HeaderLinks(props) {
   const { countData, setCountData } = NotificationStore();
@@ -81,6 +82,8 @@ export default function HeaderLinks(props) {
 
   const role = sessionStorage.getItem('ROLE');
 
+  const { setNotificationSocket, notificationSocket } = SocketStore();
+
   const initialValue = {
     firstName: '',
     lastName: '',
@@ -110,14 +113,30 @@ export default function HeaderLinks(props) {
         role === 'ROLE_TERMINAL'
           ? terminal_notification_count
           : role === 'ROLE_SELLER'
-          ? seller_notification_count
-          : role === 'ROLE_SUPER_ADMIN'
-          ? admin_notification_count
-          : '',
+            ? seller_notification_count
+            : role === 'ROLE_SUPER_ADMIN'
+              ? admin_notification_count
+              : '',
       setData: setCountData,
     });
     userGetMe({ setData: setGetMeeData });
   }, []);
+
+  useEffect(() => {
+    if (notificationSocket) {
+      globalGetFunction({
+        url:
+          role === 'ROLE_TERMINAL'
+            ? terminal_notification_count
+            : role === 'ROLE_SELLER'
+              ? seller_notification_count
+              : role === 'ROLE_SUPER_ADMIN'
+                ? admin_notification_count
+                : '',
+        setData: setCountData,
+      });
+    }
+  }, [notificationSocket]);
 
   useEffect(() => {
     if (languageData) {
@@ -269,11 +288,10 @@ export default function HeaderLinks(props) {
                 backgroundColor: 'red',
                 position: 'absolute',
                 color: '#fff',
-                fontSize: '10px',
+                fontSize: '8px',
                 padding: '3px',
-                borderRadius: '50%',
-                width: '17px',
-                height: '17px',
+                borderRadius: 10,
+                minWidth: "17px",
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -281,7 +299,7 @@ export default function HeaderLinks(props) {
               }}
             >
               {' '}
-              <span>{+countData > 9 ? '9+' : countData}</span>{' '}
+              <span style={{padding: 1}}>{+countData > 9 ? '9+' : countData}</span>{' '}
             </div>
             <Icon me="15px" h="22px" w="22px" color={navbarIcon} as={FaBell} />
           </Button>
@@ -311,8 +329,8 @@ export default function HeaderLinks(props) {
                   borderRadius="full"
                   src={
                     languageData &&
-                    typeof languageData === 'string' &&
-                    languageData?.toUpperCase() === 'UZ'
+                      typeof languageData === 'string' &&
+                      languageData?.toUpperCase() === 'UZ'
                       ? 'https://cdn-icons-png.flaticon.com/512/6211/6211657.png'
                       : 'https://cdn-icons-png.flaticon.com/512/6211/6211549.png'
                   }
@@ -395,7 +413,7 @@ export default function HeaderLinks(props) {
               borderRadius="20px"
               bg={menuBg}
               border="none"
-              // boxSize={"sm"}
+            // boxSize={"sm"}
             >
               <Flex
                 borderBottom="1px solid"
