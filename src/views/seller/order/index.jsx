@@ -256,7 +256,6 @@ export default function SellerOrder() {
     });
   };
 
- 
   const bgGenerator = (status) => {
     if (status === 'WAIT')
       return ['orange', wordsListData?.STATUS_WAIT || 'Ожидание'];
@@ -470,13 +469,6 @@ export default function SellerOrder() {
             setPage(0);
           }}
         />
-        // <Pagination
-        //   showSizeChanger={true}
-        //   responsive={true}
-        //   defaultCurrent={1}
-        //   total={totalPage}
-        //   onChange={onChange}
-        // />
       )}
       <Modal
         size={isCreate ? 'lg' : '3xl'}
@@ -506,7 +498,11 @@ export default function SellerOrder() {
                   </FormLabel>
                   <Select
                     name="terminalId"
-                    value={formValues.terminalId}
+                    value={
+                      terminalData?.length === 1
+                        ? terminalData[0].id
+                        : formValues.terminalId
+                    }
                     onChange={handleChange}
                   >
                     {terminalData && terminalData?.length > 0 ? (
@@ -523,8 +519,8 @@ export default function SellerOrder() {
                   </Select>
                   {/* {formErrors.terminalId && formValues.terminalId !== 0 && ( 
                     <Text color="red.500" fontSize="sm">   
-                      {formErrors.terminalId} 
-                    </Text>     
+                      {formErrors.terminalId}   
+                    </Text>       
                   )} */}
                 </FormControl>
                 <FormControl mt={4} isInvalid={!!formErrors.amount}>
@@ -596,10 +592,10 @@ export default function SellerOrder() {
                 gap={6}
                 px={5}
               >
-                <GridItem
+                <GridItem 
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
-                  flexDirection={{ base: 'column', md: 'row' }}
+                  flexDirection={{ base: 'column', md: 'row' }} 
                   justifyContent={'space-between'}
                   pe={5}
                   gap={20}
@@ -654,7 +650,6 @@ export default function SellerOrder() {
                   justifyContent={'space-between'}
                   alignItems={'center'}
                   pe={5}
-                  
                   borderBottom="1px solid #E0E5F2"
                   pb={2}
                 >
@@ -748,17 +743,17 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   justifyContent={'center'}
-                  // borderBottom="1px solid #E0E5F2" 
-                  pb={1} 
+                  // borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
-                  <QRCodeSVG 
-                    value={detailData && detailData?.url ? detailData?.url : ''} 
-                    renderAs="canvas" 
-                  /> 
-                </GridItem> 
-              </Grid> 
-            )} 
-          </ModalBody> 
+                  <QRCodeSVG
+                    value={detailData && detailData?.url ? detailData?.url : ''}
+                    renderAs="canvas"
+                  />
+                </GridItem>
+              </Grid>
+            )}
+          </ModalBody>
 
           <ModalFooter display={'flex'} gap={'10px'}>
             {isCreate && (
