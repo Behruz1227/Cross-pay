@@ -192,10 +192,10 @@ export default function SellerOrder() {
     }
   }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
 
-  console.log("socketData", socketData);
-  console.log("socketData id", socketData?.id);
-  console.log("socketData connected", socketData?.connected);
-  console.log("socket2", socketData);
+  console.log('socketData', socketData);
+  console.log('socketData id', socketData?.id);
+  console.log('socketData connected', socketData?.connected);
+  console.log('socket2', socketData);
 
   useEffect(() => {
     if (modalOpen) {
@@ -609,9 +609,11 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-start'}
+                  justifyContent={'space-between'}
                   pe={5}
                   gap={20}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.QR_AMOUNT || 'QR - сумма'}:{' '}
@@ -627,50 +629,43 @@ export default function SellerOrder() {
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
+                  gap={20}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.EXCEL_RATE || 'Курс'}:{' '}
                   </Text>
-                  <Text width={'70%'} fontSize={'17px'}>
+                  <Text fontSize={'17px'}>
                     {detailData?.rate || detailData?.rate === 0
                       ? detailData.rate
                       : '-'}
                   </Text>
                 </GridItem>
-                {/* <GridItem
+                <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
-                >
-                  <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.CURRENCY || 'Валюта'}:{' '}
-                  </Text>
-                  <Text width={'70%'} fontSize={'17px'}>
-                    {detailData?.chequeCurrency ||
-                    detailData?.chequeCurrency === 0
-                      ? detailData.chequeCurrency
-                      : '-'}
-                  </Text>
-                </GridItem> */}
-                <Flex
-                  width={'100%'}
-                  flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent={'space-between'}
-                  pe={5}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.PARTNER || 'Партнер'}:
                   </Text>
                   <Text fontSize={'17px'}>{detailData?.partner || '-'}</Text>
-                </Flex>
-                <Flex
-                  width={'100%'}
+                </GridItem>
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   alignItems={'center'}
                   pe={5}
+                  
+                  borderBottom="1px solid #E0E5F2"
+                  pb={2}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.STATUS || 'Статус'}:
@@ -686,12 +681,15 @@ export default function SellerOrder() {
                   >
                     {bgGenerator(detailData?.status)[1]}
                   </Text>
-                </Flex>
-                <Flex
-                  width={'100%'}
+                </GridItem>
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.DATE_CREATED || 'Дата создания'}:
@@ -705,13 +703,15 @@ export default function SellerOrder() {
                         )} ${detailData?.cheque_created_at.slice(11, 16)}`
                       : '-'}
                   </Text>
-                </Flex>
+                </GridItem>
                 <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.PURPOSE || 'Цель'}:
@@ -727,6 +727,8 @@ export default function SellerOrder() {
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.EXIT_ID || 'EXIT ID'}:
@@ -740,6 +742,8 @@ export default function SellerOrder() {
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
+                  borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
                     {wordsListData?.redirect_url || 'Redirect URL'}:
@@ -753,55 +757,17 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   justifyContent={'center'}
+                  // borderBottom="1px solid #E0E5F2" 
+                  pb={1} 
                 >
-                  <QRCodeSVG
-                    value={detailData && detailData?.url ? detailData?.url : ''}
-                    renderAs="canvas"
-                  />
-                </GridItem>
-                {/* {role === 'ROLE_SELLER' && (
-                  <GridItem
-                    width={'100%'}
-                    colSpan={{ base: 1, md: 2 }}
-                    display={'flex'}
-                    justifyContent={'center'}
-                    gap={'10px'}
-                  >
-                    <Button
-                      bg={'red'}
-                      color={'white'}
-                      _hover={{ bg: 'red.600' }}
-                      _active={{
-                        bg: 'red.600',
-                        transform: 'scale(0.98)',
-                      }}
-                      onClick={() => {
-                        setDetailData(detailData);
-                        openCancelModal();
-                      }}
-                    >
-                      {wordsListData?.CANCEL_MODAL || 'Отмена платежа'}
-                    </Button>
-                    <Button
-                      bg={'blue'}
-                      color={'white'}
-                      _hover={{ bg: 'blue.600' }}
-                      _active={{
-                        bg: 'blue.600',
-                        transform: 'scale(0.98)',
-                      }}
-                      onClick={() => {
-                        setDetailData(detailData);
-                        openConfirmModal();
-                      }}
-                    >
-                      {wordsListData?.CONFIRM_MODAL || 'Подтверждение платежа'}
-                    </Button>
-                  </GridItem>
-                )} */}
-              </Grid>
-            )}
-          </ModalBody>
+                  <QRCodeSVG 
+                    value={detailData && detailData?.url ? detailData?.url : ''} 
+                    renderAs="canvas" 
+                  /> 
+                </GridItem> 
+              </Grid> 
+            )} 
+          </ModalBody> 
 
           <ModalFooter display={'flex'} gap={'10px'}>
             {isCreate && (

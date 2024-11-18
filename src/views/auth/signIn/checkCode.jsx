@@ -232,18 +232,13 @@ function CheckCode() {
                                 onChange={e => handleAuth('phone', e.target.value)}
                             /> */}
 
-
-
-
-
-
             {/* </InputGroup> */}
             <FormLabel
               ms="4px"
               fontSize="sm"
               fontWeight="500"
               color={textColor}
-              display="flex"   
+              display="flex"
             >
               {'Введите код'}
               <Text color={brandStars}>*</Text>
