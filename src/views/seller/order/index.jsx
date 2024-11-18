@@ -592,10 +592,10 @@ export default function SellerOrder() {
                 gap={6}
                 px={5}
               >
-                <GridItem 
+                <GridItem
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
-                  flexDirection={{ base: 'column', md: 'row' }} 
+                  flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent={'space-between'}
                   pe={5}
                   gap={20}
