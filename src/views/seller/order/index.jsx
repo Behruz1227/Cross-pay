@@ -193,16 +193,16 @@ export default function SellerOrder() {
   // console.log("socketData id", socketData?.id);
   // console.log("socketData connected", socketData?.connected);
   // console.log("socket2", socketData);
-   
-  useEffect(() => {   
-    if (modalOpen) { 
-      openModal();  
-    } 
-  }, [modalOpen]); 
-    
-  const openModal = () => { 
-    // setIsCreate(true); 
-    onOpen();  
+
+  useEffect(() => {
+    if (modalOpen) {
+      openModal();
+    }
+  }, [modalOpen]);
+
+  const openModal = () => {
+    // setIsCreate(true);
+    onOpen();
   };
 
   useEffect(() => {
@@ -256,7 +256,6 @@ export default function SellerOrder() {
     });
   };
 
- 
   const bgGenerator = (status) => {
     if (status === 'WAIT')
       return ['orange', wordsListData?.STATUS_WAIT || 'Ожидание'];
@@ -503,10 +502,14 @@ export default function SellerOrder() {
                 <FormControl mt={4} isInvalid={!!formErrors.terminalId}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL || 'Выберите терминал'}
-                  </FormLabel>  
+                  </FormLabel>
                   <Select
                     name="terminalId"
-                    value={terminalData?.length === 1 ? terminalData[0].id : formValues.terminalId}
+                    value={
+                      terminalData?.length === 1
+                        ? terminalData[0].id
+                        : formValues.terminalId
+                    }
                     onChange={handleChange}
                   >
                     {terminalData && terminalData?.length > 0 ? (
@@ -525,12 +528,12 @@ export default function SellerOrder() {
                     <Text color="red.500" fontSize="sm">   
                       {formErrors.terminalId}   
                     </Text>       
-                  )} */} 
-                </FormControl> 
-                <FormControl mt={4} isInvalid={!!formErrors.amount}>  
-                  <FormLabel> 
-                    {wordsListData?.EXCEL_AMOUNT || 'Сумма'} 
-                  </FormLabel> 
+                  )} */}
+                </FormControl>
+                <FormControl mt={4} isInvalid={!!formErrors.amount}>
+                  <FormLabel>
+                    {wordsListData?.EXCEL_AMOUNT || 'Сумма'}
+                  </FormLabel>
                   <Input
                     type="number"
                     name="amount"
@@ -654,7 +657,6 @@ export default function SellerOrder() {
                   justifyContent={'space-between'}
                   alignItems={'center'}
                   pe={5}
-                  
                   borderBottom="1px solid #E0E5F2"
                   pb={2}
                 >
@@ -748,17 +750,17 @@ export default function SellerOrder() {
                   colSpan={{ base: 1, md: 2 }}
                   display={'flex'}
                   justifyContent={'center'}
-                  // borderBottom="1px solid #E0E5F2" 
-                  pb={1} 
+                  // borderBottom="1px solid #E0E5F2"
+                  pb={1}
                 >
-                  <QRCodeSVG 
-                    value={detailData && detailData?.url ? detailData?.url : ''} 
-                    renderAs="canvas" 
-                  /> 
-                </GridItem> 
-              </Grid> 
-            )} 
-          </ModalBody> 
+                  <QRCodeSVG
+                    value={detailData && detailData?.url ? detailData?.url : ''}
+                    renderAs="canvas"
+                  />
+                </GridItem>
+              </Grid>
+            )}
+          </ModalBody>
 
           <ModalFooter display={'flex'} gap={'10px'}>
             {isCreate && (
