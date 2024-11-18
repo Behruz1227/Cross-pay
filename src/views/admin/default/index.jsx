@@ -150,11 +150,11 @@ export default function Dashboard() {
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
-    wordsListData?.FULL_NAME || 'Ф.И.О',
+    wordsListData?.MANAGER_FIO || 'Ф.И.О',
     wordsListData?.PHONE_NUMBER || 'Телефон',
     wordsListData?.EXCEL_MFO || 'МФО',
-    wordsListData?.ACCOUNT || 'Счет',
-    wordsListData?.INN || 'ИНН',
+    wordsListData?.ACCOUNT_WEB || 'Счет',
+    wordsListData?.INN_WEB || 'ИНН',
     wordsListData?.STATUS || 'Статус',
   ];
   const theadPayment = [

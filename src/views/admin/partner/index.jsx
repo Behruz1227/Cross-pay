@@ -247,7 +247,7 @@ export default function Partner() {
           name={`${wordsListData?.TABLE_TITLE_PARTNER || 'Таблица торговцев'}`}
           thead={[
             wordsListData?.TABLE_TR || '№',
-            wordsListData?.NAME || 'ИМЯ',
+            wordsListData?.MANAGER_FIO || 'Ф.И.О',
             wordsListData?.PHONE_NUMBER || 'ТЕЛЕФОН',
             // wordsListData?.ADDRESS || 'АДРЕС',
             wordsListData?.INN_WEB || 'ИНН',
