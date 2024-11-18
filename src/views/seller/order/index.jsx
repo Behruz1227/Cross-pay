@@ -448,8 +448,7 @@ export default function SellerOrder() {
           ) : (
             <Tr>
               <Td textAlign="center" colSpan={thead.length}>
-                {wordsListData?.PAYMENT || 'Платеж'}
-                {wordsListData?.NOT_FOUND || 'Не найдено'}
+                {wordsListData?.PAYMENT_NOTFOUND || 'Платеж не найден'}
               </Td>
             </Tr>
           )}
@@ -460,7 +459,7 @@ export default function SellerOrder() {
           showSizeChanger
           responsive={true}
           defaultCurrent={1}
-          total={totalPage}  
+          total={totalPage}
           onChange={(page, size) => {
             setPage(page - 1);
           }}
@@ -699,7 +698,7 @@ export default function SellerOrder() {
                   borderBottom="1px solid #E0E5F2"
                   pb={1}
                 >
-                  <Text fontSize={'17px'} fontWeight={'700'}>
+                  <Text fontSize={'17px'}>
                     {wordsListData?.PURPOSE || 'Цель'}:
                   </Text>
                   <Text ml={5} fontSize={'17px'}>
@@ -732,7 +731,7 @@ export default function SellerOrder() {
                   pb={1}
                 >
                   <Text fontSize={'17px'} fontWeight={'700'}>
-                    {wordsListData?.redirect_url || 'Redirect URL'}:
+                    {wordsListData?.REDIRECTED_URL || 'Redirect URL'}:
                   </Text>
                   <Text fontSize={'17px'}>
                     {detailData?.redirect_url || '-'}

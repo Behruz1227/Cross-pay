@@ -42,6 +42,7 @@ import { LanguageStore } from 'contexts/state-management/language/languageStore'
 import { terminal_search } from 'contexts/api';
 import { PhoneInput } from 'react-international-phone';
 import { FaDeleteLeft } from 'react-icons/fa6';
+import { MdDelete } from 'react-icons/md';
 
 export default function SellerTerminal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -359,7 +360,7 @@ return (
                       disabled={item.status === 1}
                       // isChecked={item.status === 0}
                     >
-                      <FaDeleteLeft color={navbarIcon} size={23} /> 
+                      <MdDelete  color={navbarIcon} size={23} /> 
                     </Button>
                   </Box>
                 </Td>
