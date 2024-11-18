@@ -576,7 +576,7 @@ export default function SellerOrder() {
                       fontSize: '16px',
                       color: textColor,
                     }}
-                    inputClass="phone-input"
+                    inputClass="phone-input" 
                     containerClass="phone-input-container"
                     textClass="phone-input-text"
                   />
