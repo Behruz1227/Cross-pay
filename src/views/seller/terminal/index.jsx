@@ -164,28 +164,34 @@ export default function SellerTerminal() {
   const validate = () => {
     const errors = {};
     if (!formValues.name.trim(''))
-      errors.name = `${wordsListData?.NAME || 'Имя'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.name = `${wordsListData?.NAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.terminalSerialCode.trim(''))
-      errors.terminalSerialCode = `${wordsListData?.SURNAME || 'Имя'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.terminalSerialCode = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.inn.trim(''))
-      errors.inn = `${wordsListData?.SURNAME || 'Имя'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.inn = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.filialCode.trim(''))
-      errors.filialCode = `${wordsListData?.SURNAME || 'Имя'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.filialCode = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.account.trim(''))
-          errors.account = `${wordsListData?.SURNAME || 'Имя'}${
-            wordsListData?.IS_REQUIRED || '  требуется '
-          }`;
+      errors.account = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     if (!formValues.phone.trim('')) {
-      errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${wordsListData?.IS_REQUIRED || '  требуется '
-        }`;
+      errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
     } else if (formValues?.phone.slice(1).length !== 12) {
-      errors.phone = `${wordsListData?.PHONE_ERROR ||
+      errors.phone = `${
+        wordsListData?.PHONE_ERROR ||
         'Номер телефона должен состоять ровно из 9 символов и содержать только цифры.'
-        }`;
+      }`;
     }
     // if (!formValues.account.trim(''))
     //   errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${wordsListData?.IS_REQUIRED || '  требуется '}`;
@@ -194,116 +200,117 @@ export default function SellerTerminal() {
     //     wordsListData?.PASSWORD_ERROR_TERMINAL ||
     //     'Пароль должен содержать не менее 4 символов.'
     //   }`;
-  // }
-  setFormErrors(errors);
-  return Object.keys(errors).length === 0;
-};
+    // }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
-const handleSave = () => {
-
-  if (validate()) {
-    if (isEdit) {
-      globalPutFunction({
-        url: `${terminal_update}${detailData && detailData.id ? detailData.id : 0}`,
-        putData: {
-          name: formValues?.name,
-          account: formValues.account,
-          inn: formValues.inn,
-          phone: `${formValues.phone.slice(1)}`,
-          password: formValues.password,
-          terminalSerialCode: formValues.terminalSerialCode,
-          filialCode: formValues.filialCode,
-        },
-        setLoading: setCreateLoading,
-        getFunction: () => {
-          getFunction();
-          onClose();
-          resetValue();
-        },
-      });
-    } else {
-      globalPostFunction({
-        url: `${terminal_create}`,
-        postData: {
-          name: formValues?.name,
-          account: formValues.account,
-          inn: formValues.inn,
-          phone: `${formValues.phone.slice(1)}`,
-          password: formValues.password,
-          terminalSerialCode: formValues.terminalSerialCode,
-          filialCode: formValues.filialCode,
-        },
-        setLoading: setCreateLoading,
-        getFunction: () => {
-          getFunction();
-          onClose();
-          resetValue();
-        },
-      });
+  const handleSave = () => {
+    if (validate()) {
+      if (isEdit) {
+        globalPutFunction({
+          url: `${terminal_update}${
+            detailData && detailData.id ? detailData.id : 0
+          }`,
+          putData: {
+            name: formValues?.name,
+            account: formValues.account,
+            inn: formValues.inn,
+            phone: `${formValues.phone.slice(1)}`,
+            password: formValues.password,
+            terminalSerialCode: formValues.terminalSerialCode,
+            filialCode: formValues.filialCode,
+          },
+          setLoading: setCreateLoading,
+          getFunction: () => {
+            getFunction();
+            onClose();
+            resetValue();
+          },
+        });
+      } else {
+        globalPostFunction({
+          url: `${terminal_create}`,
+          postData: {
+            name: formValues?.name,
+            account: formValues.account,
+            inn: formValues.inn,
+            phone: `${formValues.phone.slice(1)}`,
+            password: formValues.password,
+            terminalSerialCode: formValues.terminalSerialCode,
+            filialCode: formValues.filialCode,
+          },
+          setLoading: setCreateLoading,
+          getFunction: () => {
+            getFunction();
+            onClose();
+            resetValue();
+          },
+        });
+      }
     }
-  }
-};
+  };
 
-return (
-  <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-    <SimpleGrid
-      mb="20px"
-      columns={{ sm: 1 }}
-      spacing={{ base: '20px', xl: '20px' }}
-    >
-      <ComplexTable
-        name={`${wordsListData?.TERMINAL_TABLE_TITLE || 'Терминальный стол'}`}
-        buttonChild={
-          role === 'ROLE_SUPER_ADMIN' && (
-            <Button
-              bg={bgColor}
-              color={textColor}
-              _hover={{ bg: hoverBgColor }}
-              _active={{
-                bg: hoverBgColor,
-                transform: 'scale(0.98)',
-              }}
-              onClick={() => {
-                setIsEdit(false);
-                onOpen();
-              }}
-            >
-              {wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
-            </Button>
-          )
-        }
-        thead={thead}
+  return (
+    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+      <SimpleGrid
+        mb="20px"
+        columns={{ sm: 1 }}
+        spacing={{ base: '20px', xl: '20px' }}
       >
-        {createLoading ? (
-          <Tr>
-            <Td textAlign="center" colSpan={thead.length}>
-              {wordsListData?.LOADING || 'Загрузка'}...
-            </Td>
-          </Tr>
-        ) : terminalData && terminalData?.object?.length > 0 ? (
-          terminalData?.object?.map((item, i) => (
-            <Tr key={i}>
-              <Td>{page * 10 + i + 1}</Td>
-              <Td minWidth={'250px'}>{item?.name ? item?.name : '-'}</Td>
-
-              <Td minWidth={'250px'}>
-                {item?.terminalSerialCode ? item?.terminalSerialCode : '-'}
+        <ComplexTable
+          name={`${wordsListData?.TERMINAL_TABLE_TITLE || 'Терминальный стол'}`}
+          buttonChild={
+            role === 'ROLE_SUPER_ADMIN' && (
+              <Button
+                bg={bgColor}
+                color={textColor}
+                _hover={{ bg: hoverBgColor }}
+                _active={{
+                  bg: hoverBgColor,
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => {
+                  setIsEdit(false);
+                  onOpen();
+                }}
+              >
+                {wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
+              </Button>
+            )
+          }
+          thead={thead}
+        >
+          {createLoading ? (
+            <Tr>
+              <Td textAlign="center" colSpan={thead.length}>
+                {wordsListData?.LOADING || 'Загрузка'}...
               </Td>
-              <Td minWidth={'250px'}>{item?.account || '-'}</Td>
-              <Td minWidth={'250px'}>
-                {item?.phones && item.phones.length > 0
-                  ? item.phones?.map((phone, index) => (
-                    <div key={index}>
-                      {`+998 (${phone.slice(3, 5)}) ${phone.slice(
-                        5,
-                        8,
-                      )} ${phone.slice(8, 10)} ${phone.slice(10, 12)}`}
-                    </div>
-                  ))
-                  : '-'}
-              </Td>
+            </Tr>
+          ) : terminalData && terminalData?.object?.length > 0 ? (
+            terminalData?.object?.map((item, i) => (
+              <Tr key={i}>
+                <Td>{page * 10 + i + 1}</Td>
+                <Td minWidth={'250px'}>{item?.name ? item?.name : '-'}</Td>
 
-              {/* <Td alignSelf="flex-start">
+                <Td minWidth={'250px'}>
+                  {item?.terminalSerialCode ? item?.terminalSerialCode : '-'}
+                </Td>
+                <Td minWidth={'250px'}>{item?.account || '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item?.phones && item.phones.length > 0
+                    ? item.phones?.map((phone, index) => (
+                        <div key={index}>
+                          {`+998 (${phone.slice(3, 5)}) ${phone.slice(
+                            5,
+                            8,
+                          )} ${phone.slice(8, 10)} ${phone.slice(10, 12)}`}
+                        </div>
+                      ))
+                    : '-'}
+                </Td>
+
+                {/* <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
                     color={'blue'}
@@ -318,101 +325,101 @@ return (
                       : wordsListData.BUTTON_NOT_ACTIVE}
                   </Text>
                 </Td> */}
-              {/* <Td>{item?.posId ? item?.posId : '-'}</Td> */}
-              {/* <Td>{item?.filial_code ? item?.filial_code : '-'}</Td> */}
-              {role === 'ROLE_SELLER' && (
-                <Td>
-                  <Box ms={3}>
-                    <button
+                {/* <Td>{item?.posId ? item?.posId : '-'}</Td> */}
+                {/* <Td>{item?.filial_code ? item?.filial_code : '-'}</Td> */}
+                {role === 'ROLE_SELLER' && (
+                  <Td>
+                    <Box ms={3}>
+                      <button
+                        onClick={() => {
+                          setFormValues({
+                            name: item?.name,
+                            terminalSerialCode: item?.terminalSerialCode,
+                          });
+                          setTerminalSerialCode(item.terminalSerialCode);
+                          setTerminalSerialCodeInitial(item.terminalSerialCode);
+                          setdetailData(item);
+                          setIsEdit(true);
+                          onOpen();
+                        }}
+                      >
+                        {/* <FaEdit color={navbarIcon} size={23} /> */}
+                      </button>
+                    </Box>
+                  </Td>
+                )}
+                {role === 'ROLE_TERMINAL' || role === 'ROLE_BANK' || (
+                  <Td>
+                    <Box
                       onClick={() => {
-                        setFormValues({
-                          name: item?.name,
-                          terminalSerialCode: item?.terminalSerialCode,
-                        });
-                        setTerminalSerialCode(item.terminalSerialCode);
-                        setTerminalSerialCodeInitial(item.terminalSerialCode);
-                        setdetailData(item);
-                        setIsEdit(true);
-                        onOpen();
+                        if (item.status === 0) {
+                          debouncedPostFunction(item);
+                        }
                       }}
                     >
-                      {/* <FaEdit color={navbarIcon} size={23} /> */}
-                    </button>
-                  </Box>
-                </Td>
-              )}
-              {role === 'ROLE_TERMINAL' || role === 'ROLE_BANK' || (
-                <Td>
-                  <Box
-                    onClick={() => {
-                      if (item.status === 0) {
-                        debouncedPostFunction(item);
-                      }
-                    }}
-                  >
-                    {/* <Switch
+                      {/* <Switch
                       disabled={item.status === 1}
                       isChecked={item.status === 0}
                       colorScheme="teal"
                       size="lg" 
                     /> */}
-                    <Button
-                      disabled={item.status === 1}
-                      // isChecked={item.status === 0}
-                    >
-                      <MdDelete  color={navbarIcon} size={23} /> 
-                    </Button>
-                  </Box>
-                </Td>
-              )}
+                      <Button
+                        disabled={item.status === 1}
+                        // isChecked={item.status === 0}
+                      >
+                        <MdDelete color={navbarIcon} size={23} />
+                      </Button>
+                    </Box>
+                  </Td>
+                )}
+              </Tr>
+            ))
+          ) : (
+            <Tr>
+              <Td textAlign={'center'} colSpan={thead.length}>
+                {wordsListData?.PANEL_TERMINAL || 'Терминал'}{' '}
+                {wordsListData?.NOT_FOUND || 'не найден'}
+              </Td>
             </Tr>
-          ))
-        ) : (
-          <Tr>
-            <Td textAlign={'center'} colSpan={thead.length}>
-              {wordsListData?.PANEL_TERMINAL || 'Терминал'}{' '}
-              {wordsListData?.NOT_FOUND || 'не найден'}
-            </Td>
-          </Tr>
+          )}
+        </ComplexTable>
+        {role === 'ROLE_TERMINAL' || (
+          <Pagination
+            showSizeChanger
+            responsive={true}
+            defaultCurrent={1}
+            total={totalPage}
+            onChange={(page, size) => {
+              setPage(page - 1);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              setSize(pageSize);
+              setPage(0);
+            }}
+          />
         )}
-      </ComplexTable>
-      {role === 'ROLE_TERMINAL' || ( 
-        <Pagination
-          showSizeChanger
-          responsive={true}
-          defaultCurrent={1}
-          total={totalPage}
-          onChange={(page, size) => {
-            setPage(page - 1);
-          }}
-          onShowSizeChange={(current, pageSize) => {
-            setSize(pageSize);
-            setPage(0);
-          }}
-        />
-      )}
-    </SimpleGrid>
-    <Modal
-      size={'3xl'}
-      initialFocusRef={initialRef}
-      finalFocusRef={finalRef}
-      isOpen={isOpen}
-      onClose={() => {
-        onClose();
-        resetValue();
-      }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          {isEdit
-            ? wordsListData?.EDIT_TERMINAL || 'Редактирование терминала'
-            : wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody pb={6}>
-          <Grid templateColumns="repeat(2, 1fr)" gap={6} px={5}>
-            {/* {!isEdit && (
+      </SimpleGrid>
+      <Modal
+        size={'3xl'}
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          resetValue();
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            {isEdit
+              ? wordsListData?.EDIT_TERMINAL || 'Редактирование терминала'
+              : wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <Grid templateColumns="repeat(2, 1fr)" gap={6} px={5}>
+              {/* {!isEdit && (
                 <FormControl mt={4}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL_TYPE || 'Выберите терминал'}
@@ -440,96 +447,100 @@ return (
                 </FormControl>
               )} */}
 
-            {/* Terminal Name */}
-            <FormControl mt={4} isInvalid={!!formErrors.name}>
-              <FormLabel>
-                {wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала'}
-              </FormLabel>
-              <Input
-                name="name"
-                ref={initialRef}
-                placeholder={
-                  wordsListData?.ENTER_THE_TERMINAL_NAME ||
-                  'Введите название терминала'
-                }
-                value={formValues.name}
-                onChange={handleChange}
-                color={inputTextColor}
-              />
-            </FormControl>
+              {/* Terminal Name */}
+              <FormControl mt={4} isInvalid={!!formErrors.name}>
+                <FormLabel>
+                  {wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала'}
+                </FormLabel>
+                <Input
+                  name="name"
+                  ref={initialRef}
+                  placeholder={
+                    wordsListData?.ENTER_THE_TERMINAL_NAME ||
+                    'Введите название терминала'
+                  }
+                  value={formValues.name}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-            {/* Account */}
-            <FormControl mt={4} isInvalid={!!formErrors.account}>
-              <FormLabel>{wordsListData?.ACCOUNT_WEB || 'Аккаунт'}</FormLabel>
-              <Input
-                name="account"
-                placeholder={wordsListData?.ACCOUNT_WEB || 'Аккаунт'}
-                value={formValues.account}
-                onChange={handleChange}
-                color={inputTextColor}
-              />
-            </FormControl>
+              {/* Account */}
+              <FormControl mt={4} isInvalid={!!formErrors.account}>
+                <FormLabel>{wordsListData?.ACCOUNT_WEB || 'Аккаунт'}</FormLabel>
+                <Input
+                  name="account"
+                  placeholder={wordsListData?.ACCOUNT_WEB || 'Аккаунт'}
+                  value={formValues.account}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-            {/* Filial Code */}
-            <FormControl mt={4} isInvalid={!!formErrors.filialCode}>
-              <FormLabel>{wordsListData?.EXCEL_MFO || 'Код филиала'}</FormLabel>
-              <Input
-                name="filialCode"
-                placeholder={wordsListData?.EXCEL_MFO || 'Код филиала'}
-                value={formValues.filialCode}
-                onChange={handleChange}
-                color={inputTextColor}
-              />
-            </FormControl>
+              {/* Filial Code */}
+              <FormControl mt={4} isInvalid={!!formErrors.filialCode}>
+                <FormLabel>
+                  {wordsListData?.EXCEL_MFO || 'Код филиала'}
+                </FormLabel>
+                <Input
+                  name="filialCode"
+                  placeholder={wordsListData?.EXCEL_MFO || 'Код филиала'}
+                  value={formValues.filialCode}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-            {/* INN */}
-            <FormControl mt={4} isInvalid={!!formErrors.inn}>
-              <FormLabel>{wordsListData?.INN_WEB || 'ИНН'}</FormLabel>
-              <Input
-                name="inn"
-                placeholder={wordsListData?.INN_WEB || 'ИНН'}
-                value={formValues.inn}
-                onChange={handleChange}
-                color={inputTextColor}
-              />
-            </FormControl>
+              {/* INN */}
+              <FormControl mt={4} isInvalid={!!formErrors.inn}>
+                <FormLabel>{wordsListData?.INN_WEB || 'ИНН'}</FormLabel>
+                <Input
+                  name="inn"
+                  placeholder={wordsListData?.INN_WEB || 'ИНН'}
+                  value={formValues.inn}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-            {/* Phone */}
-            <FormControl mt={4} isInvalid={!!formErrors.phone}>
-              <FormLabel>
-                {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
-              </FormLabel>
-              <PhoneInput
-              disableCountryCodeEdit
-                required
-                defaultCountry="uz"
-                value={formValues.phone}
-                onChange={(phone) => handleChange({ target: { name: 'phone', value: phone } })}
-                style={{
-                  width: '100%',
-                  height: '50px',
-                  borderRadius: '16px',
-                  border: '1px solid #E0E5F2',
-                  fontSize: '16px',
-                  padding: '0 15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: inputTextColor
-                }}
-                inputStyle={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  outline: 'none',
-                  backgroundColor: 'transparent',
-                  fontSize: '16px',
-                  color: inputTextColor
-                }}
-                inputClass="phone-input"
-                containerClass="phone-input-container"
-                textClass="phone-input-text"
-              />
-              {/* <PhoneInput
+              {/* Phone */}
+              <FormControl mt={4} isInvalid={!!formErrors.phone}>
+                <FormLabel>
+                  {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
+                </FormLabel>
+                <PhoneInput
+                  disableCountryCodeEdit
+                  required
+                  defaultCountry="uz"
+                  value={formValues.phone}
+                  onChange={(phone) =>
+                    handleChange({ target: { name: 'phone', value: phone } })
+                  }
+                  style={{
+                    width: '100%',
+                    height: '50px',
+                    borderRadius: '16px',
+                    border: '1px solid #E0E5F2',
+                    fontSize: '16px',
+                    padding: '0 15px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: inputTextColor,
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '16px',
+                    color: inputTextColor,
+                  }}
+                  inputClass="phone-input"
+                  containerClass="phone-input-container"
+                  textClass="phone-input-text"
+                />
+                {/* <PhoneInput
                   required
                   defaultCountry="uz"
                   value={formValues.phone}
@@ -560,50 +571,50 @@ return (
                   containerClass="phone-input-container"
                   textClass="phone-input-text"
                 /> */}
-            </FormControl>
-            <FormControl mt={4} isInvalid={!!formErrors.terminalSerialCode}>
-              <FormLabel>
-                {wordsListData?.SERIAL_CODE || 'Серийный код'}
-              </FormLabel>
-              <Input
-                name="terminalSerialCode"
-                placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
-                value={formValues.terminalSerialCode}
-                onChange={handleChange}
-                color={inputTextColor}
-              />
-            </FormControl>
-          </Grid>
-        </ModalBody>
-        <ModalFooter display={'flex'} gap={'10px'}>
-          <Button
-            bg={'red'}
-            color={'white'}
-            _hover={{ bg: 'red.600' }}
-            _active={{ bg: 'red.600', transform: 'scale(0.98)' }}
-            onClick={() => {
-              onClose();
-              resetValue();
-            }}
-          >
-            {wordsListData?.CANCEL || 'Отмена'}
-          </Button>
-          <Button
-            bg={'green'}
-            color={'white'}
-            _hover={{ bg: 'green.600' }}
-            _active={{ bg: 'green.600', transform: 'scale(0.98)' }}
-            onClick={() => {
-              handleSave();
-            }}
-          >
-            {createLoading
-              ? wordsListData?.LOADING || 'Загрузка...'
-              : wordsListData?.SAVE || 'Сохранить'}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  </Box>
-);
+              </FormControl>
+              <FormControl mt={4} isInvalid={!!formErrors.terminalSerialCode}>
+                <FormLabel>
+                  {wordsListData?.SERIAL_CODE || 'Серийный код'}
+                </FormLabel>
+                <Input
+                  name="terminalSerialCode"
+                  placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
+                  value={formValues.terminalSerialCode}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
+            </Grid>
+          </ModalBody>
+          <ModalFooter display={'flex'} gap={'10px'}>
+            <Button
+              bg={'red'}
+              color={'white'}
+              _hover={{ bg: 'red.600' }}
+              _active={{ bg: 'red.600', transform: 'scale(0.98)' }}
+              onClick={() => {
+                onClose();
+                resetValue();
+              }}
+            >
+              {wordsListData?.CANCEL || 'Отмена'}
+            </Button>
+            <Button
+              bg={'green'}
+              color={'white'}
+              _hover={{ bg: 'green.600' }}
+              _active={{ bg: 'green.600', transform: 'scale(0.98)' }}
+              onClick={() => {
+                handleSave();
+              }}
+            >
+              {createLoading
+                ? wordsListData?.LOADING || 'Загрузка...'
+                : wordsListData?.SAVE || 'Сохранить'}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
 }
