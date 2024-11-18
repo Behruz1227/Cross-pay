@@ -503,10 +503,10 @@ export default function SellerOrder() {
                 <FormControl mt={4} isInvalid={!!formErrors.terminalId}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL || 'Выберите терминал'}
-                  </FormLabel>
+                  </FormLabel>  
                   <Select
                     name="terminalId"
-                    value={formValues.terminalId}
+                    value={terminalData?.length === 1 ? terminalData[0].id : formValues.terminalId}
                     onChange={handleChange}
                   >
                     {terminalData && terminalData?.length > 0 ? (
@@ -530,7 +530,7 @@ export default function SellerOrder() {
                 <FormControl mt={4} isInvalid={!!formErrors.amount}>  
                   <FormLabel> 
                     {wordsListData?.EXCEL_AMOUNT || 'Сумма'} 
-                  </FormLabel>
+                  </FormLabel> 
                   <Input
                     type="number"
                     name="amount"
