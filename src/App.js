@@ -175,6 +175,20 @@ export default function Main() {
     }, 10000);
   }, [pathname, tokens, navigate]);
 
+  const bgGenerator = (status) => {
+    if (status === 'WAIT')
+      return ['orange', wordsListData?.STATUS_WAIT || 'Ожидание'];
+    else if (status === 'COMPLETED')
+      return ['green', wordsListData?.STATUS_CONFIRMED || 'Подтвержден'];
+    else if (status === 'CANCEL')
+      return ['red', wordsListData?.STATUS_CANCELED || 'Отменен'];
+    else if (status === 'NEW')
+      return ['blue', wordsListData?.STATUS_NEW || 'Новый'];
+    else if (status === 'RETURNED')
+      return ['purple', wordsListData?.STATUS_RETURNED || 'Возврат'];
+    else return ['gray', wordsListData?.STATUS_UNKNOWN || 'Неизвестно'];
+  };
+
   return (
     <ChakraProvider theme={currentTheme}>
       <Modal
@@ -220,10 +234,10 @@ export default function Main() {
                 pe={5}
               >
                 <Text fontSize={'17px'} fontWeight={'700'}>
-                  {wordsListData?.SELLER_NAME || 'Название компании'}:{' '}
+                  {wordsListData?.EXT_ID || 'Внешний ID'}:{' '}
                 </Text>
                 <Text fontSize={'17px'}>
-                  {socketModalData?.merchant ? socketModalData.merchant : '-'}
+                  {socketModalData?.ext_id ? socketModalData.ext_id : '-'}
                 </Text>
               </Flex>
               <Flex
@@ -233,10 +247,10 @@ export default function Main() {
                 pe={5}
               >
                 <Text fontSize={'17px'} fontWeight={'700'}>
-                  {wordsListData?.CLIENT || 'Клиент'}:{' '}
+                  {wordsListData?.CHEQUE_AMOUNT_UZS || 'Проверить стоимость (uzs)'}:{' '}
                 </Text>
                 <Text fontSize={'17px'}>
-                  {socketModalData?.client ? socketModalData.client : '-'}
+                  {socketModalData?.amountUZS ? socketModalData.amountUZS : '-'}
                 </Text>
               </Flex>
               <Flex
@@ -246,10 +260,45 @@ export default function Main() {
                 pe={5}
               >
                 <Text fontSize={'17px'} fontWeight={'700'}>
-                  {wordsListData?.EXCEL_AMOUNT || 'Количество'}:{' '}
+                  {wordsListData?.CHEQUE_AMOUNT_RUB || 'Проверить стоимость (rub)'}:{' '}
                 </Text>
                 <Text fontSize={'17px'}>
-                  {socketModalData?.amount ? socketModalData.amount : '-'}
+                  {socketModalData?.amountUZS ? socketModalData.amountUZS : '-'}
+                </Text>
+              </Flex>
+              <Flex
+                width={'100%'}
+                flexDirection={{ base: 'column', md: 'row' }}
+                justifyContent={'space-between'}
+                pe={5}
+              >
+                <Text fontSize={'17px'} fontWeight={'700'}>
+                  {wordsListData?.STATUS || 'Статус'}:{' '}
+                </Text>
+                <Text
+                    background={'#ECEFF8'}
+                    color={bgGenerator(socketModalData?.status)[0]}
+                    py="10px"
+                    fontSize={"17px"}
+                    fontWeight="700"
+                    borderRadius="10px"
+                    textAlign={'center'}
+                    width={'130px'}
+                  >
+                    {bgGenerator(socketModalData?.status)[1]}
+                  </Text>
+              </Flex>
+              <Flex
+                width={'100%'}
+                flexDirection={{ base: 'column', md: 'row' }}
+                justifyContent={'space-between'}
+                pe={5}
+              >
+                <Text fontSize={'17px'} fontWeight={'700'}>
+                  {wordsListData?.DATE || 'Дата'}:{' '}
+                </Text>
+                <Text fontSize={'17px'}>
+                  {socketModalData?.created_at ? socketModalData.created_at : '-'}
                 </Text>
               </Flex>
             </Grid>
