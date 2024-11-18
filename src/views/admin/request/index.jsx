@@ -76,19 +76,19 @@ const Request = () => {
                 <Td>{page * 10 + i + 1}</Td>
                 <Td minWidth={'250px'}>{item?.fullName || '-'}</Td>
                 <Td minWidth={'250px'}>
-                  {item?.phone 
-                    ? `+998 (${item?.phone.slice(3, 5)}) ${item?.phone.slice(
+                  {item?.phone
+                    ? `+998 (${item?.phone.slice(3, 5)}) ${item?.phone.slice( 
                         5,
                         8,
                       )} ${item?.phone.slice(8, 10)} ${item?.phone.slice(10)}`
-                    : '-'} 
+                    : '-'}
                 </Td>
                 <Td minWidth={'250px'}>{item?.filialCode || '-'}</Td>
                 <Td minWidth={'250px'}>{item?.account || '-'}</Td>
                 <Td minWidth={'250px'}>{item?.inn || '-'}</Td>
                 <Td alignSelf="flex-start">
                   <Text
-                    background={'#ECEFF8'} 
+                    background={'#ECEFF8'}
                     color={bgGenerator(item?.status)[0]}
                     py="10px"
                     fontWeight="700"
@@ -96,7 +96,7 @@ const Request = () => {
                     textAlign={'center'}
                     width={'130px'}
                   >
-                    {bgGenerator(item?.status)[1]}  
+                    {bgGenerator(item?.status)[1]}
                   </Text>
                 </Td>
                 <Td>
