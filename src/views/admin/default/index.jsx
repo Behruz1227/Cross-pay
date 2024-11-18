@@ -89,7 +89,6 @@ export default function Dashboard() {
         transports: ['websocket'], // Faqat WebSocket transportini ishlatish
     secure: true
       });
-      console.log("DEEEeeeeeejhiuuuuuuuuuuuuuuuuuuv  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrhui                          ");
       
 
       socketRef.current.on('connect', () => {
@@ -98,11 +97,16 @@ export default function Dashboard() {
       });
 
       socketRef.current.on('notification', (data) => {
-        console.log('Received data:', data);
+        console.log('Notification data:', data);
         setNotificationSocket(data);
       });
 
       socketRef.current.on('callback-web-or-app', (data) => {
+        console.log('calback data:', data);
+        setSocketModalData(data);
+      });
+
+       socketRef.current.on('test', (data) => {
         console.log('Received data:', data);
         setSocketModalData(data);
       });
