@@ -469,13 +469,6 @@ export default function SellerOrder() {
             setPage(0);
           }}
         />
-        // <Pagination
-        //   showSizeChanger={true}
-        //   responsive={true}
-        //   defaultCurrent={1}
-        //   total={totalPage}
-        //   onChange={onChange}
-        // />
       )}
       <Modal
         size={isCreate ? 'lg' : '3xl'}
