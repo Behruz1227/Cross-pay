@@ -96,7 +96,7 @@ const Request = () => {
                     textAlign={'center'}
                     width={'130px'}
                   >
-                    {bgGenerator(item?.status)[1]}
+                    {bgGenerator(item?.status)[1]}  
                   </Text>
                 </Td>
                 <Td>
