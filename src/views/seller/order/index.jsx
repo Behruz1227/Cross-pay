@@ -460,7 +460,7 @@ export default function SellerOrder() {
           showSizeChanger
           responsive={true}
           defaultCurrent={1}
-          total={totalPage}
+          total={totalPage}  
           onChange={(page, size) => {
             setPage(page - 1);
           }}

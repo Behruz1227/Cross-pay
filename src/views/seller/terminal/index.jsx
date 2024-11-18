@@ -375,7 +375,7 @@ return (
           </Tr>
         )}
       </ComplexTable>
-      {role === 'ROLE_TERMINAL' || (
+      {role === 'ROLE_TERMINAL' || ( 
         <Pagination
           showSizeChanger
           responsive={true}
