@@ -194,12 +194,12 @@ export default function SellerOrder() {
   // console.log("socketData connected", socketData?.connected);
   // console.log("socket2", socketData);
    
-  useEffect(() => { 
-    if (modalOpen) {
-      openModal();
-    }
-  }, [modalOpen]);
-
+  useEffect(() => {   
+    if (modalOpen) { 
+      openModal();  
+    } 
+  }, [modalOpen]); 
+  
   const openModal = () => { 
     // setIsCreate(true); 
     onOpen();
