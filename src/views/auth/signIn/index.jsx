@@ -289,7 +289,7 @@ return (
                 );
               }
             }}
-            to={(showPassword && policy) && '/auth/check-password'}
+            to={(showPassword && policy && !loading) && '/auth/check-password'}
           >
             <Button
               disabled={!policy || loading}
@@ -299,7 +299,7 @@ return (
               w="100%"
               h="50"
               mb="24px"
-              type="submit"
+              // type="submit"
             >
               {loading ? 'Загрузка...' : showPassword ? "Продолжить" : 'Отправить СМС-код'}
             </Button>

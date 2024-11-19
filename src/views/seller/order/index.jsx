@@ -143,57 +143,6 @@ export default function SellerOrder() {
     });
   }, []);
 
-  // const connectSocket = () => {
-  //   if (socketRef.current) {
-  //     socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
-  //   }
-  //   socketRef.current = io('https://my.qrpay.uz/', {
-  //     secure: true,
-  //     transports: ['websocket', 'polling'],
-  //   });
-
-  //   socketRef.current.on('connect', () => {
-  //     console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
-  //     setSocketData(socketRef.current);
-  //   });
-
-  //   socketRef.current.on('callback-web-or-app', (data) => {
-  //     console.log('Received data:', data);
-  //     setSocketModalData(data);
-  //   });
-
-  //   socketRef.current.on('connect_error', (error) => {
-  //     console.error('Socket connection error:', error);
-  //     setTimeout(() => {
-  //       console.log('Retrying to connect socket...');
-  //       connectSocket(); // Qayta ulanish
-  //     }, 5000);
-  //   });
-
-  //   consoleClear();
-  // };
-
-  // useEffect(() => {
-  //   connectSocket(); // Ilk bor socketni ulaymiz
-
-  //   return () => {
-  //     if (socketRef.current) {
-  //       socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
-  //     }
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (socketRef.current && !socketRef.current.connected) {
-  //     connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
-  //   }
-  // }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
-
-  // console.log("socketData", socketData);
-  // console.log("socketData id", socketData?.id);
-  // console.log("socketData connected", socketData?.connected);
-  // console.log("socket2", socketData);
-
   useEffect(() => {
     if (modalOpen) {
       openModal();
@@ -211,10 +160,10 @@ export default function SellerOrder() {
         role === 'ROLE_TERMINAL'
           ? `${terminal_order_get}?page=${page}&size=${size}`
           : role === 'ROLE_SELLER'
-          ? `${seller_order_get}?page=${page}&size=${size}`
-          : role === 'ROLE_SUPER_ADMIN'
-          ? `${admin_order_get}?page=${page}&size=${size}`
-          : '',
+            ? `${seller_order_get}?page=${page}&size=${size}`
+            : role === 'ROLE_SUPER_ADMIN'
+              ? `${admin_order_get}?page=${page}&size=${size}`
+              : '',
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
@@ -229,16 +178,25 @@ export default function SellerOrder() {
     console.log('detailData ishladi', detailData);
   }, [detailData]);
 
+  useEffect(() => {
+    if (terminalData?.length > 0) {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        terminalId: terminalData[0].id,
+      }));
+    }
+  }, [terminalData]);
+
   const getFunction = () => {
     globalGetFunction({
       url:
         role === 'ROLE_TERMINAL'
           ? `${terminal_order_get}?page=${page}&size=${size}`
           : role === 'ROLE_SELLER'
-          ? `${seller_order_get}?page=${page}&size=${size}`
-          : role === 'ROLE_SUPER_ADMIN'
-          ? `${admin_order_get}?page=${page}&size=${size}`
-          : '',
+            ? `${seller_order_get}?page=${page}&size=${size}`
+            : role === 'ROLE_SUPER_ADMIN'
+              ? `${admin_order_get}?page=${page}&size=${size}`
+              : '',
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
@@ -248,10 +206,10 @@ export default function SellerOrder() {
         role === 'ROLE_TERMINAL'
           ? terminal_notification_count
           : role === 'ROLE_SELLER'
-          ? seller_notification_count
-          : role === 'ROLE_SUPER_ADMIN'
-          ? admin_notification_count
-          : '',
+            ? seller_notification_count
+            : role === 'ROLE_SUPER_ADMIN'
+              ? admin_notification_count
+              : '',
       setData: setCountData,
     });
   };
@@ -290,21 +248,23 @@ export default function SellerOrder() {
     const errors = { ...formErrors };
 
     if (name !== 'terminalId' && value.trim() === '') {
-      errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
+      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
     } else if (name === 'terminalId' && (value < 1 || !value)) {
-      errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
+      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
     } else if (name === 'amount') {
-      const numericValue = parseInt(value.replace(/,/g, ''), 10); 
+      const numericValue = parseInt(value.replace(/,/g, ''), 10);
 
       if (numericValue < 10000) {
-        errors[name] = 'Minimum value is 10,000';
+        errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
       } else if (numericValue > 150000000) {
-        errors[name] = 'Maximum value is 150,000,000';
+        errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
       } else {
-        errors[name] = ''; 
+        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
       }
+    } else if (name === 'amount' && value.trim() === '') {
+      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
     } else {
-      errors[name] = ''; 
+      errors[name] = '';
     }
 
     // Update error state
@@ -316,14 +276,22 @@ export default function SellerOrder() {
     Object.keys(formValues).forEach((key) => {
       if (key === 'terminalId') {
         if (formValues[key] < 1 || !formValues[key]) {
-          errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
+          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
         }
-      } else if (key === 'phone') {
-        if (formValues.phone.slice(1).length < 11) {
-          errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
+      } else if (key === 'amount') {
+        const numericValue = parseInt(formValues?.amount?.replace(/,/g, ''), 10);
+
+        if (numericValue < 10000) {
+          errors[key] = 'Minimum value is 10,000';
+        } else if (numericValue > 150000000) {
+          errors[key] = 'Maximum value is 150,000,000';
+        } else {
+          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
         }
+      } else if (key === 'amount' && formValues[key].trim() === '') {
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
       } else if (formValues[key].trim() === '') {
-        errors[key] = `${key} ${wordsListData?.ERROR || 'Ошибка'}`;
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
       }
     });
     if (Object.keys(errors).length === 0) {
@@ -398,8 +366,8 @@ export default function SellerOrder() {
                 <Td minWidth={'250px'}>
                   {item.cheque_created_at
                     ? item.cheque_created_at.slice(0, 10) +
-                      ' ' +
-                      item.cheque_created_at.slice(11, 16)
+                    ' ' +
+                    item.cheque_created_at.slice(11, 16)
                     : '-'}
                 </Td>
                 {/* <Td minWidth={'250px'}>
@@ -513,18 +481,16 @@ export default function SellerOrder() {
           <ModalBody pb={6}>
             {isCreate ? (
               <>
+                
                 <FormControl mt={4} isInvalid={!!formErrors.terminalId}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL || 'Выберите терминал'}
                   </FormLabel>
                   <Select
                     name="terminalId"
-                    value={
-                      terminalData?.length === 1
-                        ? terminalData[0].id
-                        : formValues.terminalId
-                    }
+                    value={terminalData?.length > 0 ? terminalData[0].id : formValues.terminalId}
                     onChange={handleChange}
+
                   >
                     {terminalData && terminalData?.length > 0 ? (
                       terminalData?.map((item) => (
@@ -532,7 +498,8 @@ export default function SellerOrder() {
                           {item.name}
                         </option>
                       ))
-                    ) : (
+                    )
+                     : (
                       <option disabled value={0}>
                         {wordsListData?.NOT_FOUND || 'Не найдено'}
                       </option>
@@ -554,15 +521,20 @@ export default function SellerOrder() {
                     placeholder={
                       wordsListData?.ENTER_THE_AMOUNT || 'Введите сумму'
                     }
-                    value={formValues.amount || ''}
-                    onChange={handleChange}
+                    value={formValues.amount ? formValues.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ''}
+                    onChange={(e) => {
+                      const newValue = e.target.value.replace(/\D/g, '');
+                      if (newValue.length <= 9) {
+                        handleChange({ target: { name: 'amount', value: newValue } });
+                      }
+                    }}
                     color={inputTextColor}
                   />
-                  {/* {formErrors.amount && (
+                  {formErrors.amount && (
                     <Text color="red.500" fontSize="sm">
                       {formErrors.amount}
                     </Text>
-                  )} */}
+                  )}
                 </FormControl>
 
                 {/* <FormControl mt={4} isInvalid={!!formErrors.phone}>
@@ -703,11 +675,11 @@ export default function SellerOrder() {
                   </Text>
                   <Text fontSize={'17px'}>
                     {detailData?.cheque_created_at ||
-                    detailData?.cheque_created_at === 0
+                      detailData?.cheque_created_at === 0
                       ? `${detailData?.cheque_created_at.slice(
-                          0,
-                          10,
-                        )} ${detailData?.cheque_created_at.slice(11, 16)}`
+                        0,
+                        10,
+                      )} ${detailData?.cheque_created_at.slice(11, 16)}`
                       : '-'}
                   </Text>
                 </GridItem>
@@ -856,9 +828,8 @@ export default function SellerOrder() {
               }}
               onClick={() => {
                 globalPostFunction({
-                  url: `${order_cancel}?ext_id=${
-                    detailData && detailData.ext_id ? detailData.ext_id : 0
-                  }`,
+                  url: `${order_cancel}?ext_id=${detailData && detailData.ext_id ? detailData.ext_id : 0
+                    }`,
                   postData: {},
                   getFunction: () => {
                     getFunction();
@@ -915,9 +886,8 @@ export default function SellerOrder() {
               }}
               onClick={() => {
                 globalPostFunction({
-                  url: `${order_confirm}${
-                    detailData && detailData.id ? detailData.id : 0
-                  }`,
+                  url: `${order_confirm}${detailData && detailData.id ? detailData.id : 0
+                    }`,
                   postData: {},
                   getFunction: () => {
                     getFunction();

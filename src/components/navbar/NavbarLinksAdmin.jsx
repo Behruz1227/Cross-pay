@@ -729,7 +729,7 @@ export default function HeaderLinks(props) {
                   </Text>
                 )} */}
               </FormControl>
-              {role !== 'ROLE_SUPER_ADMIN' && (
+              {role === 'ROLE_SELLER' && (
                 <>
                   <FormControl mt={4} isInvalid={!!formErrors.inn}>
                     <FormLabel>{wordsListData?.INN || 'ИНН'}</FormLabel>

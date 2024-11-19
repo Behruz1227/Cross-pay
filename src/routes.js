@@ -166,13 +166,6 @@ export const generateRoutes = (wordsListData) => [
   },
   // Terminal panel route
   {
-    name: wordsListData?.PANEL_TERMINAL || 'Терминал',
-    layout: '/terminal',
-    path: '/terminals',
-    icon: <Icon as={IoTerminal} width="20px" height="20px" color="inherit" />,
-    component: <SellerTerminal />,
-  },
-  {
     name: wordsListData?.PANEL_PAYMENT || 'Оплата',
     layout: '/terminal',
     path: '/payment',
@@ -181,6 +174,14 @@ export const generateRoutes = (wordsListData) => [
     ),
     component: <SellerOrder />,
   },
+  {
+    name: wordsListData?.PANEL_TERMINAL || 'Терминал',
+    layout: '/terminal',
+    path: '/terminals',
+    icon: <Icon as={IoTerminal} width="20px" height="20px" color="inherit" />,
+    component: <SellerTerminal />,
+  },
+  
   {
     name: wordsListData?.PANEL_PAYMENT_STATS || 'Отчет о платежах', //
     layout: '/terminal',
