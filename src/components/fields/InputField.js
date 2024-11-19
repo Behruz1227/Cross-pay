@@ -32,6 +32,7 @@ export default function Default(props) {
       <Input
         {...rest}
         type={type}
+        maxLength={40}
         id={id}
         fontWeight='500'
         variant='main'

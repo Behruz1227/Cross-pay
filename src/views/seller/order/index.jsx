@@ -270,23 +270,45 @@ export default function SellerOrder() {
     else return ['gray', wordsListData?.STATUS_UNKNOWN || 'Неизвестно'];
   };
 
+  const formatNumber = (value) => {
+    return value.replace(/[^0-9]/g, "")
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Format the value for display (for 'amount' field only)
+    const formattedValue = name === 'amount' ? formatNumber(value) : value;
+
+    // Update form values
     setFormValues({
       ...formValues,
-      [name]: value,
+      [name]: formattedValue,
     });
 
-    const errors = {};
+    // Validate input and handle errors
+    const errors = { ...formErrors };
+
     if (name !== 'terminalId' && value.trim() === '') {
       errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
     } else if (name === 'terminalId' && (value < 1 || !value)) {
       errors[name] = `${name}${wordsListData?.ERROR || 'Ошибка'}`;
+    } else if (name === 'amount') {
+      const numericValue = parseInt(value.replace(/,/g, ''), 10); 
+
+      if (numericValue < 10000) {
+        errors[name] = 'Minimum value is 10,000';
+      } else if (numericValue > 150000000) {
+        errors[name] = 'Maximum value is 150,000,000';
+      } else {
+        errors[name] = ''; 
+      }
     } else {
-      errors[name] = '';
+      errors[name] = ''; 
     }
-    setFormErrors({ ...formErrors, ...errors });
-    // Simple validation example
+
+    // Update error state
+    setFormErrors(errors);
   };
 
   const handleSave = () => {
@@ -527,7 +549,7 @@ export default function SellerOrder() {
                     {wordsListData?.EXCEL_AMOUNT || 'Сумма'}
                   </FormLabel>
                   <Input
-                    type="number"
+                    type="text"
                     name="amount"
                     placeholder={
                       wordsListData?.ENTER_THE_AMOUNT || 'Введите сумму'
