@@ -35,14 +35,14 @@ import io from 'socket.io-client';
 import { SocketStore } from 'contexts/state-management/socket/socketStore';
 import { consoleClear } from 'contexts/toast-message';
 
-const socket = io('https://my.qrpay.uz', {
-    transports: ['websocket'], // Faqat WebSocket transportini ishlatish
-    secure: true
-});
+// const socket = io('https://my.qrpay.uz', {
+//     transports: ['websocket'], // Faqat WebSocket transportini ishlatish
+//     secure: true
+// });
 
-socket.on('connect', () => {
-    console.log('Socket.IO ulanish o‘rnatildi.');
-});
+// socket.on('connect', () => {
+//     console.log('Socket.IO ulanish o‘rnatildi.');
+// });
 
 // socket.on('message', (data) => {
 //     console.log('Serverdan xabar:', data);
@@ -79,74 +79,74 @@ export default function Dashboard() {
 
   const role = sessionStorage.getItem('ROLE');
 
-  const connectSocket = () => {
-    if (role !== "ROLE_SUPER_ADMIN") {
+  // const connectSocket = () => {
+  //   if (role !== "ROLE_SUPER_ADMIN") {
       
-      if (socketRef.current) {
-        socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
-      }
-      socketRef.current = io('https://my.qrpay.uz', {
-        transports: ['websocket'], // Faqat WebSocket transportini ishlatish
-    secure: true
-      });
+  //     if (socketRef.current) {
+  //       socketRef.current.disconnect(); // Eskisini uzib tashlaymiz
+  //     }
+  //     socketRef.current = io('https://my.qrpay.uz', {
+  //       transports: ['websocket'], // Faqat WebSocket transportini ishlatish
+  //   secure: true
+  //     });
       
 
-      socketRef.current.on('connect', () => {
-        console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
-        setSocketData(socketRef.current);
-      });
+  //     socketRef.current.on('connect', () => {
+  //       console.log('Connected to Socket.IO server ID: ' + socketRef.current.id);
+  //       setSocketData(socketRef.current);
+  //     });
 
-      socketRef.current.on('notification', (data) => {
-        console.log('Notification data:', data);
-        setNotificationSocket(data);
-      });
+  //     socketRef.current.on('notification', (data) => {
+  //       console.log('Notification data:', data);
+  //       setNotificationSocket(data);
+  //     });
 
-      socketRef.current.on('callback-web-or-app', (data) => {
-        console.log('calback data:', data);
-        setSocketModalData(data);
-      });
+  //     socketRef.current.on('callback-web-or-app', (data) => {
+  //       console.log('calback data:', data);
+  //       setSocketModalData(data);
+  //     });
 
-       socketRef.current.on('test', (data) => {
-        console.log('Received data:', data);
-        setSocketModalData(data);
-      });
+  //      socketRef.current.on('test', (data) => {
+  //       console.log('Received data:', data);
+  //       setSocketModalData(data);
+  //     });
 
-      socketRef.current.on('connect_error', (error) => {
-        console.error('Socket connection error:', error);
-        setTimeout(() => {
-          console.log('Retrying to connect socket...');
-          connectSocket(); // Qayta ulanish
-        }, 5000);
-      });
-    }
+  //     socketRef.current.on('connect_error', (error) => {
+  //       console.error('Socket connection error:', error);
+  //       setTimeout(() => {
+  //         console.log('Retrying to connect socket...');
+  //         connectSocket(); // Qayta ulanish
+  //       }, 5000);
+  //     });
+  //   }
 
-    consoleClear();
-  };
+  //   consoleClear();
+  // };
 
-  useEffect(() => {
-    // if (role === "ROLE_SUPER_ADMIN") {
-      connectSocket(); // Ilk bor socketni ulaymiz
-    // }
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
-      }
-    };
+  // useEffect(() => {
+  //   // if (role === "ROLE_SUPER_ADMIN") {
+  //     connectSocket(); // Ilk bor socketni ulaymiz
+  //   // }
+  //   return () => {
+  //     if (socketRef.current) {
+  //       socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
+  //     }
+  //   };
 
-  }, []);
+  // }, []);
 
-  useEffect(() => {
-    if (role !== "ROLE_SUPER_ADMIN") {
-      if (socketRef.current && !socketRef.current.connected) {
-        connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
-      }
-    }
-  }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
+  // useEffect(() => {
+  //   if (role !== "ROLE_SUPER_ADMIN") {
+  //     if (socketRef.current && !socketRef.current.connected) {
+  //       connectSocket(); // Agar socket ulanmagan bo'lsa, qayta ulash
+  //     }
+  //   }
+  // }, [socketRef]); // Sahifa va o'lcham o'zgarsa qayta ulanish
 
-  console.log("socketData", socketData);
-  console.log("socketData id", socketData?.id);
-  console.log("socketData connected", socketData?.connected);
-  console.log("socket2", socketData);
+  // console.log("socketData", socketData);
+  // console.log("socketData id", socketData?.id);
+  // console.log("socketData connected", socketData?.connected);
+  // console.log("socket2", socketData);
 
   const thead = [
     wordsListData?.TABLE_TR || 'Т/р',
