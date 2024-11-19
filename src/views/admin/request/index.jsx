@@ -90,11 +90,11 @@ const Request = () => {
                   <Text
                     background={'#ECEFF8'}
                     color={bgGenerator(item?.status)[0]}
-                    py="10px"
+                    py="10px"  
                     fontWeight="700"
-                    borderRadius="10px"
-                    textAlign={'center'}
-                    width={'130px'}
+                    borderRadius="10px" 
+                    textAlign={'center'} 
+                    width={'130px'} 
                   >
                     {bgGenerator(item?.status)[1]}
                   </Text>
