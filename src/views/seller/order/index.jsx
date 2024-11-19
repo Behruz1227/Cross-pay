@@ -259,7 +259,7 @@ export default function SellerOrder() {
       } else if (numericValue > 150000000) {
         errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
       } else {
-        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
+        errors[name] = "";;
       }
     } else if (name === 'amount' && value.trim() === '') {
       errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
@@ -274,24 +274,23 @@ export default function SellerOrder() {
   const handleSave = () => {
     const errors = {};
     Object.keys(formValues).forEach((key) => {
-      if (key === 'terminalId') {
-        if (formValues[key] < 1 || !formValues[key]) {
-          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
-        }
+      if (key !== 'terminalId' && formValues[key].trim() === '') {
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+      } else if (key === 'terminalId' && (formValues[key] < 1 || !formValues[key])) {
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
       } else if (key === 'amount') {
-        const numericValue = parseInt(formValues?.amount?.replace(/,/g, ''), 10);
-
+        const numericValue = parseInt(formValues[key].replace(/,/g, ''), 10);
         if (numericValue < 10000) {
-          errors[key] = 'Minimum value is 10,000';
+          errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
         } else if (numericValue > 150000000) {
-          errors[key] = 'Maximum value is 150,000,000';
+          errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
         } else {
-          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
+          errors[key] = "";;
         }
       } else if (key === 'amount' && formValues[key].trim() === '') {
         errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-      } else if (formValues[key].trim() === '') {
-        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";;
+      } else {
+        errors[key] = '';
       }
     });
     if (Object.keys(errors).length === 0) {
