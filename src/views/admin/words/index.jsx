@@ -332,8 +332,8 @@ const WordsPage = () => {
         onShowSizeChange={(current, pageSize) => {
           setSize(pageSize)
           setPage(0)
-          console.log("current", current)
-          console.log("pageSize", pageSize)
+          // console.log("current", current)
+          // console.log("pageSize", pageSize)
         }}
       />
       <>

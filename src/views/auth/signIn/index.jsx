@@ -78,7 +78,7 @@ function checkKeyPress(event) {
 }
 
 useEffect(() => {
-  console.log(phonenumber.slice(1));
+  // console.log(phonenumber.slice(1));
   if (phonenumber.slice(1).length === 12) {
     setLoading(true)
     _.delay(() => {

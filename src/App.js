@@ -72,7 +72,7 @@ export default function Main() {
   const tokenExpiry = sessionStorage.getItem("tokenExpiry");
 
   useEffect(() => {
-    // siteSecurity();
+    siteSecurity();
   }, []);
 
   useEffect(() => {
@@ -103,24 +103,24 @@ export default function Main() {
       });
 
       socketRef?.current.on("connect", () => {
-        console.log(
-          "Connected to Socket.IO server ID: " + socketRef?.current?.id
-        );
+        // console.log(
+        //   "Connected to Socket.IO server ID: " + socketRef?.current?.id
+        // );
         setSocketData(socketRef.current);
       });
 
       socketRef.current.on("notification", (data) => {
-        console.log("Notification data:", data);
+        // console.log("Notification data:", data);
         setNotificationSocket(data);
       });
 
       socketRef.current.on("callback-web-or-app", (data) => {
-        console.log("calback data:", data);
+        // console.log("calback data:", data);
         setSocketModalData(data);
       });
 
       socketRef.current.on("test", (data) => {
-        console.log("Received data:", data);
+        // console.log("Received data:", data);
         setSocketModalData(data);
       });
 
@@ -128,7 +128,7 @@ export default function Main() {
         console.error("Socket connection error:", error);
         setConnectionAttempts((prev) => prev + 1); // Ulanish urinishini oshiramiz
         setTimeout(() => {
-          console.log("Retrying to connect socket...");
+          // console.log("Retrying to connect socket...");
           connectSocket(); // Qayta ulanish
         }, 5000);
       });

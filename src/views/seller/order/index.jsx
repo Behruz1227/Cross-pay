@@ -175,7 +175,7 @@ export default function SellerOrder() {
       setIsCreate(false);
       resetValue();
     }
-    console.log('detailData ishladi', detailData);
+    // console.log('detailData ishladi', detailData);
   }, [detailData]);
 
   useEffect(() => {

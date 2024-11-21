@@ -511,7 +511,10 @@ export default function Dashboard() {
                     <Td>{i + 1}</Td>
                     <Td>{item?.partner}</Td>
                     <Td>{item?.date}</Td>
-                    <Td>{`${item?.amount ? item?.amount.toFixed(2) : '0'
+                    <Td>{`${item?.amount ? `${item.amount.toLocaleString('uz-UZ', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}` : '0'
                       } UZS`}</Td>
                     <Td alignSelf="flex-start">
                       <Text
