@@ -1,29 +1,29 @@
 // import { io } from "socket.io-client";
 
-// export const base_url = 'http://185.74.4.138:8080';
-export const base_url = 'https://apk.qrpay.uz/';
+export const base_url = 'http://185.74.4.138:8081/api/';
+// export const base_url = 'https://apk.qrpay.uz/';
 // export const socket = io('https://socket.qrpay.uz', {
 //       secure: true,
 //       transports: ['websocket', 'polling'], // WebSocket va Pollingni qo'llash
 //     });
 
-export const getMeUrl = `${base_url}api/user/me`;
+export const getMeUrl = `${base_url}user/me`;
 
 // USER CONTROLLER
-export const user_register = `${base_url}api/user/register`;
-export const user_login = `${base_url}api/user/login`;
-export const bank_login = `${base_url}api/user/bank-login`;
-export const set_socket = `${base_url}api/user/save-socket-id?socketId=`;
-export const user_sendCode = `${base_url}api/user/send-code`;
-export const checkPhoneUrl = `${base_url}api/user/check-phone?phone=`; //
+export const user_register = `${base_url}user/register`;
+export const user_login = `${base_url}user/login`;
+export const bank_login = `${base_url}user/bank-login`;
+export const set_socket = `${base_url}user/save-socket-id?socketId=`;
+export const user_sendCode = `${base_url}user/send-code`;
+export const checkPhoneUrl = `${base_url}user/check-phone?phone=`; //
 export const user_request = `${base_url}request/save`;
-export const user_edit = `${base_url}api/user/update`;
-export const user_merchant = `${base_url}api/user/page`;
-export const user_terminal = `${base_url}api/user/terminal`;
-export const user_edit_status = `${base_url}api/user/user-active`;
+export const user_edit = `${base_url}user/update`;
+export const user_merchant = `${base_url}user/page`;
+export const user_terminal = `${base_url}user/terminal`;
+export const user_edit_status = `${base_url}user/user-active`;
 export const user_terminal_add = `${base_url}terminal/add-terminal-user`;
 export const user_terminal_delete = `${base_url}terminal/delete-terminal-user`;
-export const user_merchant_update = `${base_url}api/user/add-seller`;
+export const user_merchant_update = `${base_url}user/add-seller`;
 
 // TERMINAL CONTROLLER
 export const terminal_create = `${base_url}terminal/create`;
@@ -31,7 +31,7 @@ export const terminal_get = `${base_url}terminal/list`;
 export const terminal_get_list = `${base_url}terminal/select-terminal-list`;
 export const terminal_update = `${base_url}terminal/update/`;
 export const terminal_isActive = `${base_url}terminal/deactive/`;
-export const terminal_search = `${base_url}api/user/select`;
+export const terminal_search = `${base_url}user/select`;
 
 // ORDER CONTROLLER
 export const order_create = `${base_url}payment/create`;
