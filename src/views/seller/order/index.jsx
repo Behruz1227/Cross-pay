@@ -184,6 +184,9 @@ export default function SellerOrder() {
         ...prevValues,
         terminalId: terminalData[0].id,
       }));
+
+      console.log("terminalData[0].id", terminalData[0].id);
+      
     }
   }, [terminalData]);
 
@@ -258,13 +261,9 @@ export default function SellerOrder() {
         errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
       } else if (numericValue > 150000000) {
         errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
-      } else {
-        errors[name] = "";;
       }
     } else if (name === 'amount' && value.trim() === '') {
       errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-    } else {
-      errors[name] = '';
     }
 
     // Update error state
@@ -272,6 +271,7 @@ export default function SellerOrder() {
   };
 
   const handleSave = () => {
+    
     const errors = {};
     Object.keys(formValues).forEach((key) => {
       if (key !== 'terminalId' && formValues[key].trim() === '') {
@@ -284,16 +284,17 @@ export default function SellerOrder() {
           errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
         } else if (numericValue > 150000000) {
           errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
-        } else {
-          errors[key] = "";;
         }
       } else if (key === 'amount' && formValues[key].trim() === '') {
         errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-      } else {
-        errors[key] = '';
       }
     });
+    console.log("101002929293939 ", Object.keys(errors).length);
+    console.log("101002929293939 99494949494949 ", Object.keys(errors));
+    console.log("101002929293939 99494949494949 9499995 ", errors);
+
     if (Object.keys(errors).length === 0) {
+      console.log("101002929293939 99494949494949 9499995 4959599 9959595959");
       globalPostFunction({
         url: `${order_create}`,
         postData: {
@@ -776,7 +777,12 @@ export default function SellerOrder() {
                     bg: 'blue.600',
                     transform: 'scale(0.98)',
                   }}
-                  onClick={handleSave}
+                  onClick={() => {
+                    handleSave()
+                    console.log("xfguiogfxfghjhg jghjohgghihhjojhhd jiojjcoihrr ", formValues.terminalId);
+                    console.log("xfguiogfxfghjhg jghjohgghihhjojhhd ", formValues.amount);
+                    
+                  }}
                   isLoading={isLoading}
                 >
                   {wordsListData?.SAVE || 'Сохранить'}

@@ -266,8 +266,8 @@ export default function OrderStats() {
                 <Td minWidth={'200px'}>{item.rate || '-'}</Td>
                 <Td minWidth={'200px'}>{item.account || '-'}</Td>
                 <Td minWidth={'200px'}>{item.inn || '-'}</Td>
-                <Td minWidth={'250px'}>{item.createdAt || '-'}</Td>
-                <Td minWidth={'250px'}>{item.paymentDate || '-'}</Td>
+                <Td minWidth={'250px'}>{item.createdAt ? item.createdAt.slice(0, 16) : '-'}</Td>
+                <Td minWidth={'250px'}>{item.payDate ? item.payDate.slice(0, 16) : '-'}</Td>
                 <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
