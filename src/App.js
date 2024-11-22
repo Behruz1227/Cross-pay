@@ -76,7 +76,10 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    if (socketData?.id || pathname.split("/")[2] === "dashboard") {
+    if (
+      (socketData?.id || pathname.split("/")[2] === "dashboard") &&
+      pathname.split("/")[2] === "sign-in"
+    ) {
       globalPostFunction({
         url: `${set_socket}${socketData?.id}`,
         postData: {},
@@ -136,13 +139,13 @@ export default function Main() {
   };
 
   useEffect(() => {
-    connectSocket(); // Ilk bor socketni ulaymiz
+    if (pathname.split("/")[2] === "dashboard") connectSocket(); // Ilk bor socketni ulaymiz
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect(); // Unmount qilinganda socketni uzamiz
       }
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (connectionAttempts < 5 && role !== "ROLE_SUPER_ADMIN") {
@@ -176,7 +179,12 @@ export default function Main() {
 
   useEffect(() => {
     // i18n.changeLanguage(languageData);
-    if (languageData) {
+    if (
+      languageData &&
+      pathname.split("/")[2] !== "sign-in" &&
+      pathname.split("/")[2] !== "check-code" &&
+      pathname.split("/")[2] !== "sign-up"
+    ) {
       globalGetFunction({
         url: `${words_get_data}WEB`,
         setData: setWordsListData,
@@ -185,7 +193,12 @@ export default function Main() {
   }, [languageData]);
 
   useEffect(() => {
-    if (!wordsListData) {
+    if (
+      !wordsListData &&
+      pathname.split("/")[2] !== "sign-in" &&
+      pathname.split("/")[2] !== "check-code" &&
+      pathname.split("/")[2] !== "sign-up"
+    ) {
       globalGetFunction({
         url: `${words_get_data}WEB`,
         setData: setWordsListData,
