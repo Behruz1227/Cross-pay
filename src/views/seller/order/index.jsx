@@ -236,93 +236,95 @@ export default function SellerOrder() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-  
-    // Format the value for display (for 'amount' field only)
-    const formattedValue = name === 'amount' ? formatNumber(value) : value;
-  
-    // Update form values
-    setFormValues({
-      ...formValues,
-      [name]: formattedValue,
-    });
-  
-    // Validate input and handle errors
-    const errors = { ...formErrors };
-  
-    if (name === 'terminalId') {
-      if (!value || parseInt(value, 10) <= 0) {
-        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
+  const { name, value } = e.target;
+
+  // Format the value for display (for 'amount' field only)
+  const formattedValue = name === 'amount' ? formatNumber(value) : value;
+
+  // Update form values
+  setFormValues({
+    ...formValues,
+    [name]: formattedValue,
+  });
+
+  // Validate input and handle errors
+  const errors = { ...formErrors };
+
+  if (name === 'terminalId') {
+    const numericValue = Number(value); // Raqamga aylantirish
+    if (!numericValue || numericValue <= 0) {
+      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
+    } else {
+      delete errors[name];
+    }
+  } else if (name === 'amount') {
+    if (!value.trim()) {
+      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+    } else {
+      const numericValue = parseInt(value.replace(/,/g, ''), 10);
+
+      if (numericValue < 10000) {
+        errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
+      } else if (numericValue > 150000000) {
+        errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
       } else {
         delete errors[name];
       }
-    } else if (name === 'amount') {
-      if (!value.trim()) {
-        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-      } else {
-        const numericValue = parseInt(value.replace(/,/g, ''), 10);
-  
-        if (numericValue < 10000) {
-          errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
-        } else if (numericValue > 150000000) {
-          errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
-        } else {
-          delete errors[name];
-        }
-      }
     }
-  
-    // Update error state
-    setFormErrors(errors);
-  };
+  }
+
+  // Update error state
+  setFormErrors(errors);
+};
+
   
 
-  const handleSave = () => {
-    const errors = {};
-  
-    Object.keys(formValues).forEach((key) => {
-      const value = formValues[key]?.trim(); // Trim orqali bo'sh joylarni olib tashlash
-  
-      if (key === 'terminalId') {
-        if (!value || parseInt(value, 10) < 1) {
-          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
-        }
-      } else if (key === 'amount') {
-        if (!value) {
-          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-        } else {
-          const numericValue = parseInt(value.replace(/,/g, ''), 10);
-          if (numericValue < 10000) {
-            errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (UZS)';
-          } else if (numericValue > 150000000) {
-            errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
-          }
-        }
-      } else if (!value) {
-        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+const handleSave = () => {
+  const errors = {};
+
+  Object.keys(formValues).forEach((key) => {
+    const value = String(formValues[key] || '').trim(); // terminalId qiymatini stringga aylantirish
+
+    if (key === 'terminalId') {
+      // terminalId faqat raqam bo'lishi va 0 dan katta bo'lishi kerak
+      const numericValue = Number(value);
+      if (!numericValue || numericValue < 1) {
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
       }
-    });
-  
-    // console.log("Validation Errors Count: ", Object.keys(errors).length);
-    // console.log("Validation Errors Keys: ", Object.keys(errors));
-    // console.log("Validation Errors Details: ", errors);
-  
-    if (Object.keys(errors).length === 0) {
-      // console.log("All validations passed. Proceeding with save.");
-      globalPostFunction({
-        url: `${order_create}`,
-        postData: {
-          amount: +formValues.amount, // Numberga o'girish
-          terminalId: formValues.terminalId,
-        },
-        setLoading: setIsLoading,
-        getFunction: getFunction,
-        setData: setDetailData,
-      });
-    } else {
-      setFormErrors(errors); // Xatoliklarni yangilash
+    } else if (key === 'amount') {
+      if (!value) {
+        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+      } else {
+        const numericValue = parseInt(value.replace(/,/g, ''), 10); // "," belgilarini olib tashlash va raqamga aylantirish
+        if (numericValue < 10000) {
+          errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (UZS)';
+        } else if (numericValue > 150000000) {
+          errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
+        }
+      }
+    } else if (!value) {
+      // Boshqa barcha maydonlar uchun umumiy tekshirish
+      errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
     }
-  };
+  });
+
+  // Agar hech qanday xatolik bo'lmasa, post qilish jarayoni
+  if (Object.keys(errors).length === 0) {
+    globalPostFunction({
+      url: `${order_create}`,
+      postData: {
+        amount: +formValues.amount.replace(/,/g, ''), // Numberga aylantirish va "," belgilarini olib tashlash
+        terminalId: String(formValues.terminalId || '').trim(), // String format va bosh joylarni olib tashlash
+      },
+      setLoading: setIsLoading,
+      getFunction: getFunction,
+      setData: setDetailData,
+    });
+  } else {
+    setFormErrors(errors); // Xatoliklarni yangilash
+  }
+};
+
   
 
   return (
