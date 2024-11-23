@@ -536,7 +536,7 @@ export default function SellerOrder() {
                     placeholder={
                       wordsListData?.ENTER_THE_AMOUNT || 'Введите сумму'
                     }
-                    value={formValues.amount ? formValues.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ''}
+                    value={formValues.amount ? formValues.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : ''}
                     onChange={(e) => {
                       const newValue = e.target.value.replace(/\D/g, '');
                       if (newValue.length <= 9) {
