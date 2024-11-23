@@ -266,7 +266,8 @@ const UserTerminal = () => {
           ) : (
             <Tr>
               <Td textAlign="center" colSpan={thead.length}>
-                {wordsListData?.PAYMENT_NOTFOUND || 'не найдено'}
+              {wordsListData?.TERMINAL_USERS_TABLE || 'Пользователи терминалов'}{' '}
+                {wordsListData?.NOT_FOUND || 'не найдено'}
               </Td>
             </Tr>
           )}
