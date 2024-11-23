@@ -11,7 +11,6 @@ import AdminLayout from "./layouts/admin";
 import ClientLayout from "./layouts/seller";
 import TerminalLayout from "./layouts/terminal";
 import {
-  Button,
   ChakraProvider,
   Flex,
   Grid,
@@ -19,7 +18,6 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
@@ -28,30 +26,21 @@ import {
 import initialTheme from "./theme/theme";
 import { useEffect, useRef, useState } from "react";
 import { setConfig } from "./contexts/token";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 
 import { LanguageStore } from "contexts/state-management/language/languageStore";
 import { globalGetFunction } from "contexts/logic-function/globalFunktion";
 import { words_get_data } from "contexts/api";
 import { consoleClear } from "contexts/toast-message";
-import { PaymentStore } from "contexts/state-management/payment/paymentStore";
 import { SocketStore } from "contexts/state-management/socket/socketStore";
 import { globalPostFunction } from "contexts/logic-function/globalFunktion";
-import { terminal_order_get } from "contexts/api";
-import { admin_order_get } from "contexts/api";
-import { order_confirm } from "contexts/api";
-import { seller_order_get } from "contexts/api";
-import { order_cancel } from "contexts/api";
 import { siteSecurity } from "contexts/allRequest";
-import { globalPutFunction } from "contexts/logic-function/globalFunktion";
 import { set_socket } from "contexts/api";
 import { words_get_language } from "contexts/api";
 
 export default function Main() {
   const { languageData, setWordsListData, wordsListData, setLanguageData } = LanguageStore();
   const {
-    setSocketLoading,
-    socketLoading,
     setSocketModal,
     socketModal,
     socketModalData,
@@ -66,7 +55,6 @@ export default function Main() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const socketRef = useRef(null);
-  // const [role, setRole] = useState("");
   const [connectionAttempts, setConnectionAttempts] = useState(0); // Ulanish urinishlari
   const tokens = sessionStorage.getItem("token");
   const role = sessionStorage.getItem("ROLE");

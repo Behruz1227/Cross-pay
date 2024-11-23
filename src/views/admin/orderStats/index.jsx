@@ -119,7 +119,7 @@ export default function OrderStats() {
     else if (status === 'COMPLETED')
       return ['green', wordsListData?.STATUS_CONFIRMED || 'Подтвержден'];
     else if (status === 'CANCEL')
-      return ['red', wordsListData?.STATUS_CANCEL || 'Отменен'];
+      return ['red', wordsListData?.STATUS_CANCELED || 'Отменен'];
     else if (status === 'NEW')
       return ['blue', wordsListData?.STATUS_NEW || 'Новый'];
     else return ['gray', wordsListData?.UNKNOWN || 'Неизвестно'];

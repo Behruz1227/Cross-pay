@@ -333,7 +333,7 @@ const UserTerminal = () => {
                     ))
                   ) : (
                     <option value="" disabled>
-                      {wordsListData?.TERMINALPANEL_TERMINAL || 'Терминал'}
+                      {wordsListData?.PANEL_TERMINAL || 'Терминал'}
                       {wordsListData?.NOT_FOUND || 'не найдено'}
                     </option>
                   )}
