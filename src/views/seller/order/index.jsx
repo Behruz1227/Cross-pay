@@ -237,68 +237,82 @@ export default function SellerOrder() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+  
     // Format the value for display (for 'amount' field only)
     const formattedValue = name === 'amount' ? formatNumber(value) : value;
-
+  
     // Update form values
     setFormValues({
       ...formValues,
       [name]: formattedValue,
     });
-
+  
     // Validate input and handle errors
     const errors = { ...formErrors };
-
-    if (name !== 'terminalId' && value.trim() === '') {
-      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-    } else if (name === 'terminalId' && (value < 1 || !value)) {
-      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-    } else if (name === 'amount') {
-      const numericValue = parseInt(value.replace(/,/g, ''), 10);
-
-      if (numericValue < 10000) {
-        errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
-      } else if (numericValue > 150000000) {
-        errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
+  
+    if (name === 'terminalId') {
+      if (!value || parseInt(value, 10) <= 0) {
+        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
+      } else {
+        delete errors[name];
       }
-    } else if (name === 'amount' && value.trim() === '') {
-      errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+    } else if (name === 'amount') {
+      if (!value.trim()) {
+        errors[name] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+      } else {
+        const numericValue = parseInt(value.replace(/,/g, ''), 10);
+  
+        if (numericValue < 10000) {
+          errors[name] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
+        } else if (numericValue > 150000000) {
+          errors[name] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
+        } else {
+          delete errors[name];
+        }
+      }
     }
-
+  
     // Update error state
     setFormErrors(errors);
   };
+  
 
   const handleSave = () => {
-    
     const errors = {};
+  
     Object.keys(formValues).forEach((key) => {
-      if (key !== 'terminalId' && formValues[key].trim() === '') {
-        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-      } else if (key === 'terminalId' && (formValues[key] < 1 || !formValues[key])) {
-        errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
-      } else if (key === 'amount') {
-        const numericValue = parseInt(formValues[key].replace(/,/g, ''), 10);
-        if (numericValue < 10000) {
-          errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (сум)';
-        } else if (numericValue > 150000000) {
-          errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
+      const value = formValues[key]?.trim(); // Trim orqali bo'sh joylarni olib tashlash
+  
+      if (key === 'terminalId') {
+        if (!value || parseInt(value, 10) < 1) {
+          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение больше 0";
         }
-      } else if (key === 'amount' && formValues[key].trim() === '') {
+      } else if (key === 'amount') {
+        if (!value) {
+          errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
+        } else {
+          const numericValue = parseInt(value.replace(/,/g, ''), 10);
+          if (numericValue < 10000) {
+            errors[key] = wordsListData?.MINIMUM_SUM || 'Минимальная стоимость 10 000 (UZS)';
+          } else if (numericValue > 150000000) {
+            errors[key] = wordsListData?.MAXIMUM_SUM || 'Максимальная стоимость 150 000 000 (UZS).';
+          }
+        }
+      } else if (!value) {
         errors[key] = wordsListData?.RECUIRED_AMOUNT || "Необходимо указать значение";
       }
     });
-    console.log("101002929293939 ", Object.keys(errors).length);
-    console.log("101002929293939 99494949494949 ", Object.keys(errors));
-    console.log("101002929293939 99494949494949 9499995 ", errors);
-
+  
+    // console.log("Validation Errors Count: ", Object.keys(errors).length);
+    // console.log("Validation Errors Keys: ", Object.keys(errors));
+    // console.log("Validation Errors Details: ", errors);
+  
     if (Object.keys(errors).length === 0) {
-      console.log("101002929293939 99494949494949 9499995 4959599 9959595959");
+      // console.log("All validations passed. Proceeding with save.");
       globalPostFunction({
         url: `${order_create}`,
         postData: {
-          amount: +formValues.amount,
+          amount: +formValues.amount, // Numberga o'girish
           terminalId: formValues.terminalId,
         },
         setLoading: setIsLoading,
@@ -306,9 +320,10 @@ export default function SellerOrder() {
         setData: setDetailData,
       });
     } else {
-      setFormErrors(errors);
+      setFormErrors(errors); // Xatoliklarni yangilash
     }
   };
+  
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
