@@ -140,7 +140,7 @@ export default function HeaderLinks(props) {
 
   useEffect(() => {
     if (languageData) {
-      localStorage.setItem('selectedLang', languageData);
+      sessionStorage.setItem('selectedLang', languageData);
     }
   }, [languageData]);
 

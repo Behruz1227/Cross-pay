@@ -45,9 +45,10 @@ import { order_cancel } from "contexts/api";
 import { siteSecurity } from "contexts/allRequest";
 import { globalPutFunction } from "contexts/logic-function/globalFunktion";
 import { set_socket } from "contexts/api";
+import { words_get_language } from "contexts/api";
 
 export default function Main() {
-  const { languageData, setWordsListData, wordsListData } = LanguageStore();
+  const { languageData, setWordsListData, wordsListData, setLanguageData } = LanguageStore();
   const {
     setSocketLoading,
     socketLoading,
@@ -189,6 +190,10 @@ export default function Main() {
         url: `${words_get_data}WEB`,
         setData: setWordsListData,
       });
+      globalGetFunction({
+        url: `${words_get_language}WEB`,
+        setData: setLanguageData,
+      });
     }
   }, [languageData]);
 
@@ -202,6 +207,10 @@ export default function Main() {
       globalGetFunction({
         url: `${words_get_data}WEB`,
         setData: setWordsListData,
+      });
+      globalGetFunction({
+        url: `${words_get_language}WEB`,
+        setData: setLanguageData,
       });
     }
   }, [wordsListData]);

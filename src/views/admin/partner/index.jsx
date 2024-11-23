@@ -102,7 +102,7 @@ export default function Partner() {
       setData: setMerchantData,
     });
   };
-  const role = localStorage.getItem('role');
+  const role = sessionStorage.getItem('ROLE');
   const validateFields = () => {
     const newErrors = {};
 

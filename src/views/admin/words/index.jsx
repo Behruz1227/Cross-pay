@@ -36,6 +36,7 @@ import toast from 'react-hot-toast';
 import { words_get_data } from 'contexts/api';
 import { Pagination } from 'antd';
 import { debounce } from 'lodash';
+import { words_get_language } from 'contexts/api';
 
 const WordsPage = () => {
   const [wordsWebData, setWordsWeb] = useState(null)
@@ -133,6 +134,10 @@ const WordsPage = () => {
           globalGetFunction({
             url: `${words_get_data}WEB`,
             setData: setWordsListData,
+          });
+          globalGetFunction({
+            url: `${words_get_language}WEB`,
+            setData: setLanguageData,
           });
           onClose();
           resetValue();
