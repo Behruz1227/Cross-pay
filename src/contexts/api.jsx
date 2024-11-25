@@ -1,8 +1,8 @@
 // import { io } from "socket.io-client";
 
 // export const base_url = 'http://185.74.4.138:8080/api/';
-export const base_url = 'https://apk.qrpay.uz/api/'; // production uchun back url 
-// export const base_url = 'https://socket.qrpay.uz/api/';   // test uchun back url
+// export const base_url = 'https://apk.qrpay.uz/api/'; // production uchun back url 
+export const base_url = 'https://socket.qrpay.uz/api/';   // test uchun back url
 // export const socket = io('https://socket.qrpay.uz', {
 //       secure: true,
 //       transports: ['websocket', 'polling'], // WebSocket va Pollingni qo'llash
