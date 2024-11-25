@@ -94,7 +94,6 @@ export default function HeaderLinks(props) {
     password: '12345',
   };
 
-  // State to manage form values and validation
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState(initialValue);
   const [editLoading, setEditLoading] = useState(false);
@@ -113,15 +112,14 @@ export default function HeaderLinks(props) {
         role === 'ROLE_TERMINAL'
           ? terminal_notification_count
           : role === 'ROLE_SELLER'
-            ? seller_notification_count
-            : role === 'ROLE_SUPER_ADMIN'
-              ? admin_notification_count
-              : '',
+          ? seller_notification_count
+          : role === 'ROLE_SUPER_ADMIN'
+          ? admin_notification_count
+          : '',
       setData: setCountData,
     });
     userGetMe({ setData: setGetMeeData });
   }, []);
-
   useEffect(() => {
     if (notificationSocket) {
       globalGetFunction({
@@ -129,10 +127,10 @@ export default function HeaderLinks(props) {
           role === 'ROLE_TERMINAL'
             ? terminal_notification_count
             : role === 'ROLE_SELLER'
-              ? seller_notification_count
-              : role === 'ROLE_SUPER_ADMIN'
-                ? admin_notification_count
-                : '',
+            ? seller_notification_count
+            : role === 'ROLE_SUPER_ADMIN'
+            ? admin_notification_count
+            : '',
         setData: setCountData,
       });
     }
@@ -166,7 +164,8 @@ export default function HeaderLinks(props) {
   }, [response]);
 
   const routePush = (id) => document.getElementById(id).click();
-
+  const emailError = `${wordsListData?.EMAIL_ERROR}`;
+  const phoneError = `${wordsListData?.PHONE_LEGHT}`;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({
@@ -175,8 +174,8 @@ export default function HeaderLinks(props) {
     }));
     const errors = {};
     if (name === 'phone' && value.slice(1).length !== 12) {
-      errors.phone =
-        'Phone number must be exactly 9 characters long and only contain numbers.';
+      console.log("qwerty");
+      errors.phone = phoneError;
     } else if (name === 'firstName') {
       if (value.trim() === '') {
         errors[name] = `${t(name)}${t('error')}`;
@@ -196,18 +195,27 @@ export default function HeaderLinks(props) {
     }
     setFormErrors({ ...formErrors, ...errors });
   };
-
   const handleSave = () => {
     const errors = {};
-
+    const nameRegex = /^[a-zA-Z]+$/; 
     Object.keys(formValues)
-      .filter((item) => item !== 'phones')
+      .filter((item) => item !== 'phones') 
       .forEach((key) => {
-        if (key === 'phone' && formValues[key].slice(1).length !== 12) {
-          errors.phone = t('phoneError');
+        if (key === 'phone') {
+          if (!formValues[key]) {
+            errors[key] = `${t(key)}${t('error')}`;
+          } else if (formValues[key].slice(1).length < 12) {
+            errors[key] = phoneError;  
+          }
         } else if (key === 'email') {
           if (formValues[key].trim() === '') {
             errors[key] = `${t(key)}${t('error')}`;
+          } else if (!formValues[key].includes('@')) {
+            errors[key] = emailError;
+          }
+        } else if (key === 'firstName' || key === 'lastName') {
+          if (!nameRegex.test(formValues[key])) {
+            errors[key] = t('onlyLettersError');
           }
         } else if (
           role !== 'ROLE_SUPER_ADMIN' ||
@@ -219,7 +227,7 @@ export default function HeaderLinks(props) {
           }
         }
       });
-
+  
     if (Object.keys(errors).length === 0) {
       globalPutFunction({
         url: `${user_edit}`,
@@ -227,17 +235,21 @@ export default function HeaderLinks(props) {
           firstName: formValues?.firstName,
           lastName: formValues?.lastName,
           email: formValues?.email,
-          phone: `${formValues?.phone.slice(1)}`,
+          phone: `${formValues?.phone.slice(1)}`, // Remove '+' from phone number
           inn: formValues.inn ? formValues.inn : null,
           filial_code: formValues.filial_code ? formValues.filial_code : null,
-          password: '12345',
+          password: '12345', // Default password
         },
         setLoading: setEditLoading,
         setResponse: setResponse,
       });
-      resetValue();
-    } else setFormErrors(errors);
+      resetValue(); // Reset form to initial state
+    } else {
+      setFormErrors(errors); // Set form errors
+    }
   };
+  
+  
 
   // console.log(formValues.phone);
 
@@ -291,7 +303,7 @@ export default function HeaderLinks(props) {
                 fontSize: '8px',
                 padding: '3px',
                 borderRadius: 10,
-                minWidth: "17px",
+                minWidth: '17px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -299,7 +311,9 @@ export default function HeaderLinks(props) {
               }}
             >
               {' '}
-              <span style={{padding: 1}}>{+countData > 9 ? '9+' : countData}</span>{' '}
+              <span style={{ padding: 1 }}>
+                {+countData > 9 ? '9+' : countData}
+              </span>{' '}
             </div>
             <Icon me="15px" h="22px" w="22px" color={navbarIcon} as={FaBell} />
           </Button>
@@ -329,8 +343,8 @@ export default function HeaderLinks(props) {
                   borderRadius="full"
                   src={
                     languageData &&
-                      typeof languageData === 'string' &&
-                      languageData?.toUpperCase() === 'UZ'
+                    typeof languageData === 'string' &&
+                    languageData?.toUpperCase() === 'UZ'
                       ? 'https://cdn-icons-png.flaticon.com/512/6211/6211657.png'
                       : 'https://cdn-icons-png.flaticon.com/512/6211/6211549.png'
                   }
@@ -352,7 +366,7 @@ export default function HeaderLinks(props) {
                     url: `${words_post_language}?lang=uz&webOrMobile=WEB`,
                     postData: {},
                     setData: setDataLang,
-                    isToast: false
+                    isToast: false,
                     // getFunction: globalGetFunction({
                     //   url: `${words_get_language}WEB`,
                     //   setData: setLanguageData
@@ -376,7 +390,7 @@ export default function HeaderLinks(props) {
                     url: `${words_post_language}?lang=ru&webOrMobile=WEB`,
                     postData: {},
                     setData: setDataLang,
-                    isToast: false
+                    isToast: false,
                     // getFunction: globalGetFunction({
                     //   url: `${words_get_language}WEB`,
                     //   setData: setLanguageData
@@ -413,7 +427,7 @@ export default function HeaderLinks(props) {
               borderRadius="20px"
               bg={menuBg}
               border="none"
-            // boxSize={"sm"}
+              // boxSize={"sm"}
             >
               <Flex
                 borderBottom="1px solid"
@@ -643,18 +657,18 @@ export default function HeaderLinks(props) {
                   onChange={handleChange}
                   color={inputTextColor}
                 />
-                {/* {formErrors.managerFio && (
+                {formErrors.managerFio && (
                   <Text color="red.500" fontSize="sm">
                     {formErrors.managerFio}
                   </Text>
-                )} */}
+                )}
               </FormControl>
 
               <FormControl mt={4} isInvalid={!!formErrors.email}>
                 <FormLabel>{wordsListData?.EMAIL || 'Email'}</FormLabel>
                 <Input
                   name="email"
-                  type='email'
+                  type="email"
                   placeholder={
                     wordsListData?.EMAIL_PLACEHOLDER || 'Введите ваш email'
                   }
@@ -662,11 +676,11 @@ export default function HeaderLinks(props) {
                   onChange={handleChange}
                   color={inputTextColor}
                 />
-                {/* {formErrors.email && ( */}
-                {/* //   <Text color="red.500" fontSize="sm">
-                //     {formErrors.email}
-                //   </Text>
-                // )} */}
+                {formErrors.email && (
+                  <Text color="red.500" fontSize="sm">
+                    {formErrors.email}
+                  </Text>
+                )}
               </FormControl>
               <FormControl mt={4} isInvalid={!!formErrors.phone}>
                 <FormLabel>
@@ -723,11 +737,11 @@ export default function HeaderLinks(props) {
                   disableCountryCodeEdit
                 />
 
-                {/* {formErrors.phone && (
+                {formErrors.phone && (
                   <Text color="red.500" fontSize="sm">
                     {formErrors.phone}
                   </Text>
-                )} */}
+                )}
               </FormControl>
               {role === 'ROLE_SELLER' && (
                 <>
