@@ -60,9 +60,9 @@ export default function Main() {
   const role = sessionStorage.getItem("ROLE");
   const tokenExpiry = sessionStorage.getItem("tokenExpiry");
 
-  useEffect(() => {
-    siteSecurity();
-  }, []);
+  // useEffect(() => {
+  //   siteSecurity();
+  // }, []);
 
   useEffect(() => {
     if (

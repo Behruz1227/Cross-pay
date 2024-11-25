@@ -24,6 +24,7 @@ export const user_edit_status = `${base_url}user/user-active`;
 export const user_terminal_add = `${base_url}terminal/add-terminal-user`;
 export const user_terminal_delete = `${base_url}terminal/delete-terminal-user`;
 export const user_merchant_update = `${base_url}user/add-seller`;
+export const user_merchant_search = `${base_url}user/select-seller`;
 
 // TERMINAL CONTROLLER
 export const terminal_create = `${base_url}terminal/create`;
@@ -84,3 +85,8 @@ export const rate_post = `${base_url}rate?status=`;
 export const rate_delete = `${base_url}rate/`;
 export const rate_select = `${base_url}rate/select-status`;
 export const rate_rating = `${base_url}rate/online-rate`;
+
+// LIMIT PRICE CONTROLLER
+export const limit_price = `${base_url}limit-price/page`;
+export const limit_price_save_or_edit = `${base_url}limit-price/save`;
+export const limit_price_seller_list = `${base_url}limit-price/seller-and-terminal`;

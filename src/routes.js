@@ -22,6 +22,8 @@ import WordsPage from 'views/admin/words';
 import OrderStats from 'views/admin/orderStats';
 // import Rate from 'views/admin/rate/rate';
 import CheckCodeBank from 'views/auth/signIn/checkCodeBank';
+import {IoLogoUsd} from "react-icons/io";
+import PriceLimit from "./views/admin/price-limit";
 
 export const generateRoutes = (wordsListData) => [
   // Admin panel route
@@ -94,13 +96,13 @@ export const generateRoutes = (wordsListData) => [
     ),
     component: <WordsPage />,
   },
-  // {
-  //     name: wordsListData?.PANEL_RATE || "Настройка курс",
-  //     layout: '/admin',
-  //     path: '/rate',
-  //     icon: <Icon as={IoLogoUsd} width="20px" height="20px" color="inherit"/>,
-  //     component: <Rate/>,
-  // },
+  {
+      name: wordsListData?.LIMIT || "Лимит",
+      layout: '/admin',
+      path: '/limit-price',
+      icon: <Icon as={IoLogoUsd} width="20px" height="20px" color="inherit"/>,
+      component: <PriceLimit/>,
+  },
   {
     name: '',
     layout: '/admin',
