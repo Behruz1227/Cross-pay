@@ -81,7 +81,7 @@ export default function SellerTerminal() {
     wordsListData?.ACCOUNT_WEB || 'Счет',
     wordsListData?.PHONE_NUMBER || 'Телефон',
 
-    role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+    // role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
     // wordsListData?.POS_ID || 'ПОС ИД',
     // wordsListData?.ACTIVE || 'АКТИВНЫЙ',
   ];
@@ -89,8 +89,8 @@ export default function SellerTerminal() {
   useEffect(() => {
     setConfig();
     getFunction();
-    role === 'ROLE_SELLER' &&
-      thead.splice(thead.length - 1, 0, wordsListData?.UPDATE || 'АКТИВНЫЙ');
+    // role === 'ROLE_SELLER' 
+    //   thead.splice(thead.length - 1, 0, wordsListData?.UPDATE || 'АКТИВНЫЙ');
   }, []);
 
   useEffect(() => {
@@ -367,7 +367,7 @@ export default function SellerTerminal() {
                         disabled={item.status === 1}
                         // isChecked={item.status === 0}
                       >
-                        <MdDelete color={navbarIcon} size={23} />
+                        {/* <MdDelete color={navbarIcon} size={23} /> */}
                       </Button>
                     </Box>
                   </Td>
