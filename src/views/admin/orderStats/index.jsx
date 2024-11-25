@@ -32,7 +32,7 @@ export default function OrderStats() {
     page,
     setTotalPages,
     size,
-    setSize
+    setSize,
   } = PaymentStore();
   const { wordsListData } = LanguageStore();
   const role = sessionStorage.getItem('ROLE');
@@ -85,9 +85,11 @@ export default function OrderStats() {
         createdAt ? `&createdAt=${createdAt}` : ''
       }${paymentDate ? `&paymentDate=${paymentDate}` : ''}${
         status ? `&status=${status}` : ''
-      }${amount ? `&amount=${amount}` : ''}${fullName || mfo || createdAt || paymentDate || status || amount
-        ? '&'
-        : '?'}page=${page}&size=${size}`,
+      }${amount ? `&amount=${amount}` : ''}${
+        fullName || mfo || createdAt || paymentDate || status || amount
+          ? '&'
+          : '?'
+      }page=${page}&size=${size}`,
       setLoading: setCreateLoading,
       setData: setPaymentData,
       setTotalElements: setTotalPages,
@@ -136,9 +138,19 @@ export default function OrderStats() {
           name={
             <div>
               {wordsListData?.PAYMENT_STATS_TABLE || 'График отчета о платежах'}
-              <Flex gap={5} mt={5}>
+              <Flex
+                gap={5}
+                mt={5}
+                direction="row"
+                wrap="wrap"
+                justify="space-between"
+                alignItems="flex-start" // Aligning inputs at the top
+              >
                 {role !== 'ROLE_SELLER' && role !== 'ROLE_TERMINAL' && (
-                  <Box>
+                  <Box
+                    className="input-box"
+                    width={{ base: '50%', sm: '50%', md: 'auto' }}
+                  >
                     <Text fontSize="15px">
                       {wordsListData?.EXCEL_MERCHANT || 'Торговец'}
                     </Text>
@@ -147,11 +159,15 @@ export default function OrderStats() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder={wordsListData?.EXCEL_MERCHANT || 'Торговец'}
+                      style={{ fontSize: '15px', lineHeight: '20px' }}
                     />
                   </Box>
                 )}
                 {role !== 'ROLE_TERMINAL' && (
-                  <Box>
+                  <Box
+                    className="input-box"
+                    width={{ base: '50%', sm: '30%', md: 'auto' }}
+                  >
                     <Text fontSize="15px">
                       {wordsListData?.EXCEL_MFO || 'МФО'}
                     </Text>
@@ -160,10 +176,14 @@ export default function OrderStats() {
                       value={mfo}
                       onChange={(e) => setMfo(e.target.value)}
                       placeholder={wordsListData?.EXCEL_MFO || 'МФО'}
+                      style={{ fontSize: '15px', lineHeight: '20px' }}
                     />
                   </Box>
                 )}
-                <Box>
+                <Box
+                  className="input-box"
+                  width={{ base: '50%', sm: '50%', md: 'auto' }}
+                >
                   <Text fontSize="15px">
                     {wordsListData?.EXCEL_CREATED_AT || 'Дата создания'}
                   </Text>
@@ -174,9 +194,13 @@ export default function OrderStats() {
                     placeholder={
                       wordsListData?.EXCEL_CREATED_AT || 'Дата создания'
                     }
+                    style={{ fontSize: '15px', lineHeight: '20px' }}
                   />
                 </Box>
-                <Box>
+                <Box
+                  className="input-box"
+                  width={{ base: '50%', sm: '30%', md: 'auto' }}
+                >
                   <Text fontSize="15px">
                     {wordsListData?.STATUS || 'Статус'}
                   </Text>
@@ -186,19 +210,22 @@ export default function OrderStats() {
                     onChange={(value) => setStatus(value)}
                     placeholder={wordsListData?.STATUS || 'Статус'}
                   >
-                    <Option value="">{wordsListData?.ALL || 'Все'}</Option>
-                    <Option value="WAIT">
+                    <option value="">{wordsListData?.ALL || 'Все'}</option>
+                    <option value="WAIT">
                       {wordsListData?.STATUS_WAIT || 'Ожидание'}
-                    </Option>
-                    <Option value="COMPLETED">
+                    </option>
+                    <option value="COMPLETED">
                       {wordsListData?.STATUS_CONFIRMED || 'Подтвержден'}
-                    </Option>
-                    <Option value="CANCEL">
+                    </option>
+                    <option value="CANCEL">
                       {wordsListData?.STATUS_CANCELED || 'Отменен'}
-                    </Option>
+                    </option>
                   </Select>
                 </Box>
-                <Box>
+                <Box
+                  className="input-box"
+                  width={{ base: '50%', sm: '50%', md: 'auto' }}
+                >
                   <Text fontSize="15px">
                     {wordsListData?.EXCEL_AMOUNT || 'Количество'}
                   </Text>
@@ -209,8 +236,12 @@ export default function OrderStats() {
                     placeholder={wordsListData?.EXCEL_AMOUNT || 'Количество'}
                   />
                 </Box>
+              </Flex>
+
+              {/* Button wrapped in a Box */}
+              <Box width="100%" display="flex" justifyContent="flex-end" mt={4}>
                 <Button
-                  style={{ height: '40px', marginTop: '22px' }}
+                  style={{ height: '40px' }}
                   onClick={() => {
                     setFullName('');
                     setMfo('');
@@ -222,7 +253,7 @@ export default function OrderStats() {
                 >
                   {wordsListData?.RESET || 'Сбросить'}
                 </Button>
-              </Flex>
+              </Box>
             </div>
           }
           thead={thead}
@@ -266,8 +297,12 @@ export default function OrderStats() {
                 <Td minWidth={'200px'}>{item.rate || '-'}</Td>
                 <Td minWidth={'200px'}>{item.account || '-'}</Td>
                 <Td minWidth={'200px'}>{item.inn || '-'}</Td>
-                <Td minWidth={'250px'}>{item.createdAt ? item.createdAt.slice(0, 16) : '-'}</Td>
-                <Td minWidth={'250px'}>{item.payDate ? item.payDate.slice(0, 16) : '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item.createdAt ? item.createdAt.slice(0, 16) : '-'}
+                </Td>
+                <Td minWidth={'250px'}>
+                  {item.payDate ? item.payDate.slice(0, 16) : '-'}
+                </Td>
                 <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
@@ -295,7 +330,7 @@ export default function OrderStats() {
       </SimpleGrid>
       <Flex alignItems={'center'} w={'full'} justifyContent="space-between">
         {/* {paymentData && paymentData?.object && ( */}
-          <Pagination
+        <Pagination
           showSizeChanger
           responsive={true}
           defaultCurrent={1}
@@ -308,7 +343,7 @@ export default function OrderStats() {
             setPage(0);
           }}
         />
-          
+
         <Flex my={5} gap={5}>
           <Select
             // placeholder={wordsListData?.INTERVAL || 'Интервал'}
@@ -318,9 +353,7 @@ export default function OrderStats() {
             style={{ width: '200px', height: '40px' }}
             // placement={wordsListData?.INTERVAL || 'Интервал'}
           >
-            <Option value="">
-              {wordsListData?.INTERVAL || 'Интервал'}
-            </Option>
+            <Option value="">{wordsListData?.INTERVAL || 'Интервал'}</Option>
             {intervalData &&
               intervalData?.map((item) => (
                 <Option key={item.page} value={item.page}>
