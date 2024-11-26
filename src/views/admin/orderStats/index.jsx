@@ -132,7 +132,7 @@ export default function OrderStats() {
       <SimpleGrid
         mb="20px"
         columns={{ sm: 1 }}
-        spacing={{ base: '20px', xl: '20px' }} 
+        spacing={{ base: '20px', xl: '20px' }}
       >
         <ComplexTable
           name={
@@ -199,14 +199,14 @@ export default function OrderStats() {
                 </Box>
                 <Box
                   className="input-box"
-                  width={{ base: '50%', sm: '30%', md: 'auto' }}
+                  width={{ base: '50%', sm: '50%', md: 'auto' }}
                 >
                   <Text fontSize="15px">
                     {wordsListData?.STATUS || 'Статус'}
                   </Text>
                   <Select
                     value={status}
-                    style={{ width: '100%', height: '40px' }}
+                    style={{ width: '120px', height: '40px', }} // Kenglik va balandlikni oshirdik
                     onChange={(value) => setStatus(value)}
                     placeholder={wordsListData?.STATUS || 'Статус'}
                   >
@@ -224,7 +224,7 @@ export default function OrderStats() {
                 </Box>
                 <Box
                   className="input-box"
-                  width={{ base: '50%', sm: '50%', md: 'auto' }}
+                  width={{ base: '50%', sm: '30%', md: 'auto' }}
                 >
                   <Text fontSize="15px">
                     {wordsListData?.EXCEL_AMOUNT || 'Количество'}
