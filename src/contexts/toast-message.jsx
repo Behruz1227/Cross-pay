@@ -1,9 +1,7 @@
 import toast from 'react-hot-toast';
 
-// export const consoleClear = () => console.clear()
-export const consoleClear = () => {
-  console.clear()
-};
+export const consoleClear = () => console.clear()
+// export const consoleClear = () => ''
 
 export const toastMessage = (code) => {
   if (+code === 3) return toast.error('The password did not match');
