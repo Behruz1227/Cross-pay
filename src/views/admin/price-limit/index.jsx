@@ -222,10 +222,7 @@ const PriceLimit = () => {
                 isRequired
                 variant="outline"
                 fontSize="sm"
-                placeholder={
-                  `${wordsListData?.SELLER_SEARCH_PHONE}...` ||
-                  'Поиск по номеру телефона...'
-                }
+                placeholder={`${wordsListData?.SELLER_SEARCH_PHONE}...` || 'Поиск по номеру телефона...'}
                 fontWeight="500"
                 size="lg"
                 value={phone}

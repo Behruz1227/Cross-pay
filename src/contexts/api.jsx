@@ -1,7 +1,7 @@
 // import { io } from "socket.io-client";
 
 // export const base_url = 'http://185.74.4.138:8080/api/';
-// export const base_url = 'https://apk.qrpay.uz/api/'; // production uchun back url 
+// export const base_url = 'https://apk.qrpay.uz/api/'; // production uchun back url
 export const base_url = 'https://socket.qrpay.uz/api/';   // test uchun back url
 // export const socket = io('https://socket.qrpay.uz', {
 //       secure: true,
@@ -89,4 +89,4 @@ export const rate_rating = `${base_url}rate/online-rate`;
 // LIMIT PRICE CONTROLLER
 export const limit_price = `${base_url}limit-price/page`;
 export const limit_price_save_or_edit = `${base_url}limit-price/save`;
-export const limit_price_seller_list = `${base_url}limit-price/seller-and-terminal`;
+export const limit_price_seller = `${base_url}limit-price/seller-and-terminal`;
