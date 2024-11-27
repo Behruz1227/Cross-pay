@@ -1,38 +1,19 @@
 import {
-    Box,
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    SimpleGrid,
-    Td,
-    Tr,
-    useDisclosure,
-    useColorModeValue,
-    Text,
-    Switch,
-    Grid,
-    Select,
+  Box, Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
+  ModalHeader, ModalOverlay, SimpleGrid, Td, Tr, useDisclosure, useColorModeValue, Text, Switch, Grid, Select,
 } from '@chakra-ui/react';
 import {debounce} from 'lodash';
 import {Pagination} from 'antd';
 import {
-    terminal_create,
-    terminal_update,
-    terminal_isActive,
-    terminal_get,
+  terminal_create,
+  terminal_update,
+  terminal_isActive,
+  terminal_get,
 } from 'contexts/api';
 import {
-    globalPostFunction,
-    globalPutFunction,
-    globalGetFunction,
+  globalPostFunction,
+  globalPutFunction,
+  globalGetFunction,
 } from 'contexts/logic-function/globalFunktion';
 import {TerminalStore} from 'contexts/state-management/terminal/terminalStory';
 import {setConfig} from 'contexts/token';
@@ -43,274 +24,314 @@ import {terminal_search} from 'contexts/api';
 import {PhoneInput} from 'react-international-phone';
 import {FaDeleteLeft} from 'react-icons/fa6';
 import {MdDelete} from 'react-icons/md';
+import {Alerts} from "../../../components/alert/alert";
 
 export default function SellerTerminal() {
-    const {isOpen, onOpen, onClose} = useDisclosure();
-    const {
-        setTerminalData,
-        terminalData,
-        isEdit,
-        setIsEdit,
-        setPage,
-        totalPage,
-        page,
-        setSize,
-        size,
-        setTotalPages,
-    } = TerminalStore();
-    const [createLoading, setCreateLoading] = useState(false);
-    const [detailData, setdetailData] = useState({});
-    const [selectData, setSelectData] = useState([]);
-    const [terminalSerialCodeInitial, setTerminalSerialCodeInitial] =
-        useState(null);
-    const [terminalSerialCode, setTerminalSerialCode] = useState(null);
-    const initialRef = React.useRef(null);
-    const finalRef = React.useRef(null);
-    const role = sessionStorage.getItem('ROLE');
-    const [search, setSearch] = useState('');
-    const inputTextColor = useColorModeValue('gray.800', 'white');
-    const navbarIcon = useColorModeValue('#1B255A', 'white');
-    const bgColor = useColorModeValue('#422AFB', '#7551FF');
-    const textColor = useColorModeValue('white', 'white');
-    const hoverBgColor = useColorModeValue('blue.600', 'purple.600');
-    const {wordsListData} = LanguageStore();
-    const thead = [
-        wordsListData?.TABLE_TR || '№',
-        wordsListData?.NAME || 'ИМЯ',
-        wordsListData?.SERIAL_CODE || 'Серийный код',
-        wordsListData?.ACCOUNT_WEB || 'Счет',
-        wordsListData?.PHONE_NUMBER || 'Телефон',
+  const {isOpen, onOpen, onClose} = useDisclosure();
+  const {
+    setTerminalData,
+    terminalData,
+    isEdit,
+    setIsEdit,
+    setPage,
+    totalPage,
+    page,
+    setSize,
+    size,
+    setTotalPages,
+  } = TerminalStore();
+  const [createLoading, setCreateLoading] = useState(false);
+  const [detailData, setdetailData] = useState({});
+  const [selectData, setSelectData] = useState([]);
+  const [terminalSerialCodeInitial, setTerminalSerialCodeInitial] = useState(null);
+  const [terminalSerialCode, setTerminalSerialCode] = useState(null);
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+  const role = sessionStorage.getItem('ROLE');
+  const [search, setSearch] = useState('');
+  const [numberError, setNumberError] = useState('')
 
-        // role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
-        // wordsListData?.POS_ID || 'ПОС ИД',
-        // wordsListData?.ACTIVE || 'АКТИВНЫЙ',
-    ];
+  const inputTextColor = useColorModeValue('gray.800', 'white');
+  const navbarIcon = useColorModeValue('#1B255A', 'white');
+  const bgColor = useColorModeValue('#422AFB', '#7551FF');
+  const textColor = useColorModeValue('white', 'white');
+  const hoverBgColor = useColorModeValue('blue.600', 'purple.600');
+  const {wordsListData} = LanguageStore();
+  const thead = [
+    wordsListData?.TABLE_TR || '№',
+    wordsListData?.NAME || 'ИМЯ',
+    wordsListData?.SERIAL_CODE || 'Серийный код',
+    wordsListData?.ACCOUNT_WEB || 'Счет',
+    wordsListData?.PHONE_NUMBER || 'Телефон',
 
-    useEffect(() => {
-        setConfig();
-        getFunction();
-        // role === 'ROLE_SELLER'
-        //   thead.splice(thead.length - 1, 0, wordsListData?.UPDATE || 'АКТИВНЫЙ');
-    }, []);
+    // role === 'ROLE_TERMINAL' || wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+    // wordsListData?.POS_ID || 'ПОС ИД',
+    // wordsListData?.ACTIVE || 'АКТИВНЫЙ',
+  ];
 
-    useEffect(() => {
-        globalGetFunction({
-            url: `${terminal_search}${search ? `?name=${search}` : ''}`,
-            setData: setSelectData,
-            setTotalElements: setTotalPages,
-            page: page,
-            size: size,
-        });
-    }, [search, page, size]);
+  useEffect(() => {
+    setConfig();
+    getFunction();
+    // role === 'ROLE_SELLER'
+    //   thead.splice(thead.length - 1, 0, wordsListData?.UPDATE || 'АКТИВНЫЙ');
+  }, []);
 
-    useEffect(() => {
-        globalGetFunction({
-            url: `${terminal_get}?page=${page}&size=${size}`,
-            setLoading: setCreateLoading,
-            setData: setTerminalData,
-            setTotalElements: setTotalPages,
-            page: page,
-            size: size,
-        });
-    }, [page, size]);
+  useEffect(() => {
+    globalGetFunction({
+      url: `${terminal_search}${search ? `?name=${search}` : ''}`,
+      setData: setSelectData,
+      setTotalElements: setTotalPages,
+      page: page,
+      size: size,
+    });
+  }, [search, page, size]);
 
-    const getFunction = () => {
-        globalGetFunction({
-            url: `${terminal_get}?page=${page}&size=${size}`,
-            setLoading: setCreateLoading,
-            setData: setTerminalData,
-            setTotalElements: setTotalPages,
-        });
-    };
+  useEffect(() => {
+    globalGetFunction({
+      url: `${terminal_get}?page=${page}&size=${size}`,
+      setLoading: setCreateLoading,
+      setData: setTerminalData,
+      setTotalElements: setTotalPages,
+      page: page,
+      size: size,
+    }).then(() => '');
+  }, [page, size]);
 
-    const initialValue = {
-        name: '',
-        terminalSerialCode: '',
-        account: '',
-        inn: '',
-        filialCode: '',
-        phone: '',
-        password: '12345',
-    };
+  const getFunction = () => {
+    globalGetFunction({
+      url: `${terminal_get}?page=${page}&size=${size}`,
+      setLoading: setCreateLoading,
+      setData: setTerminalData,
+      setTotalElements: setTotalPages,
+    });
+  };
 
-    const [formValues, setFormValues] = useState(initialValue);
-    // const [terminalNewUsers, setTerminalNewUsers] = useState([terminalNewUsersInitial]);
-    const [formErrors, setFormErrors] = useState({});
+  const initialValue = {
+    name: '',
+    terminalSerialCode: '',
+    account: '',
+    inn: '',
+    filialCode: '',
+    phone: '',
+    password: '12345',
+  };
 
-    const resetValue = () => {
-        setFormValues(initialValue);
-        setFormErrors({});
-        setTerminalSerialCodeInitial(null);
-        setTerminalSerialCode(null);
-    };
+  const [formValues, setFormValues] = useState(initialValue);
+  // const [terminalNewUsers, setTerminalNewUsers] = useState([terminalNewUsersInitial]);
+  const [formErrors, setFormErrors] = useState({});
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormValues((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+  const resetValue = () => {
+    setFormValues(initialValue);
+    setFormErrors({});
+    setTerminalSerialCodeInitial(null);
+    setTerminalSerialCode(null);
+    setNumberError('');
+  };
 
-    const debouncedPostFunction = debounce((item) => {
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const changeValidateError = (e, key) => {
+    const {value} = e.target;
+    if (isNaN(+value)) {
+      if (key === 'account') {
+        setNumberError(`${wordsListData?.ACCOUNT_WEB} ${wordsListData?.REQ_NUMBER}`)
+        return null;
+      } else if (key === 'filialCode') {
+        setNumberError(`${wordsListData?.EXCEL_MFO} ${wordsListData?.REQ_NUMBER}`)
+        return null;
+      } else if (key === 'inn') {
+        setNumberError(`${wordsListData?.INN_WEB} ${wordsListData?.REQ_NUMBER}`)
+        return null;
+      } else if (key === 'terminalSerialCode') {
+        setNumberError(`${wordsListData?.SERIAL_CODE} ${wordsListData?.REQ_NUMBER}`)
+        return null;
+      }
+    }
+
+    setNumberError('')
+    handleChange({target: {value, name: key}})
+  }
+
+  const debouncedPostFunction = debounce((item) => {
+    globalPostFunction({
+      url: `${terminal_isActive}${item.id}`,
+      data: {},
+      setLoading: setCreateLoading,
+      getFunction: getFunction,
+    }).then(() => '');
+  }, 300);
+
+  const validate = () => {
+    const errors = {};
+    if (!formValues.name.trim(''))
+      errors.name = `${wordsListData?.NAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.terminalSerialCode.trim(''))
+      errors.terminalSerialCode = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.inn.trim(''))
+      errors.inn = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.filialCode.trim(''))
+      errors.filialCode = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    if (!formValues.account.trim(''))
+      errors.account = `${wordsListData?.SURNAME || 'Имя'}${
+        wordsListData?.IS_REQUIRED || '  требуется '
+      }`;
+    // if (!formValues.phone.trim('')) {
+    //   errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${
+    //     wordsListData?.IS_REQUIRED || '  требуется '
+    //   }`;
+    // } else if (formValues?.phone.slice(1).length !== 12) {
+    //   errors.phone = `${
+    //     wordsListData?.PHONE_ERROR ||
+    //     'Номер телефона должен состоять ровно из 9 символов и содержать только цифры.'
+    //   }`;
+    // }
+    // if (!formValues.account.trim(''))
+    //   errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${wordsListData?.IS_REQUIRED || '  требуется '}`;
+    // else if (formValues.password.length < 4) {
+    //   errors.password = `${
+    //     wordsListData?.PASSWORD_ERROR_TERMINAL ||
+    //     'Пароль должен содержать не менее 4 символов.'
+    //   }`;
+    // }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSave = () => {
+    if (validate()) {
+      if (formValues?.account?.length !== 20) {
+        setNumberError(`${wordsListData?.ACCOUNT_WEB} 20 ${wordsListData?.REQ_SYMBOLL}`)
+        return null;
+      }
+
+      if (formValues?.filialCode?.length !== 5) {
+        setNumberError(`${wordsListData?.EXCEL_MFO} 5 ${wordsListData?.REQ_SYMBOLL}`)
+        return null;
+      }
+
+      if (formValues?.phone.slice(1).length !== 12) {
+        setNumberError(`${wordsListData?.PHONE_ERROR} (+998 90 123 45 67)`)
+        return null;
+      }
+
+      setNumberError('')
+
+      if (isEdit) {
+        globalPutFunction({
+          url: `${terminal_update}${detailData && detailData.id ? detailData.id : 0}`,
+          putData: {
+            name: formValues?.name,
+            account: formValues.account,
+            inn: formValues.inn,
+            phone: `${formValues.phone.slice(1)}`,
+            password: formValues.password,
+            terminalSerialCode: formValues.terminalSerialCode,
+            filialCode: formValues.filialCode,
+          },
+          setLoading: setCreateLoading,
+          getFunction: () => {
+            getFunction();
+            onClose();
+            resetValue();
+          },
+        }).then(() => '');
+      } else {
         globalPostFunction({
-            url: `${terminal_isActive}${item.id}`,
-            data: {},
-            setLoading: setCreateLoading,
-            getFunction: getFunction,
-        });
-    }, 300);
+          url: `${terminal_create}`,
+          postData: {
+            name: formValues?.name,
+            account: formValues.account,
+            inn: formValues.inn,
+            phone: `${formValues.phone.slice(1)}`,
+            password: formValues.password,
+            terminalSerialCode: formValues.terminalSerialCode,
+            filialCode: formValues.filialCode,
+          },
+          setLoading: setCreateLoading,
+          getFunction: () => {
+            getFunction();
+            onClose();
+            resetValue();
+          },
+        }).then(() => '');
+      }
+    }
+  };
 
-    const validate = () => {
-        const errors = {};
-        if (!formValues.name.trim(''))
-            errors.name = `${wordsListData?.NAME || 'Имя'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        if (!formValues.terminalSerialCode.trim(''))
-            errors.terminalSerialCode = `${wordsListData?.SURNAME || 'Имя'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        if (!formValues.inn.trim(''))
-            errors.inn = `${wordsListData?.SURNAME || 'Имя'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        if (!formValues.filialCode.trim(''))
-            errors.filialCode = `${wordsListData?.SURNAME || 'Имя'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        if (!formValues.account.trim(''))
-            errors.account = `${wordsListData?.SURNAME || 'Имя'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        if (!formValues.phone.trim('')) {
-            errors.phone = `${wordsListData?.PHONE_NUMBER || 'Телефон'}${
-                wordsListData?.IS_REQUIRED || '  требуется '
-            }`;
-        } else if (formValues?.phone.slice(1).length !== 12) {
-            errors.phone = `${
-                wordsListData?.PHONE_ERROR ||
-                'Номер телефона должен состоять ровно из 9 символов и содержать только цифры.'
-            }`;
-        }
-        // if (!formValues.account.trim(''))
-        //   errors.password = `${wordsListData?.PASSWORD || 'Пароль'}${wordsListData?.IS_REQUIRED || '  требуется '}`;
-        // else if (formValues.password.length < 4) {
-        //   errors.password = `${
-        //     wordsListData?.PASSWORD_ERROR_TERMINAL ||
-        //     'Пароль должен содержать не менее 4 символов.'
-        //   }`;
-        // }
-        setFormErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
+  return (
+    <Box pt={{base: '130px', md: '80px', xl: '80px'}}>
+      <SimpleGrid
+        mb="20px"
+        columns={{sm: 1}}
+        spacing={{base: '20px', xl: '20px'}}
+      >
+        <ComplexTable
+          name={`${wordsListData?.TERMINAL_TABLE_TITLE || 'Терминальный стол'}`}
+          thead={thead}
+          buttonChild={
+            role === 'ROLE_SUPER_ADMIN' && (
+              <Button
+                bg={bgColor}
+                color={textColor}
+                _hover={{bg: hoverBgColor}}
+                _active={{
+                  bg: hoverBgColor,
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => {
+                  setIsEdit(false);
+                  onOpen();
+                }}
+              >
+                {wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
+              </Button>
+            )
+          }
+        >
+          {createLoading ? (
+            <Tr>
+              <Td textAlign="center" colSpan={thead.length}>
+                {wordsListData?.LOADING || 'Загрузка'}...
+              </Td>
+            </Tr>
+          ) : terminalData && terminalData?.object?.length > 0 ? (
+            terminalData?.object?.map((item, i) => (
+              <Tr key={i}>
+                <Td>{page * 10 + i + 1}</Td>
+                <Td minWidth={'250px'}>{item?.name ? item?.name : '-'}</Td>
 
-    const handleSave = () => {
-        if (validate()) {
-            if (isEdit) {
-                globalPutFunction({
-                    url: `${terminal_update}${
-                        detailData && detailData.id ? detailData.id : 0
-                    }`,
-                    putData: {
-                        name: formValues?.name,
-                        account: formValues.account,
-                        inn: formValues.inn,
-                        phone: `${formValues.phone.slice(1)}`,
-                        password: formValues.password,
-                        terminalSerialCode: formValues.terminalSerialCode,
-                        filialCode: formValues.filialCode,
-                    },
-                    setLoading: setCreateLoading,
-                    getFunction: () => {
-                        getFunction();
-                        onClose();
-                        resetValue();
-                    },
-                });
-            } else {
-                globalPostFunction({
-                    url: `${terminal_create}`,
-                    postData: {
-                        name: formValues?.name,
-                        account: formValues.account,
-                        inn: formValues.inn,
-                        phone: `${formValues.phone.slice(1)}`,
-                        password: formValues.password,
-                        terminalSerialCode: formValues.terminalSerialCode,
-                        filialCode: formValues.filialCode,
-                    },
-                    setLoading: setCreateLoading,
-                    getFunction: () => {
-                        getFunction();
-                        onClose();
-                        resetValue();
-                    },
-                });
-            }
-        }
-    };
+                <Td minWidth={'250px'}>
+                  {item?.terminalSerialCode ? item?.terminalSerialCode : '-'}
+                </Td>
+                <Td minWidth={'250px'}>{item?.account || '-'}</Td>
+                <Td minWidth={'250px'}>
+                  {item?.phones && item.phones.length > 0
+                    ? item.phones?.map((phone, index) => (
+                      <div key={index}>
+                        {`+998 (${phone.slice(3, 5)}) ${phone.slice(
+                          5,
+                          8,
+                        )} ${phone.slice(8, 10)} ${phone.slice(10, 12)}`}
+                      </div>
+                    )) : '-'
+                  }
+                </Td>
 
-    return (
-        <Box pt={{base: '130px', md: '80px', xl: '80px'}}>
-            <SimpleGrid
-                mb="20px"
-                columns={{sm: 1}}
-                spacing={{base: '20px', xl: '20px'}}
-            >
-                <ComplexTable
-                    name={`${wordsListData?.TERMINAL_TABLE_TITLE || 'Терминальный стол'}`}
-                    buttonChild={
-                        role === 'ROLE_SUPER_ADMIN' && (
-                            <Button
-                                bg={bgColor}
-                                color={textColor}
-                                _hover={{bg: hoverBgColor}}
-                                _active={{
-                                    bg: hoverBgColor,
-                                    transform: 'scale(0.98)',
-                                }}
-                                onClick={() => {
-                                    setIsEdit(false);
-                                    onOpen();
-                                }}
-                            >
-                                {wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
-                            </Button>
-                        )
-                    }
-                    thead={thead}
-                >
-                    {createLoading ? (
-                        <Tr>
-                            <Td textAlign="center" colSpan={thead.length}>
-                                {wordsListData?.LOADING || 'Загрузка'}...
-                            </Td>
-                        </Tr>
-                    ) : terminalData && terminalData?.object?.length > 0 ? (
-                        terminalData?.object?.map((item, i) => (
-                            <Tr key={i}>
-                                <Td>{page * 10 + i + 1}</Td>
-                                <Td minWidth={'250px'}>{item?.name ? item?.name : '-'}</Td>
-
-                                <Td minWidth={'250px'}>
-                                    {item?.terminalSerialCode ? item?.terminalSerialCode : '-'}
-                                </Td>
-                                <Td minWidth={'250px'}>{item?.account || '-'}</Td>
-                                <Td minWidth={'250px'}>
-                                    {item?.phones && item.phones.length > 0
-                                        ? item.phones?.map((phone, index) => (
-                                            <div key={index}>
-                                                {`+998 (${phone.slice(3, 5)}) ${phone.slice(
-                                                    5,
-                                                    8,
-                                                )} ${phone.slice(8, 10)} ${phone.slice(10, 12)}`}
-                                            </div>
-                                        ))
-                                        : '-'}
-                                </Td>
-
-                                {/* <Td alignSelf="flex-start">
+                {/* <Td alignSelf="flex-start">
                   <Text
                     background={'#ECEFF8'}
                     color={'blue'}
@@ -325,102 +346,106 @@ export default function SellerTerminal() {
                       : wordsListData.BUTTON_NOT_ACTIVE}
                   </Text>
                 </Td> */}
-                                {/* <Td>{item?.posId ? item?.posId : '-'}</Td> */}
-                                {/* <Td>{item?.filial_code ? item?.filial_code : '-'}</Td> */}
-                                {role === 'ROLE_SELLER' && (
-                                    <Td>
-                                        <Box ms={3}>
-                                            <button
-                                                onClick={() => {
-                                                    setFormValues({
-                                                        name: item?.name,
-                                                        terminalSerialCode: item?.terminalSerialCode,
-                                                    });
-                                                    setTerminalSerialCode(item.terminalSerialCode);
-                                                    setTerminalSerialCodeInitial(item.terminalSerialCode);
-                                                    setdetailData(item);
-                                                    setIsEdit(true);
-                                                    onOpen();
-                                                }}
-                                            >
-                                                {/* <FaEdit color={navbarIcon} size={23} /> */}
-                                            </button>
-                                        </Box>
-                                    </Td>
-                                )}
-                                {/*   || role === 'ROLE_BANK'  bu narsa olib tashlandi admindan boshqasiga*/}
-                                {role === 'ROLE_SUPER_ADMIN' && (
-                                    <Td>
-                                        <Box
-                                            onClick={() => {
-                                                if (item.status === 0) {
-                                                    debouncedPostFunction(item);
-                                                }
-                                            }}
-                                        >
-                                            {/* <Switch
+                {/* <Td>{item?.posId ? item?.posId : '-'}</Td> */}
+                {/* <Td>{item?.filial_code ? item?.filial_code : '-'}</Td> */}
+                {role === 'ROLE_SELLER' && (
+                  <Td>
+                    <Box ms={3}>
+                      <button
+                        onClick={() => {
+                          setFormValues({
+                            name: item?.name,
+                            terminalSerialCode: item?.terminalSerialCode,
+                          });
+                          setTerminalSerialCode(item.terminalSerialCode);
+                          setTerminalSerialCodeInitial(item.terminalSerialCode);
+                          setdetailData(item);
+                          setIsEdit(true);
+                          onOpen();
+                        }}
+                      >
+                        {/* <FaEdit color={navbarIcon} size={23} /> */}
+                      </button>
+                    </Box>
+                  </Td>
+                )}
+                {/*   || role === 'ROLE_BANK'  bu narsa olib tashlandi admindan boshqasiga*/}
+                {role === 'ROLE_SUPER_ADMIN' && (
+                  <Td>
+                    <Box
+                      onClick={() => {
+                        if (item.status === 0) {
+                          debouncedPostFunction(item);
+                        }
+                      }}
+                    >
+                      {/* <Switch
                       disabled={item.status === 1}
                       isChecked={item.status === 0}
                       colorScheme="teal"
                       size="lg" 
                     /> */}
-                                            <Button
-                                                disabled={item.status === 1}
-                                                // isChecked={item.status === 0}
-                                            >
-                                                <MdDelete color={navbarIcon} size={23}/>
-                                            </Button>
-                                        </Box>
-                                    </Td>
-                                )}
-                            </Tr>
-                        ))
-                    ) : (
-                        <Tr>
-                            <Td textAlign={'center'} colSpan={thead.length}>
-                                {wordsListData?.PANEL_TERMINAL || 'Терминал'}{' '}
-                                {wordsListData?.NOT_FOUND || 'не найден'}
-                            </Td>
-                        </Tr>
-                    )}
-                </ComplexTable>
-                {role === 'ROLE_TERMINAL' || (
-                    <Pagination
-                        showSizeChanger
-                        responsive={true}
-                        defaultCurrent={1}
-                        total={totalPage}
-                        onChange={(page, size) => {
-                            setPage(page - 1);
-                        }}
-                        onShowSizeChange={(current, pageSize) => {
-                            setSize(pageSize);
-                            setPage(0);
-                        }}
-                    />
+                      <Button
+                        disabled={item.status === 1}
+                        // isChecked={item.status === 0}
+                      >
+                        <MdDelete color={navbarIcon} size={23}/>
+                      </Button>
+                    </Box>
+                  </Td>
                 )}
-            </SimpleGrid>
-            <Modal
-                size={'3xl'}
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                isOpen={isOpen}
-                onClose={() => {
-                    onClose();
-                    resetValue();
-                }}
-            >
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader>
-                        {isEdit
-                            ? wordsListData?.EDIT_TERMINAL || 'Редактирование терминала'
-                            : wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
-                    </ModalHeader>
-                    <ModalCloseButton/>
-                    <ModalBody pb={6}>
-                        <Grid templateColumns="repeat(2, 1fr)" gap={6} px={5}>
-                            {/* {!isEdit && (
+              </Tr>
+            ))
+          ) : (
+            <Tr>
+              <Td textAlign={'center'} colSpan={thead.length}>
+                {wordsListData?.PANEL_TERMINAL || 'Терминал'}{' '}
+                {wordsListData?.NOT_FOUND || 'не найден'}
+              </Td>
+            </Tr>
+          )}
+        </ComplexTable>
+        {role === 'ROLE_TERMINAL' || (
+          <Pagination
+            showSizeChanger
+            responsive={true}
+            defaultCurrent={1}
+            total={totalPage}
+            onChange={(page, size) => {
+              setPage(page - 1);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              setSize(pageSize);
+              setPage(0);
+            }}
+          />
+        )}
+      </SimpleGrid>
+
+      <Modal
+        size={'3xl'}
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          resetValue();
+        }}
+      >
+        <ModalOverlay/>
+        <ModalContent>
+          <ModalHeader>
+            {isEdit
+              ? wordsListData?.EDIT_TERMINAL || 'Редактирование терминала'
+              : wordsListData?.CREATE_TERMINAL || 'Создать терминал'}
+          </ModalHeader>
+          <ModalCloseButton/>
+          <ModalBody pb={6}>
+
+            {/*ModalAlert*/}
+            {numberError && <Alerts title={numberError}/>}
+            <Grid templateColumns="repeat(2, 1fr)" gap={6} px={5}>
+              {/* {!isEdit && (
                 <FormControl mt={4}>
                   <FormLabel>
                     {wordsListData?.SELECT_TERMINAL_TYPE || 'Выберите терминал'}
@@ -448,100 +473,100 @@ export default function SellerTerminal() {
                 </FormControl>
               )} */}
 
-                            {/* Terminal Name */}
-                            <FormControl mt={4} isInvalid={!!formErrors.name}>
-                                <FormLabel>
-                                    {wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала'}
-                                </FormLabel>
-                                <Input
-                                    name="name"
-                                    ref={initialRef}
-                                    placeholder={
-                                        wordsListData?.ENTER_THE_TERMINAL_NAME ||
-                                        'Введите название терминала'
-                                    }
-                                    value={formValues.name}
-                                    onChange={handleChange}
-                                    color={inputTextColor}
-                                />
-                            </FormControl>
+              {/* Terminal Name */}
+              <FormControl mt={4} isInvalid={!!formErrors.name}>
+                <FormLabel>
+                  {wordsListData?.EXCEL_TERMINAL_NAME || 'Название терминала'}
+                </FormLabel>
+                <Input
+                  name="name"
+                  ref={initialRef}
+                  placeholder={
+                    wordsListData?.ENTER_THE_TERMINAL_NAME ||
+                    'Введите название терминала'
+                  }
+                  value={formValues.name}
+                  onChange={handleChange}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-                            {/* Account */}
-                            <FormControl mt={4} isInvalid={!!formErrors.account}>
-                                <FormLabel>{wordsListData?.ACCOUNT_WEB || 'Аккаунт'}</FormLabel>
-                                <Input
-                                    name="account"
-                                    placeholder={wordsListData?.ACCOUNT_WEB || 'Аккаунт'}
-                                    value={formValues.account}
-                                    onChange={handleChange}
-                                    color={inputTextColor}
-                                />
-                            </FormControl>
+              {/* Account */}
+              <FormControl mt={4} isInvalid={!!formErrors.account}>
+                <FormLabel>{wordsListData?.ACCOUNT_WEB || 'Аккаунт'}</FormLabel>
+                <Input
+                  name="account"
+                  placeholder={wordsListData?.ACCOUNT_WEB || 'Аккаунт'}
+                  value={formValues.account}
+                  onChange={e => changeValidateError(e, 'account')}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-                            {/* Filial Code */}
-                            <FormControl mt={4} isInvalid={!!formErrors.filialCode}>
-                                <FormLabel>
-                                    {wordsListData?.EXCEL_MFO || 'Код филиала'}
-                                </FormLabel>
-                                <Input
-                                    name="filialCode"
-                                    placeholder={wordsListData?.EXCEL_MFO || 'Код филиала'}
-                                    value={formValues.filialCode}
-                                    onChange={handleChange}
-                                    color={inputTextColor}
-                                />
-                            </FormControl>
+              {/* Filial Code */}
+              <FormControl mt={4} isInvalid={!!formErrors.filialCode}>
+                <FormLabel>
+                  {wordsListData?.EXCEL_MFO || 'Код филиала'}
+                </FormLabel>
+                <Input
+                  name="filialCode"
+                  placeholder={wordsListData?.EXCEL_MFO || 'Код филиала'}
+                  value={formValues.filialCode}
+                  onChange={e => changeValidateError(e, 'filialCode')}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-                            {/* INN */}
-                            <FormControl mt={4} isInvalid={!!formErrors.inn}>
-                                <FormLabel>{wordsListData?.INN_WEB || 'ИНН'}</FormLabel>
-                                <Input
-                                    name="inn"
-                                    placeholder={wordsListData?.INN_WEB || 'ИНН'}
-                                    value={formValues.inn}
-                                    onChange={handleChange}
-                                    color={inputTextColor}
-                                />
-                            </FormControl>
+              {/* INN */}
+              <FormControl mt={4} isInvalid={!!formErrors.inn}>
+                <FormLabel>{wordsListData?.INN_WEB || 'ИНН'}</FormLabel>
+                <Input
+                  name="inn"
+                  placeholder={wordsListData?.INN_WEB || 'ИНН'}
+                  value={formValues.inn}
+                  onChange={e => changeValidateError(e, 'inn')}
+                  color={inputTextColor}
+                />
+              </FormControl>
 
-                            {/* Phone */}
-                            <FormControl mt={4} isInvalid={!!formErrors.phone}>
-                                <FormLabel>
-                                    {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
-                                </FormLabel>
-                                <PhoneInput
-                                    disableCountryCodeEdit
-                                    required
-                                    defaultCountry="uz"
-                                    value={formValues.phone}
-                                    onChange={(phone) =>
-                                        handleChange({target: {name: 'phone', value: phone}})
-                                    }
-                                    style={{
-                                        width: '100%',
-                                        height: '50px',
-                                        borderRadius: '16px',
-                                        border: '1px solid #E0E5F2',
-                                        fontSize: '16px',
-                                        padding: '0 15px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        color: inputTextColor,
-                                    }}
-                                    inputStyle={{
-                                        width: '100%',
-                                        height: '100%',
-                                        border: 'none',
-                                        outline: 'none',
-                                        backgroundColor: 'transparent',
-                                        fontSize: '16px',
-                                        color: inputTextColor,
-                                    }}
-                                    inputClass="phone-input"
-                                    containerClass="phone-input-container"
-                                    textClass="phone-input-text"
-                                />
-                                {/* <PhoneInput
+              {/* Phone */}
+              <FormControl mt={4} isInvalid={!!formErrors.phone}>
+                <FormLabel>
+                  {wordsListData?.PHONE_NUMBER || 'Номер телефона'}
+                </FormLabel>
+                <PhoneInput
+                  disableCountryCodeEdit
+                  required
+                  defaultCountry="uz"
+                  value={formValues.phone}
+                  onChange={(phone) =>
+                    handleChange({target: {name: 'phone', value: phone}})
+                  }
+                  style={{
+                    width: '100%',
+                    height: '50px',
+                    borderRadius: '16px',
+                    border: '1px solid #E0E5F2',
+                    fontSize: '16px',
+                    padding: '0 15px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: inputTextColor,
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '16px',
+                    color: inputTextColor,
+                  }}
+                  inputClass="phone-input"
+                  containerClass="phone-input-container"
+                  textClass="phone-input-text"
+                />
+                {/* <PhoneInput
                   required
                   defaultCountry="uz"
                   value={formValues.phone}
@@ -572,50 +597,48 @@ export default function SellerTerminal() {
                   containerClass="phone-input-container"
                   textClass="phone-input-text"
                 /> */}
-                            </FormControl>
-                            <FormControl mt={4} isInvalid={!!formErrors.terminalSerialCode}>
-                                <FormLabel>
-                                    {wordsListData?.SERIAL_CODE || 'Серийный код'}
-                                </FormLabel>
-                                <Input
-                                    name="terminalSerialCode"
-                                    placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
-                                    value={formValues.terminalSerialCode}
-                                    onChange={handleChange}
-                                    color={inputTextColor}
-                                />
-                            </FormControl>
-                        </Grid>
-                    </ModalBody>
-                    <ModalFooter display={'flex'} gap={'10px'}>
-                        <Button
-                            bg={'red'}
-                            color={'white'}
-                            _hover={{bg: 'red.600'}}
-                            _active={{bg: 'red.600', transform: 'scale(0.98)'}}
-                            onClick={() => {
-                                onClose();
-                                resetValue();
-                            }}
-                        >
-                            {wordsListData?.CANCEL || 'Отмена'}
-                        </Button>
-                        <Button
-                            bg={'green'}
-                            color={'white'}
-                            _hover={{bg: 'green.600'}}
-                            _active={{bg: 'green.600', transform: 'scale(0.98)'}}
-                            onClick={() => {
-                                handleSave();
-                            }}
-                        >
-                            {createLoading
-                                ? wordsListData?.LOADING || 'Загрузка...'
-                                : wordsListData?.SAVE || 'Сохранить'}
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-        </Box>
-    );
+              </FormControl>
+              <FormControl mt={4} isInvalid={!!formErrors.terminalSerialCode}>
+                <FormLabel>
+                  {wordsListData?.SERIAL_CODE || 'Серийный код'}
+                </FormLabel>
+                <Input
+                  name="terminalSerialCode"
+                  placeholder={wordsListData?.SERIAL_CODE || 'Серийный код'}
+                  value={formValues.terminalSerialCode}
+                  onChange={e => changeValidateError(e, 'terminalSerialCode')}
+                  color={inputTextColor}
+                />
+              </FormControl>
+            </Grid>
+          </ModalBody>
+          <ModalFooter display={'flex'} gap={'10px'}>
+            <Button
+              bg={'red'}
+              color={'white'}
+              _hover={{bg: 'red.600'}}
+              _active={{bg: 'red.600', transform: 'scale(0.98)'}}
+              onClick={() => {
+                onClose();
+                resetValue();
+              }}
+            >
+              {wordsListData?.CANCEL || 'Отмена'}
+            </Button>
+            <Button
+              bg={'green'}
+              color={'white'}
+              _hover={{bg: 'green.600'}}
+              _active={{bg: 'green.600', transform: 'scale(0.98)'}}
+              onClick={() => handleSave()}
+            >
+              {createLoading
+                ? wordsListData?.LOADING || 'Загрузка...'
+                : wordsListData?.SAVE || 'Сохранить'}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
 }
